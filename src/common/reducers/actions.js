@@ -123,6 +123,7 @@ import fmlLibsMapping from '../../app/desktop/utils/fmllibs';
 import { openModal, closeModal } from './modals/actions';
 import forgePatcher from '../utils/forgePatcher';
 
+
 export function initManifests() {
   return async (dispatch, getState) => {
     const { app } = getState();
@@ -442,9 +443,22 @@ export function login(
           data.skin = skinUrl;
         }
       } else {
+        // how does minecraft generate offline UUIDs:
+        // https://forums.spongepowered.org/t/why-are-the-uuids-changing-in-offline-mode/20237/2
+        // how to do it in javascript:
+        // https://stackoverflow.com/questions/47505620/javas-uuid-nameuuidfrombytes-to-written-in-javascript
+        /* eslint-disable */
+          const crypto = require('crypto');
+          const md5Bytes = crypto.createHash('md5').update("OfflinePlayer:"+username).digest();
+          md5Bytes[6] &= 0x0f;  /* clear version        */
+          md5Bytes[6] |= 0x30;  /* set to version 3     */
+          md5Bytes[8] &= 0x3f;  /* clear variant        */
+          md5Bytes[8] |= 0x80;  /* set to IETF variant  */
+          let generatedID = md5Bytes.toString('hex');
+        /* eslint-enable */
         data = {
           selectedProfile: {
-            id: 'ff64ff64ff64ff64ff64ff64ff64ff64',
+            id: generatedID,
             name: username
           },
           accountType: ACCOUNT_MOJANG,
