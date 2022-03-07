@@ -18,7 +18,12 @@ import { useDebouncedCallback } from 'use-debounce';
 import { FixedSizeList as List } from 'react-window';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
-import { faBomb, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBomb,
+  faExclamationCircle,
+  faWrench,
+  faDownload
+} from '@fortawesome/free-solid-svg-icons';
 import Modal from '../components/Modal';
 import { getSearch, getAddonFiles } from '../api';
 import { openModal } from '../reducers/modals/actions';
@@ -138,12 +143,12 @@ const ModsListWrapper = ({
       state => state.settings.curseReleaseChannel
     );
     const dispatch = useDispatch();
-    const { instanceName, gameVersion, installedMods, instance } = data;
+    const { instanceName, gameVersions, installedMods, instance } = data;
 
     const item = items[index];
 
     const isInstalled = installedMods.find(v => v.projectID === item?.id);
-    const primaryImage = item.attachments.find(v => v.isDefault);
+    const primaryImage = item?.logo;
 
     if (!item) {
       return (
@@ -175,7 +180,7 @@ const ModsListWrapper = ({
         <RowInnerContainer>
           <RowContainerImg
             style={{
-              background: `url('${primaryImage?.thumbnailUrl}') center center`
+              backgroundImage: `url('${primaryImage?.thumbnailUrl}')`
             }}
           />
           <div
@@ -190,7 +195,7 @@ const ModsListWrapper = ({
             onClick={() => {
               dispatch(
                 openModal('ModOverview', {
-                  gameVersion,
+                  gameVersions,
                   projectID: item.id,
                   ...(isInstalled && { fileID: isInstalled.fileID }),
                   ...(isInstalled && { fileName: isInstalled.fileName }),
@@ -207,29 +212,10 @@ const ModsListWrapper = ({
             <div>
               <Button
                 type="primary"
-                css={`
-                  margin-right: 10px;
-                `}
-                onClick={() => {
-                  dispatch(
-                    openModal('ModOverview', {
-                      gameVersion,
-                      projectID: item.id,
-                      ...(isInstalled && { fileID: isInstalled.fileID }),
-                      ...(isInstalled && { fileName: isInstalled.fileName }),
-                      instanceName
-                    })
-                  );
-                }}
-              >
-                Explore
-              </Button>
-              <Button
-                type="primary"
                 onClick={async e => {
                   setLoading(true);
                   e.stopPropagation();
-                  const files = (await getAddonFiles(item?.id)).data;
+                  const files = await getAddonFiles(item?.id);
 
                   const isFabric = getPatchedInstanceType(instance) === FABRIC;
                   const isForge = getPatchedInstanceType(instance) === FORGE;
@@ -239,12 +225,12 @@ const ModsListWrapper = ({
                   if (isFabric) {
                     filteredFiles = filterFabricFilesByVersion(
                       files,
-                      gameVersion
+                      gameVersions
                     );
                   } else if (isForge) {
                     filteredFiles = filterForgeFilesByVersion(
                       files,
-                      gameVersion
+                      gameVersions
                     );
                   }
 
@@ -257,7 +243,7 @@ const ModsListWrapper = ({
                     setLoading(false);
                     setError('Mod Not Available');
                     console.error(
-                      `Could not find any release candidate for addon: ${item?.id} / ${gameVersion}`
+                      `Could not find any release candidate for addon: ${item?.id} / ${gameVersions}`
                     );
                     return;
                   }
@@ -268,7 +254,7 @@ const ModsListWrapper = ({
                       item?.id,
                       preferredFile?.id,
                       instanceName,
-                      gameVersion,
+                      gameVersions,
                       true,
                       p => {
                         if (parseInt(p, 10) !== prev) {
@@ -286,7 +272,7 @@ const ModsListWrapper = ({
                 }}
                 loading={loading}
               >
-                Install
+                <FontAwesomeIcon icon={faDownload} />
               </Button>
             </div>
           )
@@ -296,7 +282,7 @@ const ModsListWrapper = ({
             onClick={() => {
               dispatch(
                 openModal('ModOverview', {
-                  gameVersion,
+                  gameVersions,
                   projectID: item.id,
                   ...(isInstalled && { fileID: isInstalled.fileID }),
                   ...(isInstalled && { fileName: isInstalled.fileName }),
@@ -305,7 +291,7 @@ const ModsListWrapper = ({
               );
             }}
           >
-            Change version / explore
+            <FontAwesomeIcon icon={faWrench} />
           </Button>
         )}
       </RowContainer>
@@ -344,14 +330,14 @@ const createItemData = memoize(
   (
     items,
     instanceName,
-    gameVersion,
+    gameVersions,
     installedMods,
     instance,
     isNextPageLoading
   ) => ({
     items,
     instanceName,
-    gameVersion,
+    gameVersions,
     installedMods,
     instance,
     isNextPageLoading
@@ -359,7 +345,7 @@ const createItemData = memoize(
 );
 
 let lastRequest;
-const ModsBrowser = ({ instanceName, gameVersion }) => {
+const ModsBrowser = ({ instanceName, gameVersions }) => {
   const itemsNumber = 50;
 
   const [mods, setMods] = useState([]);
@@ -367,8 +353,10 @@ const ModsBrowser = ({ instanceName, gameVersion }) => {
   const [filterType, setFilterType] = useState('Featured');
   const [searchQuery, setSearchQuery] = useState('');
   const [hasNextPage, setHasNextPage] = useState(false);
+  const [categoryId, setCategoryId] = useState(null);
   const [error, setError] = useState(false);
   const instance = useSelector(state => _getInstance(state)(instanceName));
+  const categories = useSelector(state => state.app.curseforgeCategories);
 
   const installedMods = instance?.mods;
 
@@ -382,7 +370,7 @@ const ModsBrowser = ({ instanceName, gameVersion }) => {
 
   useEffect(() => {
     loadMoreMods(searchQuery, true);
-  }, [filterType]);
+  }, [filterType, categoryId]);
 
   useEffect(() => {
     loadMoreMods();
@@ -401,16 +389,17 @@ const ModsBrowser = ({ instanceName, gameVersion }) => {
       if (error) {
         setError(false);
       }
-      ({ data } = await getSearch(
+      data = await getSearch(
         'mods',
         searchP,
         itemsNumber,
         isReset ? 0 : mods.length,
         filterType,
         filterType !== 'Author' && filterType !== 'Name',
-        gameVersion,
-        getPatchedInstanceType(instance) === FABRIC ? 4780 : null
-      ));
+        gameVersions,
+        categoryId,
+        getPatchedInstanceType(instance)
+      );
     } catch (err) {
       setError(err);
     }
@@ -426,7 +415,7 @@ const ModsBrowser = ({ instanceName, gameVersion }) => {
   const itemData = createItemData(
     mods,
     instanceName,
-    gameVersion,
+    gameVersions,
     installedMods,
     instance,
     areModsLoading
@@ -445,8 +434,8 @@ const ModsBrowser = ({ instanceName, gameVersion }) => {
         <Header>
           <Select
             css={`
-              width: 160px;
-              margin: 0 10px;
+              width: 160px !important;
+              margin: 0 10px !important;
             `}
             defaultValue={filterType}
             onChange={setFilterType}
@@ -460,11 +449,51 @@ const ModsBrowser = ({ instanceName, gameVersion }) => {
             <Select.Option value="Author">Author</Select.Option>
             <Select.Option value="TotalDownloads">Downloads</Select.Option>
           </Select>
+          <Select
+            placeholder="Minecraft Category"
+            onChange={setCategoryId}
+            defaultValue={null}
+            virtual={false}
+            css={`
+              width: 500px !important;
+              margin-right: 10px !important;
+            `}
+          >
+            <Select.Option key="allcategories" value={null}>
+              All Categories
+            </Select.Option>
+            {(categories || [])
+              .filter(v => v?.classId === 6)
+              .sort((a, b) => a?.name.localeCompare(b?.name))
+              .map(v => (
+                <Select.Option value={v?.id} key={v?.id}>
+                  <div
+                    css={`
+                      display: flex;
+                      align-items: center;
+                      width: 100%;
+                      height: 100%;
+                    `}
+                  >
+                    <img
+                      src={v?.iconUrl}
+                      css={`
+                        height: 16px;
+                        width: 16px;
+                        margin-right: 10px;
+                      `}
+                      alt="icon"
+                    />
+                    {v?.name}
+                  </div>
+                </Select.Option>
+              ))}
+          </Select>
           <Input
             css={`
-              height: 32px;
+              height: 32px !important;
             `}
-            placeholder="Search for a mod"
+            placeholder="Search..."
             value={searchQuery}
             onChange={e => {
               setSearchQuery(e.target.value);
@@ -506,7 +535,7 @@ const ModsBrowser = ({ instanceName, gameVersion }) => {
                   height={height - 50}
                   loadNextPage={loadMoreMods}
                   searchQuery={searchQuery}
-                  version={gameVersion}
+                  version={gameVersions}
                   installedMods={installedMods}
                   instanceName={instanceName}
                   itemData={itemData}

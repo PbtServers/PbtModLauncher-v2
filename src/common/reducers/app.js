@@ -65,9 +65,27 @@ function curseforgeCategories(state = [], action) {
   }
 }
 
+function curseforgeVersionIds(state = {}, action) {
+  switch (action.type) {
+    case ActionTypes.UPDATE_CURSEFORGE_VERSION_IDS:
+      return action.data;
+    default:
+      return state;
+  }
+}
+
 function javaManifest(state = {}, action) {
   switch (action.type) {
     case ActionTypes.UPDATE_JAVA_MANIFEST:
+      return action.data;
+    default:
+      return state;
+  }
+}
+
+function javaLatestManifest(state = {}, action) {
+  switch (action.type) {
+    case ActionTypes.UPDATE_JAVA_LATEST_MANIFEST:
       return action.data;
     default:
       return state;
@@ -108,8 +126,10 @@ export default combineReducers({
   forgeManifest,
   fabricManifest,
   javaManifest,
+  javaLatestManifest,
   curseforgeCategories,
   clientToken,
   isNewUser,
-  lastUpdateVersion
+  lastUpdateVersion,
+  curseforgeVersionIds
 });

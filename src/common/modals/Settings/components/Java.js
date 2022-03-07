@@ -10,13 +10,16 @@ import {
   faUndo,
   faLevelDownAlt,
   faList,
-  faDesktop
+  faDesktop,
+  faPlay
 } from '@fortawesome/free-solid-svg-icons';
 import { Slider, Button, Input, Switch, Select } from 'antd';
 import {
+  updateJavaLatestPath,
   updateJavaArguments,
   updateJavaMemory,
   updateJavaPath,
+  updateMcStartupMethod,
   updateResolution
 } from '../../../reducers/settings/actions';
 import {
@@ -25,11 +28,11 @@ import {
 } from '../../../../app/desktop/utils/constants';
 import { _getJavaPath } from '../../../utils/selectors';
 import { openModal } from '../../../reducers/modals/actions';
-
-const JavaSettings = styled.div`
-  width: 100%;
-  height: 400px;
-`;
+import {
+  LATEST_JAVA_VERSION,
+  MC_STARTUP_METHODS
+} from '../../../utils/constants';
+import { marks, scaleMem, scaleMemInv, sysMemScaled } from '../../../utils';
 
 const AutodetectPath = styled.div`
   display: flex;
@@ -37,6 +40,7 @@ const AutodetectPath = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 40px;
+  margin-bottom: 30px;
 `;
 
 const SelectMemory = styled.div`
@@ -47,6 +51,20 @@ const SelectMemory = styled.div`
 const Resolution = styled.div`
   width: 100%;
   height: 100px;
+`;
+
+const McStartupMethod = styled.div`
+  width: 100%;
+  height: 100px;
+`;
+
+const McStartupMethodRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 30px;
 `;
 
 const ResolutionInputContainer = styled.div`
@@ -77,6 +95,7 @@ const Title = styled.h3`
 `;
 
 const Paragraph = styled.p`
+  max-width: 510px;
   color: ${props => props.theme.palette.text.third};
 `;
 
@@ -98,20 +117,19 @@ function resetJavaArguments(dispatch) {
   dispatch(updateJavaArguments(DEFAULT_JAVA_ARGS));
 }
 
-const marks = {
-  2048: '2048 MB',
-  4096: '4096 MB',
-  8192: '8192 MB',
-  16384: '16384 MB',
-  32768: '32768 MB'
-};
-
 export default function MyAccountPreferences() {
   const [screenResolution, setScreenResolution] = useState(null);
   const javaArgs = useSelector(state => state.settings.java.args);
   const javaMemory = useSelector(state => state.settings.java.memory);
-  const javaPath = useSelector(_getJavaPath);
+  const javaPath = useSelector(state => _getJavaPath(state)(8));
+  const javaLatestPath = useSelector(state =>
+    _getJavaPath(state)(LATEST_JAVA_VERSION)
+  );
   const customJavaPath = useSelector(state => state.settings.java.path);
+  const customJavaLatestPath = useSelector(
+    state => state.settings.java.pathLatest
+  );
+  const mcStartupMethod = useSelector(state => state.settings.mcStartupMethod);
   const mcResolution = useSelector(
     state => state.settings.minecraftSettings.resolution
   );
@@ -125,7 +143,7 @@ export default function MyAccountPreferences() {
   }, []);
 
   return (
-    <JavaSettings>
+    <>
       <MainTitle>Java</MainTitle>
       <Title
         css={`
@@ -152,32 +170,41 @@ export default function MyAccountPreferences() {
           `}
         >
           Disable this to specify a custom java path to use instead of using
-          openJDK shipped with GDLauncher if that is the case select the path to
-          your Java executable.
+          OpenJDK shipped with GDLauncher. If that is the case, select the path
+          to your Java executable.
         </Paragraph>
         <Switch
           color="primary"
           onChange={c => {
             if (c) {
               dispatch(updateJavaPath(null));
+              dispatch(updateJavaLatestPath(null));
             } else {
               dispatch(updateJavaPath(javaPath));
+              dispatch(updateJavaLatestPath(javaLatestPath));
             }
           }}
-          checked={!customJavaPath}
+          checked={!customJavaPath && !customJavaLatestPath}
         />
       </AutodetectPath>
-      {customJavaPath && (
+      {customJavaPath && customJavaLatestPath && (
         <>
           <div
             css={`
-              height: 40px;
+              height: 50px;
+              margin: 30px 0;
             `}
           >
+            <h3
+              css={`
+                text-align: left;
+              `}
+            >
+              Java 8
+            </h3>
             <div
               css={`
                 width: 100%;
-                margin: 20px 0;
               `}
             >
               <FontAwesomeIcon
@@ -187,10 +214,16 @@ export default function MyAccountPreferences() {
               />
               <Input
                 css={`
-                  width: 75%;
-                  margin: 0 10px;
+                  width: 75% !important;
+                  margin: 0 10px !important;
                 `}
-                onChange={e => dispatch(updateJavaPath(e.target.value))}
+                onChange={e =>
+                  dispatch(
+                    updateJavaPath(
+                      e.target.value === '' ? null : e.target.value
+                    )
+                  )
+                }
                 value={customJavaPath}
               />
               <StyledButtons
@@ -202,6 +235,58 @@ export default function MyAccountPreferences() {
                   );
                   if (!filePaths[0] || canceled) return;
                   dispatch(updateJavaPath(filePaths[0]));
+                }}
+              >
+                <FontAwesomeIcon icon={faFolder} />
+              </StyledButtons>
+            </div>
+          </div>
+          <div
+            css={`
+              height: 50px;
+              margin: 30px 0;
+            `}
+          >
+            <h3
+              css={`
+                text-align: left;
+              `}
+            >
+              Java {LATEST_JAVA_VERSION}
+            </h3>
+            <div
+              css={`
+                width: 100%;
+              `}
+            >
+              <FontAwesomeIcon
+                icon={faLevelDownAlt}
+                flip="horizontal"
+                transform={{ rotate: 90 }}
+              />
+              <Input
+                css={`
+                  width: 75% !important;
+                  margin: 0 10px !important;
+                `}
+                onChange={e => {
+                  dispatch(
+                    updateJavaLatestPath(
+                      e.target.value === '' ? null : e.target.value
+                    )
+                  );
+                }}
+                value={customJavaLatestPath}
+              />
+              <StyledButtons
+                color="primary"
+                onClick={async () => {
+                  const { filePaths, canceled } = await ipcRenderer.invoke(
+                    'openFileDialog',
+                    javaPath
+                  );
+                  if (!filePaths[0] || canceled) return;
+                  dispatch(updateJavaLatestPath(filePaths[0]));
                 }}
               >
                 <FontAwesomeIcon icon={faFolder} />
@@ -230,7 +315,7 @@ export default function MyAccountPreferences() {
             margin: 0;
           `}
         >
-          Select the initial game resolution in pixels (width x height)
+          Select the initial game resolution in pixels (width x height).
         </Paragraph>
         <ResolutionInputContainer>
           <div>
@@ -300,22 +385,39 @@ export default function MyAccountPreferences() {
             margin: 0;
           `}
         >
-          Select the preferred amount of memory to use when launching the game
+          Select the preferred amount of memory to use when launching the game.
         </Paragraph>
-        <Slider
+        <div
           css={`
-            margin: 20px 20px 20px 0;
+            display: flex;
           `}
-          onAfterChange={e => {
-            dispatch(updateJavaMemory(e));
-          }}
-          defaultValue={javaMemory}
-          min={1024}
-          max={32768}
-          step={512}
-          marks={marks}
-          valueLabelDisplay="auto"
-        />
+        >
+          <Slider
+            css={`
+              margin: 20px 40px !important;
+              white-space: nowrap;
+              flex: 1;
+            `}
+            onChange={e =>
+              dispatch(updateJavaMemory(Math.round(scaleMemInv(e))))
+            }
+            defaultValue={scaleMem(javaMemory)}
+            min={0}
+            max={sysMemScaled}
+            step={0.1}
+            marks={marks}
+            valueLabelDisplay="auto"
+          />
+          <div
+            css={`
+              display: grid;
+              place-items: center;
+              width: 100px;
+            `}
+          >
+            {javaMemory} MB
+          </div>
+        </div>
       </SelectMemory>
       <Hr />
       <JavaCustomArguments>
@@ -332,7 +434,7 @@ export default function MyAccountPreferences() {
             text-align: left;
           `}
         >
-          Select the preferred custom arguments to use when launching the game
+          Select the preferred custom arguments to use when launching the game.
         </Paragraph>
         <div
           css={`
@@ -344,9 +446,9 @@ export default function MyAccountPreferences() {
             onChange={e => dispatch(updateJavaArguments(e.target.value))}
             value={javaArgs}
             css={`
-              width: 83%;
-              height: 32px;
-              float: left;
+              width: 83% !important;
+              height: 32px !important;
+              float: left !important;
             `}
           />
           <StyledButtons
@@ -357,6 +459,38 @@ export default function MyAccountPreferences() {
           </StyledButtons>
         </div>
       </JavaCustomArguments>
-    </JavaSettings>
+      <Hr />
+      <McStartupMethod>
+        <Title
+          css={`
+            width: 70%;
+            text-align: left;
+          `}
+        >
+          Minecraft Startup Method &nbsp; <FontAwesomeIcon icon={faPlay} />
+        </Title>
+        <McStartupMethodRow>
+          <Paragraph
+            css={`
+              text-align: left;
+            `}
+          >
+            Select the preferred Minecraft startup method. Only change this if
+            you&apos;re experiencing issues with the default one.
+          </Paragraph>
+          <Select
+            value={mcStartupMethod}
+            onChange={v => dispatch(updateMcStartupMethod(v))}
+            disabled={process.platform !== 'win32'}
+          >
+            {Object.entries(MC_STARTUP_METHODS).map(([k, v]) => (
+              <Select.Option key={k} value={k}>
+                {v}
+              </Select.Option>
+            ))}
+          </Select>
+        </McStartupMethodRow>
+      </McStartupMethod>
+    </>
   );
 }

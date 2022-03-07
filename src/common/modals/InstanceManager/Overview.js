@@ -24,9 +24,18 @@ import {
   DEFAULT_JAVA_ARGS,
   resolutionPresets
 } from '../../../app/desktop/utils/constants';
-import { updateInstanceConfig } from '../../reducers/actions';
+import {
+  getJavaVersionForMCVersion,
+  updateInstanceConfig
+} from '../../reducers/actions';
 import { openModal } from '../../reducers/modals/actions';
-import { convertMinutesToHumanTime } from '../../utils';
+import {
+  convertMinutesToHumanTime,
+  marks,
+  scaleMem,
+  scaleMemInv,
+  sysMemScaled
+} from '../../utils';
 import { CURSEFORGE } from '../../utils/constants';
 
 const Container = styled.div`
@@ -92,7 +101,8 @@ const JavaManagerRow = styled.div`
 `;
 
 const JavaMemorySlider = styled(Slider)`
-  margin: 30px 0 55px 0;
+  margin: 10px 40px 55px 40px !important;
+  flex: 1;
 `;
 
 const JavaResetButton = styled(Button)`
@@ -114,14 +124,6 @@ const ResolutionInputContainer = styled.div`
     align-items: center;
   }
 `;
-
-const marks = {
-  2048: '2048 MB',
-  4096: '4096 MB',
-  8192: '8192 MB',
-  16384: '16384 MB',
-  32768: '32768 MB'
-};
 
 const Card = memo(
   ({ title, children, color, icon, instanceName, defaultValue }) => {
@@ -174,10 +176,18 @@ const Card = memo(
 );
 
 const Overview = ({ instanceName, background, manifest }) => {
+  const dispatch = useDispatch();
   const instancesPath = useSelector(_getInstancesPath);
   const config = useSelector(state => _getInstance(state)(instanceName));
-  const defaultJavaPath = useSelector(state => _getJavaPath(state));
-  const [javaLocalMemory, setJavaLocalMemory] = useState(config?.javaMemory);
+  const javaVersion = dispatch(
+    getJavaVersionForMCVersion(config?.loader?.mcVersion)
+  );
+  const defaultJavaPath = useSelector(state =>
+    _getJavaPath(state)(javaVersion)
+  );
+  const [javaLocalMemory, setJavaLocalMemory] = useState(
+    scaleMem(config?.javaMemory)
+  );
   const [javaLocalArguments, setJavaLocalArguments] = useState(
     config?.javaArgs
   );
@@ -186,8 +196,6 @@ const Overview = ({ instanceName, background, manifest }) => {
   const [screenResolution, setScreenResolution] = useState(null);
   const [height, setHeight] = useState(config?.resolution?.height);
   const [width, setWidth] = useState(config?.resolution?.width);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     ipcRenderer
@@ -200,7 +208,7 @@ const Overview = ({ instanceName, background, manifest }) => {
     dispatch(
       updateInstanceConfig(instanceName, prev => ({
         ...prev,
-        javaMemory: v
+        javaMemory: Math.round(scaleMemInv(v))
       }))
     );
   };
@@ -488,18 +496,31 @@ const Overview = ({ instanceName, background, manifest }) => {
               }}
             />
           </JavaManagerRow>
-          {javaLocalMemory && (
-            <div>
+          {(javaLocalMemory || null) && (
+            <div
+              css={`
+                display: flex;
+              `}
+            >
               <JavaMemorySlider
                 onAfterChange={updateJavaMemory}
-                onChange={setJavaLocalMemory}
-                value={javaLocalMemory}
-                min={1024}
-                max={32768}
-                step={512}
+                onChange={v => setJavaLocalMemory(Math.round(scaleMemInv(v)))}
+                value={scaleMem(javaLocalMemory)}
+                min={0}
+                max={sysMemScaled}
+                step={0.1}
                 marks={marks}
                 valueLabelDisplay="auto"
               />
+              <div
+                css={`
+                  display: grid;
+                  place-items: center;
+                  width: 100px;
+                `}
+              >
+                {javaLocalMemory} MB
+              </div>
             </div>
           )}
           <JavaManagerRow>
@@ -535,7 +556,7 @@ const Overview = ({ instanceName, background, manifest }) => {
             </JavaManagerRow>
           )}
           <JavaManagerRow>
-            <div>Custom Java Path</div>
+            <div>Custom Java Path {`<Java ${javaVersion}>`} </div>
             <Switch
               checked={customJavaPath}
               onChange={v => {

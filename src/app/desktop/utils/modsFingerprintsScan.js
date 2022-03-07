@@ -70,27 +70,23 @@ const modsFingerprintsScan = async instancesPath => {
 
         while (!success || tries > 10) {
           try {
-            const { data } = await getAddonsByFingerprint(
+            const data = await getAddonsByFingerprint(
               Object.values(missingMods)
             );
 
             const matches = await Promise.all(
               Object.entries(missingMods).map(async ([fileName, hash]) => {
                 const exactMatch = (data.exactMatches || []).find(
-                  v => v.file.packageFingerprint === hash
+                  v => v.file.fileFingerprint === hash
                 );
-                const unmatched = (data.unmatchedFingerprints || []).find(
-                  v => v === hash
-                );
-                if (exactMatch) {
+                if (exactMatch?.file) {
                   let addonData = null;
                   try {
-                    addonData = (await getAddon(exactMatch.file.projectId))
-                      .data;
+                    addonData = await getAddon(exactMatch.file.modId);
                     return {
                       ...normalizeModData(
                         exactMatch.file,
-                        exactMatch.file.projectId,
+                        exactMatch.file.modId,
                         addonData.name
                       ),
                       fileName
@@ -103,14 +99,11 @@ const modsFingerprintsScan = async instancesPath => {
                     };
                   }
                 }
-                if (unmatched) {
-                  return {
-                    fileName,
-                    displayName: fileName,
-                    packageFingerprint: hash
-                  };
-                }
-                return null;
+                return {
+                  fileName,
+                  displayName: fileName,
+                  packageFingerprint: hash
+                };
               })
             );
 
@@ -149,9 +142,13 @@ const modsFingerprintsScan = async instancesPath => {
   };
 
   const folders = await getDirectories(instancesPath);
-  const instances = await pMap(folders, mapFolderToInstance, {
-    concurrency: 5
-  });
+  const instances = await pMap(
+    folders.filter(folder => folder !== '.DS_Store'),
+    mapFolderToInstance,
+    {
+      concurrency: 5
+    }
+  );
   const hashMap = {};
   // eslint-disable-next-line
   for (const instance of instances) {

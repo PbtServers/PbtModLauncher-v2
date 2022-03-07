@@ -1,30 +1,41 @@
 # GDLauncher
-
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
-
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![GitHub issues](https://img.shields.io/github/issues-raw/gorilla-devs/GDLauncher.svg)](https://github.com/gorilla-devs/GDLauncher/issues) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/213eb618fa59424fba7ccfcd4f1b6a09)](https://www.codacy.com/manual/gorilla-devs/GDLauncher?utm_source=github.com&utm_medium=referral&utm_content=gorilla-devs/GDLauncher&utm_campaign=Badge_Grade) [![GitHub pull requests](https://img.shields.io/github/issues-pr/gorilla-devs/GDLauncher.svg)](https://github.com/gorilla-devs/GDLauncher/pulls)[![PRs Welcome](https://img.shields.io/github/license/gorilla-devs/GDLauncher.svg)](http://makeapullrequest.com) ![Electron CD](https://github.com/gorilla-devs/GDLauncher/workflows/Electron%20CD/badge.svg?branch=next) ![Discord](https://img.shields.io/discord/398091532881756161.svg) ![David](https://img.shields.io/david/gorilla-devs/GDLauncher.svg) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/gorilla-devs/GDLauncher.svg)![](https://img.shields.io/github/release/gorilla-devs/GDLauncher.svg?style=flat)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) 
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
+[![GitHub issues](https://img.shields.io/github/issues-raw/gorilla-devs/GDLauncher.svg)](https://github.com/gorilla-devs/GDLauncher/issues) 
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/gorilla-devs/GDLauncher.svg)](https://github.com/gorilla-devs/GDLauncher/pulls) 
+![Discord](https://img.shields.io/discord/398091532881756161.svg)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/gorilla-devs/GDLauncher.svg) 
+![](https://img.shields.io/github/release/gorilla-devs/GDLauncher.svg?style=flat)
 ![Github All Releases](https://img.shields.io/github/downloads/gorilla-devs/GDLauncher/total.svg)
 
+## 🦺 Support this project
+
+<a href='https://ko-fi.com/gdlauncher' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+## 🎉 Join our community
+
+<a href='https://discord.gdlauncher.com' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.gdlauncher.com/assets/socials/Discord-Logo+Wordmark-Color.png' border='0' alt='GDLauncher Discord Server' /></a>
 <details>
  <summary><strong>Table of Contents</strong> (click to expand)
 </summary>
 
 - [GDLauncher](#gdlauncher)
+  - [🦺 Support this project](#-support-this-project)
+  - [🎉 Join our community](#-join-our-community)
   - [🎮 What is GDLauncher](#-what-is-gdlauncher)
-  - [⚡️ Comparison with Twitch Launcher](#-comparison-with-twitch-launcher)
+  - [⚡️ Comparison with Twitch Launcher](#️-comparison-with-twitch-launcher)
   - [🚀 Getting Started](#-getting-started)
   - [🎮 Download](#-download)
   - [🎨 Features](#-features)
-    - [Our features:](#our-features)
-    - [You can also:](#you-can-also)
-    - [Some of the features we are still working on are:](#some-of-the-features-we-are-still-working-on-are)
+      - [Our features:](#our-features)
+      - [You can also:](#you-can-also)
+      - [Some of the features we are still working on are:](#some-of-the-features-we-are-still-working-on-are)
   - [💾 Compilation](#-compilation)
-    - [⚙️ Requirements](#%EF%B8%8F-requirements)
-    - [▶️ Steps](#%EF%B8%8F-steps)
+    - [⚙️ Requirements](#️-requirements)
+    - [▶️ Steps](#️-steps)
     - [🚚 Packaging](#-packaging)
   - [🚀 Technologies](#-technologies)
   - [🎁 Contributing](#-contributing)
-  - [❤️ Author](#-author)
+  - [❤️ Author](#️-author)
   - [📜 History](#-history)
   - [🎓 License](#-license)
   </details>
@@ -41,8 +52,8 @@ GDLauncher is a custom open-source Minecraft launcher written from the ground up
 
 This is an example of the time that GDLauncher takes to install a modpack in comparison to Twitch. Both tests are running at the same time over a 1Gbps network to ensure that the network doesn't impact the comparison.
 
-- GDLauncher: `0.52m`
-- Twitch Launcher: `2.25m`
+- GDLauncher: `52s`
+- Twitch Launcher: `145s`
 
 <p align="center">
     <img width="800" height="auto" src="https://gdevs.io/comparison.gif" alt="GDLauncher" />
@@ -175,6 +186,6 @@ This project is licensed under the GNU GPL V3.0 - see the [LICENSE](LICENSE) fil
 
 If you need GDLauncher licensed under different conditions, please contact davide@gdevs.io
 
-A simple way to keep in terms of the license is by forking this repository and leaving it open source under the same license. We love free software, seeing people use our code and then not share the code, breaking the license, is saddening. So please take a look at the license and respect what we're doing.
+You are free to clone the repository and do whatever you want as long as you stick to the license above, just be aware that most of the assets available in the repository are licensed differently (check [COPYING.md](COPYING.md)) so you are not allowed to redistribute those. Also keep in mind that some features will not be working unless you set them up yourself (such as analytics, error tracking..) because the private API keys are stored secretly.
 
-Also, while we cannot enforce this under the license, you cannot use our CDN/files/assets on your own launcher. Again we cannot enforce this under the license, but needless to say, we'd be very unhappy if you did that and really would like to leave cease and desist letters as a last resort.
+We do not encourage clones of this project (to avoid fragmentation) so don't expect any help from us when trying to do that. We, however, encourage collaboration and growth on this official project and you're more than welcome to contribute.

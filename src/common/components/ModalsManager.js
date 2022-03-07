@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { closeModal } from '../reducers/modals/actions';
 import AsyncComponent from './AsyncComponent';
-import AddInstance from '../modals/AddInstance';
 import Settings from '../modals/Settings';
 
 const Overlay = styled.div`
@@ -15,7 +14,7 @@ const Overlay = styled.div`
   backdrop-filter: blur(4px);
   will-change: opacity;
   transition: opacity 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  z-index: 1000;
+  z-index: 9999999;
 `;
 
 const Modal = styled.div`
@@ -30,11 +29,11 @@ const Modal = styled.div`
   transition: transform 300ms;
   will-change: transform;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  z-index: 1001;
+  z-index: 9999999;
 `;
 
 const modalsComponentLookupTable = {
-  AddInstance,
+  AddInstance: AsyncComponent(lazy(() => import('../modals/AddInstance'))),
   AccountsManager: AsyncComponent(
     lazy(() => import('../modals/AccountsManager'))
   ),
@@ -56,6 +55,9 @@ const modalsComponentLookupTable = {
   InstanceExportCurseForge: AsyncComponent(
     lazy(() => import('../modals/InstanceExport/CurseForge'))
   ),
+  InstanceDuplicateName: AsyncComponent(
+    lazy(() => import('../modals/InstanceDuplicateName'))
+  ),
   AutoUpdatesNotAvailable: AsyncComponent(
     lazy(() => import('../modals/AutoUpdatesNotAvailable'))
   ),
@@ -75,6 +77,13 @@ const modalsComponentLookupTable = {
   ),
   McVersionChanger: AsyncComponent(
     lazy(() => import('../modals/McVersionChanger'))
+  ),
+  PolicyModal: AsyncComponent(lazy(() => import('../modals/PolicyModal'))),
+  InstanceStartupAd: AsyncComponent(
+    lazy(() => import('../modals/InstanceStartupAd'))
+  ),
+  InstanceDownloadFailed: AsyncComponent(
+    lazy(() => import('../modals/InstanceDownloadFailed'))
   )
 };
 
@@ -82,11 +91,9 @@ const ModalContainer = ({
   unmounting,
   children,
   preventClose,
-  modalType,
   closeCallback
 }) => {
   const [modalStyle, setModalStyle] = useState({
-    transform: `scale(${modalType === 'Settings' ? 2 : 0})`,
     opacity: 0
   });
   const [bgStyle, setBgStyle] = useState({
@@ -104,7 +111,8 @@ const ModalContainer = ({
     if (unmounting) unMountStyle();
   }, [unmounting]);
 
-  const back = () => {
+  const back = e => {
+    e.stopPropagation();
     if (preventClose) {
       setModalStyle({
         animation: `modalShake 0.25s linear infinite`
@@ -124,7 +132,6 @@ const ModalContainer = ({
   const unMountStyle = () => {
     // css for unmount animation
     setModalStyle({
-      transform: `scale(${modalType === 'Settings' ? 2 : 0})`,
       opacity: 1
     });
     setBgStyle({
@@ -136,7 +143,6 @@ const ModalContainer = ({
   const mountStyle = () => {
     // css for mount animation
     setModalStyle({
-      transform: 'scale(1)',
       opacity: 1
     });
 

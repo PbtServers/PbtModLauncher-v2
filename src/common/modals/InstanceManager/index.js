@@ -1,30 +1,30 @@
-/* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect, lazy } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { Button } from 'antd';
 import fse from 'fs-extra';
 import { promises as fs } from 'fs';
 import path from 'path';
-import Modal from '../../components/Modal';
-import Overview from './Overview';
 import { ipcRenderer } from 'electron';
-import Screenshots from './Screenshots';
-import ResourcePacks from './ResourcePacks';
-import Notes from './Notes';
-import Mods from './Mods';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { useSelector, useDispatch } from 'react-redux';
-import { _getInstance, _getInstancesPath } from '../../utils/selectors';
-import { FORGE, FABRIC, CURSEFORGE, FTB } from '../../utils/constants';
-import Modpack from './Modpack';
 import {
-  initLatestMods,
+  faPlay,
+  faStop,
+  faTimesCircle
+} from '@fortawesome/free-solid-svg-icons';
+import omit from 'lodash/omit';
+import psTree from 'ps-tree';
+import { useSelector, useDispatch } from 'react-redux';
+import Modal from '../../components/Modal';
+import AsyncComponent from '../../components/AsyncComponent';
+import { _getInstance, _getInstancesPath } from '../../utils/selectors';
+import { FORGE, FABRIC, CURSEFORGE } from '../../utils/constants';
+import {
+  addStartedInstance,
   clearLatestModManifests,
+  launchInstance,
   updateInstanceConfig
 } from '../../reducers/actions';
-import instanceDefaultBackground from '../../../common/assets/instance_default.png';
-import omit from 'lodash/omit';
+import instanceDefaultBackground from '../../assets/instance_default.png';
 
 const SideMenu = styled.div`
   display: flex;
@@ -140,15 +140,53 @@ const InstanceBackground = styled.div`
   }
 `;
 
+const Spinner = keyframes`
+  0% {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+`;
+
+const PlayButtonAnimation = keyframes`
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
 const menuEntries = {
-  overview: { name: 'Overview', component: Overview },
-  mods: { name: 'Mods', component: Mods },
-  modpack: { name: 'Modpack', component: Modpack },
-  notes: { name: 'Notes', component: Notes },
-  resourcePacks: { name: 'Resource Packs', component: ResourcePacks },
+  overview: {
+    name: 'Overview',
+    component: AsyncComponent(lazy(() => import('./Overview')))
+  },
+  mods: {
+    name: 'Mods',
+    component: AsyncComponent(lazy(() => import('./Mods')))
+  },
+  modpack: {
+    name: 'Modpack',
+    component: AsyncComponent(lazy(() => import('./Modpack')))
+  },
+  notes: {
+    name: 'Notes',
+    component: AsyncComponent(lazy(() => import('./Notes')))
+  },
+  resourcePacks: {
+    name: 'Resource Packs',
+    component: AsyncComponent(lazy(() => import('./ResourcePacks')))
+  },
   // resourcePacks: { name: "Resource Packs", component: Overview },
   // worlds: { name: "Worlds", component: Overview },
-  screenshots: { name: 'Screenshots', component: Screenshots }
+  screenshots: {
+    name: 'Screenshots',
+    component: AsyncComponent(lazy(() => import('./Screenshots')))
+  }
   // settings: { name: "Settings", component: Overview },
   // servers: { name: "Servers", component: Overview }
 };
@@ -158,9 +196,12 @@ const InstanceManager = ({ instanceName }) => {
   const instancesPath = useSelector(_getInstancesPath);
   const [page, setPage] = useState(Object.keys(menuEntries)[0]);
   const instance = useSelector(state => _getInstance(state)(instanceName));
+  const startedInstances = useSelector(state => state.startedInstances);
   const [background, setBackground] = useState(instance?.background);
   const [manifest, setManifest] = useState(null);
   const ContentComponent = menuEntries[page].component;
+
+  const isPlaying = startedInstances[instanceName];
 
   const updateBackground = v => {
     if (v) {
@@ -216,14 +257,6 @@ const InstanceManager = ({ instanceName }) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (instance?.name) {
-      dispatch(initLatestMods(instance.name));
-    }
-  }, [instance?.mods]);
-
-
-
   return (
     <Modal
       css={`
@@ -255,6 +288,114 @@ const InstanceManager = ({ instanceName }) => {
                 />
               )}
             </InstanceBackground>
+            <div
+              css={`
+                display: flex;
+                margin-bottom: 20px;
+              `}
+            >
+              <div
+                css={`
+                  position: relative;
+                  background: ${props => props.theme.palette.colors.green};
+                  padding: 5px 10px;
+                  border-radius: 10px 0 0 10px;
+                  font-size: 16px;
+                  font-weight: bold;
+                  width: 80px;
+                  height: 35px;
+                  text-align: center;
+                  cursor: ${props => (props.isPlaying ? 'default' : 'pointer')};
+
+                  .spinner:before {
+                    animation: 1.5s linear infinite ${Spinner};
+                    animation-play-state: inherit;
+                    border: solid 3px transparent;
+                    border-bottom-color: ${props =>
+                      props.theme.palette.common.white};
+                    border-radius: 50%;
+                    content: '';
+                    height: 20px;
+                    width: 20px;
+                    position: absolute;
+                    top: 13px;
+                    transform: translate3d(-50%, -50%, 0);
+                    will-change: transform;
+                  }
+                `}
+                isPlaying={isPlaying}
+                onClick={() => {
+                  if (isPlaying) return;
+                  dispatch(addStartedInstance({ instanceName }));
+                  dispatch(launchInstance(instanceName));
+                }}
+              >
+                {isPlaying ? (
+                  <div
+                    css={`
+                      position: relative;
+                      display: grid;
+                      place-items: center;
+                      width: 100%;
+                      height: 100%;
+                    `}
+                  >
+                    {isPlaying.initialized && (
+                      <FontAwesomeIcon
+                        css={`
+                          color: ${({ theme }) => theme.palette.common.white};
+                          position: absolute;
+                          margin-left: 6px;
+                          animation: ${PlayButtonAnimation} 0.5s
+                            cubic-bezier(0.75, -1.5, 0, 2.75);
+                        `}
+                        icon={faPlay}
+                      />
+                    )}
+                    {!isPlaying.initialized && <div className="spinner" />}
+                  </div>
+                ) : (
+                  <span>PLAY</span>
+                )}
+              </div>
+              <div
+                css={`
+                  padding: 5px 15px;
+                  display: grid;
+                  font-size: 16px;
+                  place-items: center;
+                  background: ${props => props.theme.palette.colors.red};
+                  border-radius: 0 10px 10px 0;
+                  opacity: ${props => (props.isPlaying ? 1 : 0.3)};
+                  cursor: ${props => (props.isPlaying ? 'pointer' : 'default')};
+                `}
+                isPlaying={isPlaying}
+                onClick={() => {
+                  if (!isPlaying) return;
+                  psTree(isPlaying.pid, (err, children) => {
+                    if (children?.length) {
+                      children.forEach(el => {
+                        if (el) {
+                          try {
+                            process.kill(el.PID);
+                          } catch {
+                            // No-op
+                          }
+                        }
+                      });
+                    } else {
+                      try {
+                        process.kill(isPlaying.pid);
+                      } catch {
+                        // No-op
+                      }
+                    }
+                  });
+                }}
+              >
+                <FontAwesomeIcon icon={faStop} />
+              </div>
+            </div>
             {Object.entries(menuEntries).map(([k, tab]) => {
               if (
                 (tab.name === menuEntries.mods.name &&
@@ -268,7 +409,7 @@ const InstanceManager = ({ instanceName }) => {
               return (
                 <SettingsButton
                   key={tab.name}
-                  onClick={e => setPage(k)}
+                  onClick={() => setPage(k)}
                   active={k === page}
                 >
                   {tab.name}

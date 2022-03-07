@@ -34,6 +34,8 @@ const discordRPC = require('./discordRPC');
 
 const gotTheLock = app.requestSingleInstanceLock();
 
+const isDev = process.env.NODE_ENV === 'development';
+
 // Prevent multiple instances
 if (gotTheLock) {
   app.on('second-instance', (e, argv) => {
@@ -174,7 +176,7 @@ if (releaseChannelExists) {
     allowUnstableReleases = true;
   }
 } else if (!releaseChannelExists && app.getVersion().includes('beta')) {
-  fss.writeFileSync(path.join(app.getPath('userData'), 'rChannel'), 1);
+  fss.writeFileSync(path.join(app.getPath('userData'), 'rChannel'), '1');
   allowUnstableReleases = true;
 }
 
@@ -197,44 +199,40 @@ if (
 
 log.log(process.env.REACT_APP_RELEASE_TYPE, app.getVersion());
 
-const isDev = process.env.NODE_ENV === 'development';
-
-async function extract7z() {
-  const baseDir = path.join(app.getAppPath(), 'node_modules', '7zip-bin');
-
-  let zipLocationAsar = path.join(baseDir, 'linux', 'x64', '7za');
+const get7zPath = async () => {
+  let baseDir = path.dirname(app.getPath('exe'));
+  if (isDev) {
+    baseDir = path.resolve(baseDir, '../../');
+    if (process.platform === 'win32') {
+      baseDir = path.join(baseDir, '7zip-bin/win/x64');
+    } else if (process.platform === 'linux') {
+      baseDir = path.join(baseDir, '7zip-bin/linux/x64');
+    } else if (process.platform === 'darwin') {
+      baseDir = path.resolve(baseDir, '../../../', '7zip-bin/mac/x64');
+    }
+  }
+  if (process.platform === 'linux') {
+    return path.join(baseDir, '7za');
+  }
   if (process.platform === 'darwin') {
-    zipLocationAsar = path.join(baseDir, 'mac', 'x64', '7za');
+    return path.resolve(baseDir, isDev ? '' : '../', '7za');
   }
-  if (process.platform === 'win32') {
-    zipLocationAsar = path.join(baseDir, 'win', 'x64', '7za.exe');
-  }
-  try {
-    await fs.copyFile(
-      zipLocationAsar,
-      path.join(app.getPath('userData'), path.basename(zipLocationAsar))
-    );
+  return path.join(baseDir, '7za.exe');
+};
 
+async function patchSevenZip() {
+  try {
     if (process.platform === 'linux' || process.platform === 'darwin') {
-      await promisify(exec)(
-        `chmod +x "${path.join(
-          app.getPath('userData'),
-          path.basename(zipLocationAsar)
-        )}"`
-      );
-      await promisify(exec)(
-        `chmod 755 "${path.join(
-          app.getPath('userData'),
-          path.basename(zipLocationAsar)
-        )}"`
-      );
+      const sevenZipPath = await get7zPath();
+      await promisify(exec)(`chmod +x "${sevenZipPath}"`);
+      await promisify(exec)(`chmod 755 "${sevenZipPath}"`);
     }
   } catch (e) {
     log.error(e);
   }
 }
 
-extract7z();
+patchSevenZip();
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -377,7 +375,9 @@ app.on('before-quit', async () => {
     await watcher.stop();
     watcher = null;
   }
-  mainWindow.removeAllListeners('close');
+  if (mainWindow) {
+    mainWindow.removeAllListeners('close');
+  }
   mainWindow = null;
 });
 
@@ -529,6 +529,10 @@ ipcMain.handle('getUserData', () => {
   return app.getPath('userData');
 });
 
+ipcMain.handle('getSentryDsn', () => {
+  return process.env.SENTRY_DSN;
+});
+
 ipcMain.handle('getOldLauncherUserData', () => {
   return oldLauncherUserData;
 });
@@ -587,7 +591,11 @@ ipcMain.handle('init-discord-rpc', () => {
 });
 
 ipcMain.handle('update-discord-rpc', (event, p) => {
-  discordRPC.updateDetails(p);
+  discordRPC.update(p);
+});
+
+ipcMain.handle('reset-discord-rpc', () => {
+  discordRPC.reset();
 });
 
 ipcMain.handle('shutdown-discord-rpc', () => {
@@ -632,76 +640,76 @@ ipcMain.handle('calculateMurmur2FromPath', (e, filePath) => {
 
 // AutoUpdater
 
-if (process.env.REACT_APP_RELEASE_TYPE === 'setup') {
-  autoUpdater.autoDownload = false;
-  autoUpdater.allowDowngrade =
-    !allowUnstableReleases && app.getVersion().includes('beta');
-  autoUpdater.allowPrerelease = allowUnstableReleases;
-  autoUpdater.setFeedURL({
-    owner: 'gorilla-devs',
-    repo: 'GDLauncher',
-    provider: 'github'
-  });
+// if (process.env.REACT_APP_RELEASE_TYPE === 'setup') {
+//   autoUpdater.autoDownload = false;
+//   autoUpdater.allowDowngrade =
+//     !allowUnstableReleases && app.getVersion().includes('beta');
+//   autoUpdater.allowPrerelease = allowUnstableReleases;
+//   autoUpdater.setFeedURL({
+//     owner: 'gorilla-devs',
+//     repo: 'GDLauncher',
+//     provider: 'github'
+//   });
 
-  autoUpdater.on('update-available', () => {
-    // autoUpdater.downloadUpdate();
-  });
+//   autoUpdater.on('update-available', () => {
+//     autoUpdater.downloadUpdate();
+//   });
 
-  autoUpdater.on('update-downloaded', () => {
-    // mainWindow.webContents.send('updateAvailable');
-  });
+//   autoUpdater.on('update-downloaded', () => {
+//     mainWindow.webContents.send('updateAvailable');
+//   });
 
-  ipcMain.handle('checkForUpdates', () => {
-    // autoUpdater.checkForUpdates();
-  });
-}
+//   ipcMain.handle('checkForUpdates', () => {
+//     autoUpdater.checkForUpdates();
+//   });
+// }
 
-ipcMain.handle('installUpdateAndQuitOrRestart', async (e, quitAfterInstall) => {
-  const tempFolder = path.join(
-    path.dirname(app.getPath('exe')),
-    'data',
-    'temp'
-  );
-  if (process.env.REACT_APP_RELEASE_TYPE === 'setup') {
-    autoUpdater.quitAndInstall(true, !quitAfterInstall);
-  } else {
-    const updaterVbs = 'updater.vbs';
-    const updaterBat = 'updateLauncher.bat';
-    await fs.writeFile(
-      path.join(tempFolder, updaterBat),
-      `ping 127.0.0.1 -n 1 > nul & robocopy "${path.join(
-        tempFolder,
-        'update'
-      )}" "." /MOV /E${
-        quitAfterInstall ? '' : ` & start "" "${app.getPath('exe')}"`
-      }
-        DEL "${path.join(tempFolder, updaterVbs)}"
-        DEL "%~f0"
-        `
-    );
+// ipcMain.handle('installUpdateAndQuitOrRestart', async (e, quitAfterInstall) => {
+//   const tempFolder = path.join(
+//     path.dirname(app.getPath('exe')),
+//     'data',
+//     'temp'
+//   );
+//   if (process.env.REACT_APP_RELEASE_TYPE === 'setup') {
+//     autoUpdater.quitAndInstall(true, !quitAfterInstall);
+//   } else {
+//     const updaterVbs = 'updater.vbs';
+//     const updaterBat = 'updateLauncher.bat';
+//     await fs.writeFile(
+//       path.join(tempFolder, updaterBat),
+//       `ping 127.0.0.1 -n 1 > nul & robocopy "${path.join(
+//         tempFolder,
+//         'update'
+//       )}" "." /MOV /E${
+//         quitAfterInstall ? '' : ` & start "" "${app.getPath('exe')}"`
+//       }
+//         DEL "${path.join(tempFolder, updaterVbs)}"
+//         DEL "%~f0"
+//         `
+//     );
 
-    await fs.writeFile(
-      path.join(tempFolder, updaterVbs),
-      `Set WshShell = CreateObject("WScript.Shell") 
-          WshShell.Run chr(34) & "${path.join(
-            tempFolder,
-            updaterBat
-          )}" & Chr(34), 0
-          Set WshShell = Nothing
-          `
-    );
+//     await fs.writeFile(
+//       path.join(tempFolder, updaterVbs),
+//       `Set WshShell = CreateObject("WScript.Shell") 
+//           WshShell.Run chr(34) & "${path.join(
+//             tempFolder,
+//             updaterBat
+//           )}" & Chr(34), 0
+//           Set WshShell = Nothing
+//           `
+//     );
 
-    const updateSpawn = spawn(path.join(tempFolder, updaterVbs), {
-      cwd: path.dirname(app.getPath('exe')),
-      detached: true,
-      shell: true,
-      stdio: [
-        'ignore' /* stdin */,
-        'ignore' /* stdout */,
-        'ignore' /* stderr */
-      ]
-    });
-    updateSpawn.unref();
-    mainWindow.close();
-  }
-});
+//     const updateSpawn = spawn(path.join(tempFolder, updaterVbs), {
+//       cwd: path.dirname(app.getPath('exe')),
+//       detached: true,
+//       shell: true,
+//       stdio: [
+//         'ignore' /* stdin */,
+//         'ignore' /* stdout */,
+//         'ignore' /* stderr */
+//       ]
+//     });
+//     updateSpawn.unref();
+//     mainWindow.close();
+//   }
+// });

@@ -42,10 +42,11 @@ export const downloadInstanceFiles = async (
       } while (!res && counter < 3);
       downloaded += 1;
       if (
-        (updatePercentage && downloaded % 5 === 0) ||
-        downloaded === arr.length
-      )
+        updatePercentage &&
+        (downloaded % 5 === 0 || downloaded === arr.length)
+      ) {
         updatePercentage(downloaded);
+      }
     },
     { concurrency: threads }
   );
@@ -70,8 +71,10 @@ const downloadFileInstance = async (fileName, url, sha1, legacyPath) => {
     const { data } = await axios.get(url, {
       responseType: 'stream',
       responseEncoding: null,
-      adapter
+      adapter,
+      timeout: 60000 * 20
     });
+
     const wStream = fss.createWriteStream(fileName, {
       encoding: null
     });
@@ -114,8 +117,10 @@ export const downloadFile = async (fileName, url, onProgress) => {
   const { data, headers } = await axios.get(url, {
     responseType: 'stream',
     responseEncoding: null,
-    adapter
+    adapter,
+    timeout: 60000 * 20
   });
+
   const out = fss.createWriteStream(fileName, { encoding: null });
   data.pipe(out);
 
@@ -127,7 +132,7 @@ export const downloadFile = async (fileName, url, onProgress) => {
     // Update the received bytes
     receivedBytes += chunk.length;
     if (onProgress) {
-      onProgress(((receivedBytes * 100) / totalBytes).toFixed(1));
+      onProgress(parseInt(((receivedBytes * 100) / totalBytes).toFixed(1), 10));
     }
   });
 

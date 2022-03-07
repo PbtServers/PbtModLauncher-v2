@@ -61,8 +61,8 @@ export default createGlobalStyle`
   }
 
   ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     border-radius: 1px;
   }
 
@@ -90,7 +90,7 @@ export default createGlobalStyle`
     border-radius: 4px;
     color: ${props => props.theme.palette.text.primary};
     font-size: 16px;
-    min-width: 180px;
+    min-width: 220px;
     outline: none;
     transform-origin: top left;
     pointer-events: none;
@@ -105,7 +105,7 @@ export default createGlobalStyle`
     transition: opacity 150ms;
     opacity: 1;
     pointer-events: auto;
-    z-index: 9999;
+    z-index: 999999;
   }
   
   .react-contextmenu-item {
@@ -150,11 +150,33 @@ export default createGlobalStyle`
     padding: 2px 0;
   }
 
+  .ant-select-dropdown, .ant-dropdown, .ant-cascader-menus {
+    z-index: 99999999 !important;
+  }
+
+  .ant-radio-button-wrapper {
+    color: rgba(255, 255, 255, 0.65) !important;
+  }
+
+  .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-checked {
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  .ant-radio-button-wrapper-checked {
+    border-color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before,
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover::before {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+  }
+
 
   @keyframes modalShake {
     0% { transform: scale(1.01) }
     30% { transform: scale(0.99) }
     60% { transform: scale(1.01) }
-    90% { transform: scale(0.99)}
-    100% {transform: scale(1) }
+    90% { transform: scale(0.99) }
+    100% { transform: scale(1) }
+  }
 `;

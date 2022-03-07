@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { ipcRenderer } from 'electron';
 import { Button } from 'antd';
 import path from 'path';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,11 +23,15 @@ import { getAddon } from '../../../api';
  */
 const createZip = async (archiveName, zipDestPath, filesArray) => {
   const sevenZipPath = await get7zPath();
-  const zipCreation = add7z(`${archiveName}.zip`, filesArray, {
-    $bin: sevenZipPath,
-    $raw: ['-tzip'],
-    $spawnOptions: { cwd: zipDestPath }
-  });
+  const zipCreation = add7z(
+    path.join(zipDestPath, `${archiveName}.zip`),
+    filesArray,
+    {
+      $bin: sevenZipPath,
+      $raw: ['-tzip'],
+      $spawnOptions: { cwd: zipDestPath, shell: true }
+    }
+  );
   await new Promise((resolve, reject) => {
     zipCreation.on('end', () => {
       resolve();
@@ -57,6 +62,10 @@ export default function ThirdStep({
   const modloaderName = loader?.loaderType;
   const dispatch = useDispatch();
   const tempExport = path.join(tempPath, instanceName);
+
+  const openExportLocation = async () => {
+    await ipcRenderer.invoke('openFolder', filePath);
+  };
 
   // Construct manifest contents
   const createManifest = async (modsArray = mods) => {
@@ -128,7 +137,7 @@ export default function ThirdStep({
               if (tries !== 1) {
                 await new Promise(resolve => setTimeout(resolve, 5000));
               }
-              const { data } = await getAddon(mod.projectID);
+              const data = await getAddon(mod.projectID);
 
               ok = true;
               return {
@@ -280,6 +289,17 @@ export default function ThirdStep({
                           `}
                         />
                       </h1>
+                      <div>
+                        <Button
+                          type="primary"
+                          onClick={openExportLocation}
+                          css={`
+                            margin-top: 20px;
+                          `}
+                        >
+                          Open Export Location
+                        </Button>
+                      </div>
                       <div>
                         <Button
                           type="primary"
