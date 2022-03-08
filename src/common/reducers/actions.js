@@ -14,6 +14,7 @@ import omitBy from 'lodash/omitBy';
 import { pipeline } from 'stream';
 import he from 'he';
 import zlib from 'zlib';
+import crypto from 'crypto';
 import lockfile from 'lockfile';
 import omit from 'lodash/omit';
 import Seven from 'node-7z';
@@ -447,15 +448,12 @@ export function login(
         // https://forums.spongepowered.org/t/why-are-the-uuids-changing-in-offline-mode/20237/2
         // how to do it in javascript:
         // https://stackoverflow.com/questions/47505620/javas-uuid-nameuuidfrombytes-to-written-in-javascript
-        /* eslint-disable */
-          const crypto = require('crypto');
-          const md5Bytes = crypto.createHash('md5').update("OfflinePlayer:"+username).digest();
-          md5Bytes[6] &= 0x0f;  /* clear version        */
-          md5Bytes[6] |= 0x30;  /* set to version 3     */
-          md5Bytes[8] &= 0x3f;  /* clear variant        */
-          md5Bytes[8] |= 0x80;  /* set to IETF variant  */
-          let generatedID = md5Bytes.toString('hex');
-        /* eslint-enable */
+        const md5Bytes = crypto.createHash('md5').update("OfflinePlayer:" + username).digest();
+        md5Bytes[6] &= 0x0f;  /* clear version        */
+        md5Bytes[6] |= 0x30;  /* set to version 3     */
+        md5Bytes[8] &= 0x3f;  /* clear variant        */
+        md5Bytes[8] |= 0x80;  /* set to IETF variant  */
+        let generatedID = md5Bytes.toString('hex');
         data = {
           selectedProfile: {
             id: generatedID,
