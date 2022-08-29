@@ -1,7 +1,7 @@
 {
-  "name": "gdlauncher",
-  "version": "1.1.22-beta.1",
-  "description": "GDLauncher is simple, yet powerful Minecraft custom launcher with a strong focus on the user experience",
+  "name": "pbtmodlauncher2",
+  "version": "1.0.0-BETA",
+  "description": "Launcher Custom para Mods de Series que he Hecho o he Participado",
   "keywords": [
     "minecraft",
     "launcher",
@@ -14,17 +14,17 @@
     "webpack"
   ],
   "bugs": {
-    "url": "https://github.com/gorilla-devs/GDLauncher/issues"
+    "url": "https://discord.gg/mH8aREb"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gorilla-devs/GDLauncher.git"
+    "url": "git+https://github.com/PbtServers/PbtModLauncher-v2.git"
   },
   "license": "GPL-3.0",
   "author": {
-    "name": "GorillaDevs",
-    "email": "davide@gdevs.io",
-    "url": "https://gdevs.io"
+    "name": "Pbt",
+    "email": "pbt@pbtservers.com",
+    "url": "https://mc.pbtservers.com"
   },
   "private": false,
   "homepage": "./",
