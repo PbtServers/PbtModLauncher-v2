@@ -281,8 +281,6 @@ const Login = () => {
                   font-size: 10px;
                 `}
               >
-                Sign in with your Mojang Account. By doing so, you accept all
-                our policies and terms stated below.
               </p>
               <div
                 css={`
@@ -298,29 +296,6 @@ const Login = () => {
                   }
                 `}
               >
-                <span
-                  onClick={() =>
-                    dispatch(openModal('PolicyModal', { policy: 'privacy' }))
-                  }
-                >
-                  Privacy Policy
-                </span>
-                <span
-                  onClick={() =>
-                    dispatch(openModal('PolicyModal', { policy: 'tos' }))
-                  }
-                >
-                  Terms and Conditions
-                </span>
-                <span
-                  onClick={() =>
-                    dispatch(
-                      openModal('PolicyModal', { policy: 'acceptableuse' })
-                    )
-                  }
-                >
-                  Acceptable Use Policy
-                </span>
               </div>
             </Footer>
           </LeftSide>

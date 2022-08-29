@@ -38,32 +38,22 @@ const SocialButtons = () => {
         }
       `}
     >
-      <a href="https://discord.gdlauncher.com">
+      <a href="https://discord.gg/mH8aREb">
         <div>
           <FontAwesomeIcon icon={faDiscord} size="lg" />
         </div>
       </a>
-      <a href="https://github.com/gorilla-devs/GDLauncher">
+      <a href="https://github.com/PbtServers/PbtModLauncher-v2">
         <div>
           <FontAwesomeIcon icon={faGithub} size="lg" />
         </div>
       </a>
-      <a href="https://twitter.com/gdlauncher">
+      <a href="https://twitter.com/PbtServers">
         <div>
           <FontAwesomeIcon icon={faTwitter} size="lg" />
         </div>
       </a>
-      <a href="https://facebook.com/gorilladevs">
-        <div>
-          <FontAwesomeIcon icon={faFacebook} size="lg" />
-        </div>
-      </a>
-      <a href="https://instagram.com/gdlauncher">
-        <div>
-          <FontAwesomeIcon icon={faInstagram} size="lg" />
-        </div>
-      </a>
-      <a href="https://gdevs.io">
+      <a href="https://mc.pbtservers.com">
         <div>
           <FontAwesomeIcon icon={faGlobe} size="lg" />
         </div>

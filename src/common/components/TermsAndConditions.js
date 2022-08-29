@@ -13,11 +13,11 @@ const TermsAndConditions = () => {
             <a
               target="_blank"
               rel="nofollow noreferrer"
-              href="https://gdlauncher.com"
+              href="https://mc.pbtservers.com"
             >
               gdlauncher.com
             </a>{' '}
-            website (“Website”), “GDLauncher” Application (“Application”) and
+            website (“Website”), “PbtModLauncher” Application (“Application”) and
             any of their related products and services (collectively,
             “Services”). This Agreement is legally binding between you (“User”,
             “you” or “your”) and this Website operator and Application developer
