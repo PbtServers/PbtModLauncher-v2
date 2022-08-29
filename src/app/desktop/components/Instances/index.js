@@ -70,9 +70,9 @@ const Instances = () => {
         memoInstances.map(i => <Instance key={i.name} instanceName={i.name} />)
       ) : (
         <NoInstance>
-          No Instance has been installed
+          No hay Instancias Creadas
           <SubNoInstance>
-            Click on the icon in the bottom left corner to add new instances
+            Click en el Icono de Abajo a la Izquierda para Añadir Instancias
           </SubNoInstance>
         </NoInstance>
       )}

@@ -661,7 +661,7 @@ export const getJVMArguments113 = (
             );
             break;
           case 'launcher_name':
-            val = args[i].replace(argDiscovery, 'GDLauncher');
+            val = args[i].replace(argDiscovery, 'PbtModLauncher');
             break;
           case 'launcher_version':
             val = args[i].replace(argDiscovery, '1.0');

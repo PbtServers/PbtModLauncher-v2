@@ -29,16 +29,14 @@ import {
 } from '../../../utils/selectors';
 import {
   updateDiscordRPC,
-  updateHideAds,
   updateHideWindowOnGameLaunch,
   updatePotatoPcMode,
   updateInstanceSortType,
-  updateShowNews,
   updateCurseReleaseChannel
 } from '../../../reducers/settings/actions';
 import { updateConcurrentDownloads } from '../../../reducers/actions';
 import { openModal } from '../../../reducers/modals/actions';
-import HorizontalLogo from '../../../../ui/HorizontalLogo';
+import HorizontalLogo from '../../../../common/assets/PbtModLauncherv2.png';
 import { extractFace } from '../../../../app/desktop/utils';
 
 const Title = styled.div`
@@ -163,9 +161,7 @@ const General = () => {
   const isPlaying = useSelector(state => state.startedInstances);
   const queuedInstances = useSelector(state => state.downloadQueue);
   const updateAvailable = useSelector(state => state.updateAvailable);
-  const showNews = useSelector(state => state.settings.showNews);
   const DiscordRPC = useSelector(state => state.settings.discordRPC);
-  const HideAds = useSelector(state => state.settings.hideAds);
   const potatoPcMode = useSelector(state => state.settings.potatoPcMode);
   const concurrentDownloads = useSelector(
     state => state.settings.concurrentDownloads
@@ -288,7 +284,7 @@ const General = () => {
             `}
           >
             <div>
-              Username <br />
+              Usuario <br />
               <Username>{currentAccount.selectedProfile.name}</Username>
             </div>
             <div>
@@ -320,31 +316,6 @@ const General = () => {
           </div>
         </PersonalDataContainer>
       </PersonalData>
-      <Title>Release Channel</Title>
-      <Content>
-        <p>
-          Stable updates once a month. Beta updates more often, but it may have
-          more bugs.
-        </p>
-        <Select
-          css={`
-            width: 100px;
-          `}
-          onChange={async e => {
-            const appData = await ipcRenderer.invoke('getAppdataPath');
-            setReleaseChannel(e);
-            await fsa.writeFile(
-              path.join(appData, 'gdlauncher_next', 'rChannel'),
-              e.toString()
-            );
-          }}
-          value={releaseChannel}
-          virtual={false}
-        >
-          <Select.Option value={0}>Stable</Select.Option>
-          <Select.Option value={1}>Beta</Select.Option>
-        </Select>
-      </Content>
       <Title>
         Concurrent Downloads &nbsp; <FontAwesomeIcon icon={faTachometerAlt} />
       </Title>
@@ -441,31 +412,7 @@ const General = () => {
       
       
       </Content>
-      <Title>
-      Hide ADs &nbsp; <FontAwesomeIcon icon={faAd} />
-      </Title>
-      <Content>
-        <p>Hide / enable ads (top banner)</p>
-        <Switch
-          onChange={e => {
-            dispatch(updateHideAds(e));
-          }}
-          checked={HideAds}
-        />
-      </Content>
 
-      <Title>
-        Minecraft News &nbsp; <FontAwesomeIcon icon={faNewspaper} />
-      </Title>
-      <Content>
-        <p>Enable / disable Minecraft news.</p>
-        <Switch
-          onChange={e => {
-            dispatch(updateShowNews(e));
-          }}
-          checked={showNews}
-        />
-      </Content>
       <Title>
         Hide Launcher While Playing &nbsp; <FontAwesomeIcon icon={faPlay} />
       </Title>
@@ -528,7 +475,7 @@ const General = () => {
           `}
           onClick={async () => {
             const appData = await ipcRenderer.invoke('getAppdataPath');
-            const appDataPath = path.join(appData, 'gdlauncher_next');
+            const appDataPath = path.join(appData, 'PbtModLauncherv2');
             setDataPath(appDataPath);
           }}
         >
@@ -610,10 +557,7 @@ const General = () => {
             margin: 10px 0;
           `}
         >
-          <HorizontalLogo
-            size={200}
-            onClick={() => dispatch(openModal('ChangeLogs'))}
-          />{' '}
+          <img src={HorizontalLogo} style="width:80%;height:80%;" />
           <div
             css={`
               margin-left: 10px;
@@ -622,11 +566,6 @@ const General = () => {
             v {version}
           </div>
         </div>
-        <p>
-          {updateAvailable
-            ? 'There is an update available to be installed. Click on update to install it and restart the launcher.'
-            : 'You’re currently on the latest version. We automatically check for updates and we will inform you whenever one is available.'}
-        </p>
         <div
           css={`
             margin-top: 20px;
@@ -635,30 +574,6 @@ const General = () => {
             flex-direction: row;
           `}
         >
-          {updateAvailable ? (
-            <Button
-              onClick={() =>
-                ipcRenderer.invoke('installUpdateAndQuitOrRestart')
-              }
-              css={`
-                margin-right: 10px;
-              `}
-              type="primary"
-            >
-              Update &nbsp;
-              <FontAwesomeIcon icon={faDownload} />
-            </Button>
-          ) : (
-            <div
-              css={`
-                width: 96px;
-                height: 36px;
-                padding: 6px 8px;
-              `}
-            >
-              Up to date
-            </div>
-          )}
         </div>
       </LauncherVersion>
     </>

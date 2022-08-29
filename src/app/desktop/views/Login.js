@@ -13,8 +13,8 @@ import { useKey } from 'rooks';
 import { login, loginOAuth } from '../../../common/reducers/actions';
 import { load, requesting } from '../../../common/reducers/loading/actions';
 import features from '../../../common/reducers/loading/features';
-import backgroundVideo from '../../../common/assets/background.webm';
-import HorizontalLogo from '../../../ui/HorizontalLogo';
+import backgroundVideo from '../../../common/assets/PbtServers-Shaders-5.png';
+import HorizontalLogo from '../../../common/assets/PbtModLauncherv2.png';
 import { openModal } from '../../../common/reducers/modals/actions';
 import { updateOfflineMode } from '../../../common/reducers/settings/actions';
 
@@ -200,12 +200,12 @@ const Login = () => {
         <Container>
           <LeftSide transitionState={transitionState}>
             <Header>
-              <HorizontalLogo size={200} />
+              <img src={HorizontalLogo} style="width:150%;height:150%;float:left"/>
             </Header>
             <Form>
               <div>
                 <Input
-                  placeholder={offlineMode ? "Name" : "Email"}
+                  placeholder={offlineMode ? "Usuario" : "Email"}
                   value={username}
                   onChange={({ target: { value } }) => setUsername(value)}
                 />
@@ -213,7 +213,7 @@ const Login = () => {
               {!offlineMode && (
                 <div>
                   <Input
-                    placeholder="Password"
+                    placeholder="Contraseña"
                     type="password"
                     value={password}
                     onChange={({ target: { value } }) => setPassword(value)}
@@ -221,14 +221,14 @@ const Login = () => {
                 </div>
               )}
               <Checkbox defaultChecked={offlineMode} onChange={e => dispatch(updateOfflineMode(!offlineMode))}>
-                Offline mode
+                No Premium
               </Checkbox>
 
               {loginFailed && (
                 <LoginFailMessage>{loginFailed?.message}</LoginFailMessage>
               )}
               <LoginButton color="primary" onClick={authenticate}>
-                Sign In
+                Iniciar Sesión
                 <FontAwesomeIcon
                   css={`
                     margin-left: 6px;
@@ -241,7 +241,7 @@ const Login = () => {
                   color="primary"
                   onClick={authenticateMicrosoft}
                 >
-                  Sign in with Microsoft
+                  Cuenta de Microsoft
                   <FontAwesomeIcon
                     css={`
                       margin-left: 6px;
@@ -263,7 +263,7 @@ const Login = () => {
                 <FooterLinks>
                   <div>
                     <a href="https://www.minecraft.net/it-it/password/forgot">
-                      FORGOT PASSWORD
+                      Has Olvidado tu Contraseña?
                     </a>
                   </div>
                 </FooterLinks>
@@ -300,11 +300,9 @@ const Login = () => {
             </Footer>
           </LeftSide>
           <Background transitionState={transitionState}>
-            <video autoPlay muted loop>
-              <source src={backgroundVideo} type="video/webm" />
-            </video>
+            <img src={backgroundVideo} style="width:95%;height:90%;" />
           </Background>
-          <Loading transitionState={transitionState}>Loading...</Loading>
+          <Loading transitionState={transitionState}>Cargando...</Loading>
         </Container>
       )}
     </Transition>

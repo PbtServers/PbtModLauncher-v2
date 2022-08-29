@@ -326,7 +326,7 @@ const Instance = ({ instanceName }) => {
                   width: 25px !important;
                 `}
               />
-              Kill
+              Matar
             </MenuItem>
           )}
           <MenuItem disabled={Boolean(isInQueue)} onClick={manageInstance}>
@@ -337,7 +337,7 @@ const Instance = ({ instanceName }) => {
                 width: 25px !important;
               `}
             />
-            Manage
+            Administrar
           </MenuItem>
           <MenuItem onClick={openFolder}>
             <FontAwesomeIcon
@@ -347,7 +347,7 @@ const Instance = ({ instanceName }) => {
                 width: 25px !important;
               `}
             />
-            Open Folder
+            Abrir Directorio
           </MenuItem>
 
           {/* // TODO - Support other export options besides curseforge forge. */}
@@ -369,7 +369,7 @@ const Instance = ({ instanceName }) => {
                 width: 25px !important;
               `}
             />
-            Export Pack
+            Exportar
           </MenuItem>
           <MenuItem
             disabled={Boolean(isInQueue)}
@@ -382,7 +382,7 @@ const Instance = ({ instanceName }) => {
                 width: 25px !important;
               `}
             />
-            Duplicate
+            Duplicar
           </MenuItem>
           <MenuItem divider />
           <MenuItem
@@ -417,7 +417,7 @@ const Instance = ({ instanceName }) => {
                 width: 25px !important;
               `}
             />
-            Repair
+            Reparar
           </MenuItem>
           <MenuItem
             disabled={Boolean(isInQueue) || Boolean(isPlaying)}
@@ -430,25 +430,7 @@ const Instance = ({ instanceName }) => {
                 width: 25px !important;
               `}
             />
-            Delete
-          </MenuItem>
-          <MenuItem divider />
-          <MenuItem
-            onClick={openBisectModal}
-            preventClose
-            css={`
-              border: 2px solid #04cbeb;
-              border-radius: 5px;
-            `}
-          >
-            <FontAwesomeIcon
-              icon={faServer}
-              css={`
-                margin-right: 10px;
-                width: 25px !important;
-              `}
-            />
-            Create Server
+            Eliminar
           </MenuItem>
         </ContextMenu>
       </Portal>
