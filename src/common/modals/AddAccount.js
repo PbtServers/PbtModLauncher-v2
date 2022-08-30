@@ -59,7 +59,7 @@ const AddAccount = ({ username }) => {
         />
       </FormContainer>
       <FormContainer>
-        <StyledButton onClick={addAccount}>Add Account</StyledButton>
+        <StyledButton onClick={addAccount}>Añadir Cuenta</StyledButton>
       </FormContainer>
     </Container>
   );
@@ -114,7 +114,7 @@ const AddAccount = ({ username }) => {
             key={ACCOUNT_MOJANG}
             onClick={() => setAccountType(ACCOUNT_MOJANG)}
           >
-            Mojang Account
+            Mojang
           </StyledAccountMenuItem>
           <StyledAccountMenuItem
             key={ACCOUNT_MICROSOFT}
@@ -123,7 +123,7 @@ const AddAccount = ({ username }) => {
               addMicrosoftAccount();
             }}
           >
-            Microsoft Account
+            Microsoft
           </StyledAccountMenuItem>
         </Menu>
         {accountType === ACCOUNT_MOJANG ? renderAddMojangAccount() : null}

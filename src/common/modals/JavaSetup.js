@@ -90,9 +90,7 @@ const JavaSetup = () => {
                 text-align: justify;
               `}
             >
-              For an optimal experience, we suggest letting us take care of java
-              for you. Only manually manage java if you know what you&apos;re
-              doing, it may result in GDLauncher not working!
+              Recomendamos la Instalación Automática, pero si Sabes lo que Haces, Puedes utilizar el Modo Manual
             </div>
 
             <div
@@ -113,7 +111,7 @@ const JavaSetup = () => {
                 }
               `}
             >
-              <h3>Missing Versions:</h3>
+              <h3>Versiones Restantes:</h3>
               <div
                 css={`
                   display: flex;
@@ -164,7 +162,7 @@ const JavaSetup = () => {
                     setChoice(0);
                   }}
                 >
-                  Automatic Setup
+                  Automático
                 </Button>
               </div>
               <div>
@@ -178,7 +176,7 @@ const JavaSetup = () => {
                     setChoice(1);
                   }}
                 >
-                  Manual Setup
+                  Manual
                 </Button>
               </div>
             </div>
@@ -195,7 +193,7 @@ const JavaSetup = () => {
                 margin-bottom: 20px;
               `}
             >
-              {choice === 0 ? 'Automático' : 'Manual'} Setup
+              Instalación {choice === 0 ? 'Automática' : 'Manual'}
             </div>
             {choice === 0 ? (
               <AutomaticSetup
@@ -302,7 +300,7 @@ const ManualSetup = ({ setStep }) => {
         `}
       >
         <Button type="primary" onClick={() => setStep(0)}>
-          Go Back
+          Volver
         </Button>
         <Button
           type="danger"
@@ -313,7 +311,7 @@ const ManualSetup = ({ setStep }) => {
             dispatch(closeModal());
           }}
         >
-          Continue with custom java
+          Continuar
         </Button>
       </div>
     </div>
@@ -327,7 +325,7 @@ const AutomaticSetup = ({
   javaLatestLog
 }) => {
   const [downloadPercentage, setDownloadPercentage] = useState(0);
-  const [currentSubStep, setCurrentSubStep] = useState('Downloading Java');
+  const [currentSubStep, setCurrentSubStep] = useState('Descargando Java');
   const [currentStepPercentage, setCurrentStepPercentage] = useState(0);
   const javaManifest = useSelector(state => state.app.javaManifest);
   const javaLatestManifest = useSelector(state => state.app.javaLatestManifest);
@@ -392,7 +390,7 @@ const AutomaticSetup = ({
       await fse.remove(path.join(javaBaseFolder, version));
       const downloadLocation = path.join(tempFolder, path.basename(url));
 
-      setCurrentSubStep(`Java ${javaVersion} - Downloading`);
+      setCurrentSubStep(`Java ${javaVersion} - Descarga`);
       await downloadFile(downloadLocation, url, p => {
         ipcRenderer.invoke('update-progress-bar', p);
         setDownloadPercentage(p);
@@ -406,7 +404,7 @@ const AutomaticSetup = ({
       await new Promise(resolve => setTimeout(resolve, 500));
 
       setCurrentSubStep(
-        `Java ${javaVersion} - Extracting 1 / ${totalExtractionSteps}`
+        `Java ${javaVersion} - Extracción 1 / ${totalExtractionSteps}`
       );
       let { extractedParentDir } = await extractAll(
         downloadLocation,
@@ -487,7 +485,7 @@ const AutomaticSetup = ({
 
     dispatch(updateJavaPath(null));
     dispatch(updateJavaLatestPath(null));
-    setCurrentSubStep(`Java is ready!`);
+    setCurrentSubStep(`Listo para Jugar!`);
     ipcRenderer.invoke('update-progress-bar', -1);
     setDownloadPercentage(100);
     setCurrentStepPercentage(100);
