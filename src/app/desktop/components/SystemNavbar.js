@@ -224,7 +224,7 @@ const SystemNavbar = () => {
         {!isOsx ? (
           <>
             {isUpdateAvailable && <UpdateButton isAppImage={isAppImage} />}
-            {!isLocation('/') && !isLocation('/onboarding') && (
+            {!isLocation('/') && (
               <SettingsButton />
             )}
             <div
@@ -284,7 +284,7 @@ const SystemNavbar = () => {
             >
               <FontAwesomeIcon icon={faWindowMinimize} />
             </div>
-            {!isLocation('/') && !isLocation('/onboarding') && (
+            {!isLocation('/') && (
               <SettingsButton />
             )}
             {isUpdateAvailable && <UpdateButton isAppImage={isAppImage} />}

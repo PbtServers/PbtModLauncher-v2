@@ -18,7 +18,7 @@ const InstanceDuplicateName = ({ instanceName }) => {
   const instancesPath = useSelector(_getInstancesPath);
   const oldInstance = useSelector(state => _getInstance(state)(instanceName));
   const [newInstanceName, setNewInstanceName] = useState(
-    `${oldInstanceName} copy`
+    `Copia de ${oldInstanceName}`
   );
   const [alreadyExists, setAlreadyExists] = useState(false);
   const [invalidName, setInvalidName] = useState(false);
@@ -88,7 +88,7 @@ const InstanceDuplicateName = ({ instanceName }) => {
         max-height: 235px;
         overflow-x: hidden;
       `}
-      title={`Duplicate Instance "${oldInstanceName}"`}
+      title={`Duplicar Instancia "${oldInstanceName}"`}
     >
       <div
         css={`
@@ -130,8 +130,8 @@ const InstanceDuplicateName = ({ instanceName }) => {
           `}
         >
           {invalidName &&
-            'Instance name is not valid or too long. Please try another one'}
-          {alreadyExists && 'An instance with this name already exists!'}
+            'Nombre de Instancia Muy Largo o Inválido'}
+          {alreadyExists && 'ya Existe una Instancia con ese Nombre!'}
         </div>
       </div>
       <div
@@ -147,7 +147,7 @@ const InstanceDuplicateName = ({ instanceName }) => {
           disabled={invalidName || alreadyExists}
           type="primary"
         >
-          Duplicate Instance
+          Duplicar Instancia
         </Button>
       </div>
     </Modal>

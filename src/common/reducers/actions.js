@@ -717,9 +717,6 @@ export function loginThroughNativeLauncher() {
       dispatch(updateCurrentAccountId(data.selectedProfile.id));
 
       if (isNewUser) {
-        dispatch(updateIsNewUser(false));
-        dispatch(push('/onboarding'));
-      } else {
         dispatch(push('/home'));
       }
     } catch (err) {
@@ -862,9 +859,6 @@ export function loginOAuth(redirect = true) {
         }
       } else {
         dispatch(updateIsNewUser(false));
-        if (redirect) {
-          dispatch(push('/onboarding'));
-        }
       }
     } catch (error) {
       console.error(error);
@@ -1195,7 +1189,7 @@ export function downloadFabric(instanceName) {
     const state = getState();
     const { loader } = _getCurrentDownloadItem(state);
 
-    dispatch(updateDownloadStatus(instanceName, 'Downloading fabric files...'));
+    dispatch(updateDownloadStatus(instanceName, 'Descargando Archivos...'));
 
     let fabricJson;
     const fabricJsonPath = path.join(
@@ -1300,7 +1294,7 @@ export function downloadForge(instanceName) {
         'No installer found in temp or hash mismatch. Need to download it.'
       );
       dispatch(
-        updateDownloadStatus(instanceName, 'Downloading forge installer...')
+        updateDownloadStatus(instanceName, 'Descargando Instalador de Forge...')
       );
 
       let urlTerminal = 'installer.jar';
@@ -1399,7 +1393,7 @@ export function downloadForge(instanceName) {
       }
 
       dispatch(
-        updateDownloadStatus(instanceName, 'Downloading forge libraries...')
+        updateDownloadStatus(instanceName, 'Descargando Librerias Forge...')
       );
 
       let { libraries } = forgeJson.version;
@@ -1436,7 +1430,7 @@ export function downloadForge(instanceName) {
 
       // Patching
       if (forgeJson.install?.processors?.length) {
-        dispatch(updateDownloadStatus(instanceName, 'Patching forge...'));
+        dispatch(updateDownloadStatus(instanceName, 'Parcheando Forge...'));
 
         // Extract client.lzma from installer
 
@@ -1723,7 +1717,7 @@ export function processForgeManifest(instanceName) {
     const { manifest, loader } = _getCurrentDownloadItem(state);
     const concurrency = state.settings.concurrentDownloads;
 
-    dispatch(updateDownloadStatus(instanceName, 'Downloading mods...'));
+    dispatch(updateDownloadStatus(instanceName, 'Descargando Mods...'));
 
     const addonsHashmap = {};
     const addonsFilesHashmap = {};
@@ -1917,7 +1911,7 @@ export function downloadInstance(instanceName) {
         }
       } = state;
 
-      dispatch(updateDownloadStatus(instanceName, 'Downloading game files...'));
+      dispatch(updateDownloadStatus(instanceName, 'Descargando Archivos del Juego...'));
 
       const { loader, manifest } = _getCurrentDownloadItem(state);
 

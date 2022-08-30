@@ -39,7 +39,7 @@ const InstanceDeleteConfirmation = ({ instanceName }) => {
       title="Confirmar Eliminación de Instancia"
     >
       <div>
-        Are you sure you want to delete:
+        Seguro que Quieres Eliminar:
         <h4
           css={`
             font-style: italic;
@@ -49,7 +49,7 @@ const InstanceDeleteConfirmation = ({ instanceName }) => {
         >
           {instanceName}
         </h4>
-        Esta Acción es Permanente y se van a Perder todos los Datos de esta Instancia
+        Esta Acción es Permanente y se van a Perder todos los Datos
         <div
           css={`
             margin-top: 50px;

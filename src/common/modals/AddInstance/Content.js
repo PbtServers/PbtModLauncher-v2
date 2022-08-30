@@ -90,7 +90,7 @@ const Content = ({
                         width: 22px;
                       `}
                     />
-                    Vanilla
+                    Custom
                   </Radio.Button>
                   <Radio.Button value={1}>
                     <img
@@ -124,7 +124,7 @@ const Content = ({
                         cursor: pointer;
                       `}
                     />
-                    Import Zip
+                    Importar ZIP
                   </Radio.Button>
                 </Radio.Group>
               </div>

@@ -264,7 +264,7 @@ const InstanceManager = ({ instanceName }) => {
         width: 85%;
         max-width: 1500px;
       `}
-      title={`Instance Manager - ${instanceName}`}
+      title={`Administrador - ${instanceName}`}
       removePadding
     >
       <Container>

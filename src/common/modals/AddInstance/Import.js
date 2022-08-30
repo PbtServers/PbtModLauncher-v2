@@ -141,7 +141,7 @@ const Import = ({
   return (
     <Container>
       <div>
-        Local file or link to a direct download
+        Dirección a un Archivo Local o un Link Directo
         <div
           css={`
             display: flex;
@@ -150,7 +150,7 @@ const Import = ({
         >
           <Input
             disabled={loading}
-            placeholder="http://.../file.zip"
+            placeholder="http://.../PbtModPack.zip"
             value={localValue}
             onChange={e => setLocalValue(e.target.value)}
             css={`
@@ -159,7 +159,7 @@ const Import = ({
             `}
           />
           <Button disabled={loading} type="primary" onClick={openFileDialog}>
-            Browse
+            Abrir
           </Button>
         </div>
         <div
