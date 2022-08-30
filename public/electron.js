@@ -161,7 +161,7 @@ try {
   // Do nothing
 }
 
-app.setPath('userData', path.join(app.getPath('appData'), 'gdlauncher_next'));
+app.setPath('userData', path.join(app.getPath('appData'), 'PbtModLauncherv2'));
 
 let allowUnstableReleases = false;
 const releaseChannelExists = fss.existsSync(
@@ -324,7 +324,7 @@ function createWindow() {
 
   const trayMenu = Menu.buildFromTemplate(trayMenuTemplate);
   tray.setContextMenu(trayMenu);
-  tray.setToolTip('GDLauncher');
+  tray.setToolTip('PbtModLauncher');
   tray.on('double-click', () => mainWindow.show());
 
   mainWindow.loadURL(
@@ -433,7 +433,7 @@ ipcMain.handle(
       };
 
       const oAuthWindow = new BrowserWindow({
-        title: 'Sign in to your Microsoft account',
+        title: 'Inicia Sesión en Microsoft',
         show: false,
         parent: mainWindow,
         autoHideMenuBar: true,

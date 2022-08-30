@@ -21,10 +21,10 @@
     ClearErrors
     ${ifNot} ${isUpdated}
 
-        MessageBox MB_YESNO "Also delete all your user data? (instances, preferences...)" IDNO Skipped IDYES Accepted
+        MessageBox MB_YESNO "También Eliminar tus Datos? (Instancias, Ajustes...)" IDNO Skipped IDYES Accepted
 
         Accepted:
-            FileOpen $4 "$APPDATA\gdlauncher_next\override.data" r
+            FileOpen $4 "$APPDATA\PbtModLauncherv2\override.data" r
             FileRead $4 $0
             RMDir /r "$0\instances"
             RMDir /r "$0\java"
@@ -50,7 +50,7 @@
             
             FileClose $4
 
-            RMDir /r "$APPDATA\gdlauncher_next"
+            RMDir /r "$APPDATA\PbtModLauncherv2"
             Goto done
         Skipped:
             Goto done

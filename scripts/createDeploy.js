@@ -124,7 +124,7 @@ const commonConfig = {
   config: {
     generateUpdatesFilesForAllChannels: true,
     npmRebuild: false,
-    productName: 'GDLauncher',
+    productName: 'PbtModLauncherv2',
     appId: 'org.gorilladevs.GDLauncher',
     files: [
       '!node_modules/**/*',
@@ -154,8 +154,6 @@ const commonConfig = {
       oneClick: true,
       installerIcon: './public/icon.ico',
       uninstallerIcon: './public/icon.ico',
-      installerHeader: './public/installerHeader.bmp',
-      installerSidebar: './public/installerSidebar.bmp',
       installerHeaderIcon: './public/icon.ico',
       deleteAppDataOnUninstall: true,
       allowToChangeInstallationDirectory: false,

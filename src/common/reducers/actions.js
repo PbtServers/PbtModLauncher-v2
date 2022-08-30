@@ -3356,7 +3356,7 @@ export const isNewVersionAvailable = async () => {
 
   try {
     const rChannel = await fs.readFile(
-      path.join(appData, 'gdlauncher_next', 'rChannel')
+      path.join(appData, 'PbtModLauncherv2', 'rChannel')
     );
     releaseChannel = parseInt(rChannel.toString(), 10);
   } catch {

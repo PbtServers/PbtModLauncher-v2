@@ -199,7 +199,7 @@ const General = () => {
       .invoke('getAppdataPath')
       .then(appData =>
         fsa
-          .readFile(path.join(appData, 'gdlauncher_next', 'rChannel'))
+          .readFile(path.join(appData, 'PbtModLauncherv2', 'rChannel'))
           .then(v => setReleaseChannel(parseInt(v.toString(), 10)))
           .catch(() => setReleaseChannel(0))
       )
@@ -221,7 +221,7 @@ const General = () => {
   const changeDataPath = async () => {
     setLoadingMoveUserData(true);
     const appData = await ipcRenderer.invoke('getAppdataPath');
-    const appDataPath = path.join(appData, 'gdlauncher_next');
+    const appDataPath = path.join(appData, 'PbtModLauncherv2');
 
     const notCopiedFiles = [
       'Cache',
@@ -317,12 +317,12 @@ const General = () => {
         </PersonalDataContainer>
       </PersonalData>
       <Title>
-        Concurrent Downloads &nbsp; <FontAwesomeIcon icon={faTachometerAlt} />
+        Descargas Simultáneas &nbsp; <FontAwesomeIcon icon={faTachometerAlt} />
       </Title>
       <Content>
         <p>
-          Select the number of concurrent downloads. If you have a slow
-          connection, select at most 3.
+          Elige el Número de Descargas Simultáneas. Si Tienes Mala Conexión
+          se Recomienda un Máximo de 3.
         </p>
         <Select
           onChange={v => dispatch(updateConcurrentDownloads(v))}
@@ -343,7 +343,7 @@ const General = () => {
         </Select>
       </Content>
       <Title>
-        Instance Sorting &nbsp; <FontAwesomeIcon icon={faSort} />
+        Ordenar Instancias &nbsp; <FontAwesomeIcon icon={faSort} />
       </Title>
       <Content>
         <p
@@ -352,7 +352,7 @@ const General = () => {
             width: 400px;
           `}
         >
-          Select the method in which instances should be sorted.
+          Elige el Método de Ordenado de Instancias
         </p>
 
         <Select
@@ -363,18 +363,18 @@ const General = () => {
             text-align: start;
           `}
         >
-          <Select.Option value={0}>Alphabetical</Select.Option>
-          <Select.Option value={1}>Last Played</Select.Option>
-          <Select.Option value={2}>Most Played</Select.Option>
+          <Select.Option value={0}>Alfabeto</Select.Option>
+          <Select.Option value={1}>Reciente</Select.Option>
+          <Select.Option value={2}>Más Jugada</Select.Option>
         </Select>
       </Content>
       <Title>
-        Preferred Curse Release Channel &nbsp; <FontAwesomeIcon icon={faFire} />
+        Canal Preferido de CurseForge &nbsp; <FontAwesomeIcon icon={faFire} />
       </Title>
       <Content>
         <p>
-          Select the preferred release channel for downloading Curse projects.
-          This also applies for mod updates.
+          Elige el Canal de Desarrollo de ModPacks de CurseForge al Descargar.
+          También se Aplica a Descargas de Mods del ModPack.
         </p>
         <Select
           css={`
@@ -391,12 +391,12 @@ const General = () => {
         </Select>
       </Content>
       <Title>
-        Discord Integration &nbsp; <FontAwesomeIcon icon={faDiscord} />
+        Integración con Discord &nbsp; <FontAwesomeIcon icon={faDiscord} />
       </Title>
       <Content>
         <p>
-          Enable / disable Discord Integration. This displays what you are
-          playing in Discord.
+          Activar / DesActivar la Integración con Discord.
+          Esto Muestra a Otros en Discord a que Juegas.
         </p>
         <Switch
           onChange={e => {
@@ -414,12 +414,12 @@ const General = () => {
       </Content>
 
       <Title>
-        Hide Launcher While Playing &nbsp; <FontAwesomeIcon icon={faPlay} />
+        Esconder Launcher al Jugar &nbsp; <FontAwesomeIcon icon={faPlay} />
       </Title>
       <Content>
         <p>
-          Automatically hide the launcher when launching an instance. You will
-          still be able to open it from the icon tray.
+          Esconder el Launcher al Abrir una Instancia. Igualmente
+          Puedes Acceder a el Minimizado en Segundo Plano.
         </p>
         <Switch
           onChange={e => {
@@ -429,12 +429,12 @@ const General = () => {
         />
       </Content>
       <Title>
-        Potato PC Mode &nbsp; <FontAwesomeIcon icon={faToilet} />
+        Modo PC de "Venezuela" &nbsp; <FontAwesomeIcon icon={faToilet} />
       </Title>
       <Content>
         <p>
-          You got a potato PC? Don&apos;t worry! We got you covered. Enable this
-          and all animations and special effects will be disabled.
+          Tienes un PC del Gobierno? No te Preocupes!
+          Activa esto y tu PC irá tan Rápido que no lo Reconocerás.
         </p>
         <Switch
           onChange={e => {
@@ -444,110 +444,28 @@ const General = () => {
         />
       </Content>
       <Title>
-        Clear Shared Data&nbsp; <FontAwesomeIcon icon={faTrash} />
+        Borrar Datos de Instancias&nbsp; <FontAwesomeIcon icon={faTrash} />
       </Title>
       <Content>
         <p>
-          Deletes all the shared files between instances. Doing this will remove
-          ALL instance data.
+          Borrar todos los Archivos de Instancias. AVISO, Hacer esto Eliminará todos tus Datos de Instancias!
         </p>
         <Button
           onClick={() => {
             dispatch(
               openModal('ActionConfirmation', {
-                message: 'Are you sure you want to delete shared data?',
+                message: 'Seguro que Quieres Eliminar todos los Datos?',
                 confirmCallback: clearSharedData,
-                title: 'Confirm'
+                title: 'Confirmar'
               })
             );
           }}
           disabled={disableInstancesActions}
           loading={deletingInstances}
         >
-          Clear
+         Borrar
         </Button>
       </Content>
-      <Title>
-        User Data Path&nbsp; <FontAwesomeIcon icon={faFolder} />
-        <a
-          css={`
-            margin-left: 30px;
-          `}
-          onClick={async () => {
-            const appData = await ipcRenderer.invoke('getAppdataPath');
-            const appDataPath = path.join(appData, 'PbtModLauncherv2');
-            setDataPath(appDataPath);
-          }}
-        >
-          Reset Path
-        </a>
-      </Title>
-      <CustomDataPathContainer>
-        <div
-          css={`
-            display: flex;
-            justify-content: space-between;
-            text-align: left;
-            width: 100%;
-            height: 30px;
-            margin-bottom: 10px;
-            p {
-              text-align: left;
-              color: ${props => props.theme.palette.text.third};
-            }
-          `}
-        >
-          <Input
-            value={dataPath}
-            onChange={e => setDataPath(e.target.value)}
-            disabled={
-              loadingMoveUserData ||
-              deletingInstances ||
-              disableInstancesActions
-            }
-          />
-          <Button
-            css={`
-              margin-left: 20px;
-            `}
-            onClick={openFolder}
-            disabled={loadingMoveUserData || deletingInstances}
-          >
-            <FontAwesomeIcon icon={faFolder} />
-          </Button>
-          <Button
-            css={`
-              margin-left: 20px;
-            `}
-            onClick={changeDataPath}
-            disabled={
-              disableInstancesActions ||
-              userData === dataPath ||
-              !dataPath ||
-              dataPath.length === 0 ||
-              deletingInstances
-            }
-            loading={loadingMoveUserData}
-          >
-            Apply & Restart
-          </Button>
-        </div>
-        <div
-          css={`
-            display: flex;
-            justify-content: flex-start;
-            width: 100%;
-          `}
-        >
-          <Checkbox
-            onChange={e => {
-              setMoveUserData(e.target.checked);
-            }}
-          >
-            Copy current data to the new directory
-          </Checkbox>
-        </div>
-      </CustomDataPathContainer>
       <LauncherVersion>
         <div
           css={`
