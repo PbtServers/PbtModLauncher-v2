@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import Modal from '../components/Modal';
-import Logo from '../../ui/LogoSad';
 
 const calcError = code => {
   switch (code) {
@@ -57,7 +56,6 @@ const InstanceCrashed = ({ code, errorLogs }) => {
     >
       <Container>
         <InnerContainer>
-          <Logo size={100} />
           <h3>
             OOPSIE WOOPSIE!!
             <br /> A creeper blew this instance up!
