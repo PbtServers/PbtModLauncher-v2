@@ -183,7 +183,7 @@ export default function FirstStep({
                       `}
                     >
                       <InlineBlock>
-                        <h3>Name</h3>
+                        <h3>Nombre</h3>
                       </InlineBlock>
                       <span>
                         <Input
@@ -207,7 +207,7 @@ export default function FirstStep({
                       `}
                     >
                       <InlineBlock>
-                        <h3>Version</h3>
+                        <h3>Versión</h3>
                       </InlineBlock>
                       <span>
                         <Input
@@ -231,7 +231,7 @@ export default function FirstStep({
                       `}
                     >
                       <InlineBlock>
-                        <h3>Author</h3>
+                        <h3>Creador</h3>
                       </InlineBlock>
                       <span
                         css={`

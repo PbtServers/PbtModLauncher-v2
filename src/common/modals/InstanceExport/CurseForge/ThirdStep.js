@@ -281,7 +281,7 @@ export default function ThirdStep({
                   {isCompleted ? (
                     <div>
                       <h1>
-                        All Done!{' '}
+                        Instancia Exportada!{' '}
                         <FontAwesomeIcon
                           icon={faCheck}
                           css={`
@@ -297,7 +297,7 @@ export default function ThirdStep({
                             margin-top: 20px;
                           `}
                         >
-                          Open Export Location
+                          Abrir Directorio
                         </Button>
                       </div>
                       <div>
@@ -308,7 +308,7 @@ export default function ThirdStep({
                             margin-top: 20px;
                           `}
                         >
-                          Go Back To Instances
+                          Volver a Instancias
                         </Button>
                       </div>
                     </div>
