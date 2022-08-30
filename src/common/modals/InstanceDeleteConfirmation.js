@@ -36,7 +36,7 @@ const InstanceDeleteConfirmation = ({ instanceName }) => {
         max-height: 260px;
         overflow-x: hidden;
       `}
-      title="Confirm Instance Deletion"
+      title="Confirmar Eliminación de Instancia"
     >
       <div>
         Are you sure you want to delete:
@@ -49,8 +49,7 @@ const InstanceDeleteConfirmation = ({ instanceName }) => {
         >
           {instanceName}
         </h4>
-        This action is permanent and cannot be undone. You will lose all the
-        data you have in this instance
+        Esta Acción es Permanente y se van a Perder todos los Datos de esta Instancia
         <div
           css={`
             margin-top: 50px;
@@ -65,10 +64,10 @@ const InstanceDeleteConfirmation = ({ instanceName }) => {
             color="primary"
             disabled={loading}
           >
-            No, Abort
+            No, Cancelar
           </Button>
           <Button onClick={deleteInstance} loading={loading}>
-            Yes, Delete
+            Si, Eliminar
           </Button>
         </div>
       </div>

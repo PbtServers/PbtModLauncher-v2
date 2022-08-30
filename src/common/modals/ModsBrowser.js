@@ -428,7 +428,7 @@ const ModsBrowser = ({ instanceName, gameVersions }) => {
         width: 90%;
         max-width: 1500px;
       `}
-      title="Instance Manager"
+      title="Administrador de Instancias"
     >
       <Container>
         <Header>
@@ -493,7 +493,7 @@ const ModsBrowser = ({ instanceName, gameVersions }) => {
             css={`
               height: 32px !important;
             `}
-            placeholder="Search..."
+            placeholder="Buscar..."
             value={searchQuery}
             onChange={e => {
               setSearchQuery(e.target.value);
@@ -560,7 +560,7 @@ const ModsBrowser = ({ instanceName, gameVersions }) => {
                 margin-top: 70px;
               `}
             >
-              An error occurred while loading the mods list...
+              ha Ocurrido un Error Cargando la Lista de Mods...
             </div>
           </div>
         )}

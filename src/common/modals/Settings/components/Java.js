@@ -169,9 +169,7 @@ export default function MyAccountPreferences() {
             text-align: left;
           `}
         >
-          Disable this to specify a custom java path to use instead of using
-          OpenJDK shipped with GDLauncher. If that is the case, select the path
-          to your Java executable.
+          Desactiva esto para Utilizar tu Propio Java
         </Paragraph>
         <Switch
           color="primary"

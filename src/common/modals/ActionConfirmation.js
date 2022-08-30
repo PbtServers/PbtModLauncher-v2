@@ -65,14 +65,14 @@ export default function ActionConfirmation({
         <Buttons>
           <Button
             onClick={() => {
-              applyChoice('abort', abortCallback, fileName, dispatch, delay);
+              applyChoice('Cancelar', abortCallback, fileName, dispatch, delay);
             }}
           >
             Abort
           </Button>
           <Button
             onClick={() =>
-              applyChoice('confirm', confirmCallback, fileName, dispatch, delay)
+              applyChoice('Confirmar', confirmCallback, fileName, dispatch, delay)
             }
           >
             Confirm

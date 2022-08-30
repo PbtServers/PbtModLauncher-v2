@@ -43,7 +43,7 @@ const AddAccount = ({ username }) => {
             height: 80px;
           `}
         >
-          Mojang Login
+          Entrar con Mojang
         </h1>
         <StyledInput
           disabled={!!username}
@@ -53,7 +53,7 @@ const AddAccount = ({ username }) => {
         />
         <StyledInput
           type="password"
-          placeholder="Password"
+          placeholder="Contraseña"
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
@@ -72,7 +72,7 @@ const AddAccount = ({ username }) => {
             height: 80px;
           `}
         >
-          Microsoft Login
+          Entrar con Microsoft
         </h1>
         <FormContainer>
           <h2>External Login</h2>

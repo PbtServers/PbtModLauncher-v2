@@ -57,7 +57,7 @@ const McVersionChanger = ({ instanceName, defaultValue }) => {
 
   return (
     <Modal
-      title="Minecraft Version Changer"
+      title="Versión de Minecraft"
       css={`
         height: 380px;
         width: 600px;
@@ -100,7 +100,7 @@ const McVersionChanger = ({ instanceName, defaultValue }) => {
           defaultValue={patchedDefaultValue}
           onChange={setSelectedVersion}
           allowClear={false}
-          placeholder="Select a version"
+          placeholder="Elegir Versión"
           size="large"
           css={`
             width: 400px;

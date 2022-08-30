@@ -45,7 +45,7 @@ const InstanceDownloadFailed = ({ instanceName, error }) => {
         max-width: 550px;
         overflow-x: hidden;
       `}
-      title={`Instance Download Failed - ${ellipsedName}`}
+      title={`Descarga Fallida - ${ellipsedName}`}
     >
       <div>
         The download for {instanceName} failed.
@@ -59,7 +59,7 @@ const InstanceDownloadFailed = ({ instanceName, error }) => {
           {'> '}
           {error.toString()}
         </div>
-        <div>What do you want to do?</div>
+        <div>Que Quieres Hacer?</div>
         <div
           css={`
             margin-top: 50px;
@@ -74,10 +74,10 @@ const InstanceDownloadFailed = ({ instanceName, error }) => {
             onClick={cancelDownload}
             loading={loading}
           >
-            Cancel Download
+            Cancelar Descarga
           </Button>
           <Button danger type="primary" onClick={retry} disabled={loading}>
-            Retry Download
+            Volver a Intentar
           </Button>
         </div>
       </div>

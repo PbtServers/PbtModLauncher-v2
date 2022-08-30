@@ -59,7 +59,7 @@ const JavaSetup = () => {
 
   return (
     <Modal
-      title="Java Setup"
+      title="Instalación de Java"
       css={`
         height: 380px;
         width: 600px;
@@ -81,7 +81,7 @@ const JavaSetup = () => {
                 margin-bottom: 20px;
               `}
             >
-              Java Setup
+              Instalación de Java
             </div>
             <div
               css={`
@@ -195,7 +195,7 @@ const JavaSetup = () => {
                 margin-bottom: 20px;
               `}
             >
-              {choice === 0 ? 'Automatic' : 'Manual'} Setup
+              {choice === 0 ? 'Automático' : 'Manual'} Setup
             </div>
             {choice === 0 ? (
               <AutomaticSetup
@@ -243,10 +243,7 @@ const ManualSetup = ({ setStep }) => {
           font-size: 18px;
         `}
       >
-        Enter the required paths to java. Java 8 will be used for all the
-        versions {'<'} 1.17, java {LATEST_JAVA_VERSION} for versions {'>='}{' '}
-        1.17. You can also use the same executable but some versions might not
-        run.
+        Elige los Directorios a las Respectivas Versiones de Minecraft
       </div>
 
       <div
@@ -257,7 +254,7 @@ const ManualSetup = ({ setStep }) => {
         `}
       >
         <Input
-          placeholder="Select your Java8 executable (MC < 1.17)"
+          placeholder="Elige tu Ejecutable de Java8 (MC < 1.17)"
           onChange={e => setJavaPath(e.target.value)}
           value={javaPath}
         />
@@ -279,7 +276,7 @@ const ManualSetup = ({ setStep }) => {
         `}
       >
         <Input
-          placeholder={`Select your Java ${LATEST_JAVA_VERSION} executable (MC >= 1.17)`}
+          placeholder={`Elige tu Ejecutable de Java${LATEST_JAVA_VERSION} (MC >= 1.17)`}
           onChange={e => setJavaLatestPath(e.target.value)}
           value={javaLatestPath}
         />

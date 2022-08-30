@@ -98,7 +98,7 @@ const InstanceDuplicateName = ({ instanceName }) => {
         `}
       >
         <p>
-          Please enter a new name for your copy of <b>{oldInstanceName}</b>
+          Introduce un Nuevo Nombre para la Copia de <b>{oldInstanceName}</b>
         </p>
         <Input
           size="large"

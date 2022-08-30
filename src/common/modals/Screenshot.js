@@ -27,7 +27,7 @@ export default function Screenshot({ screenshotsPath, file }) {
         max-width: 1500px;
         overflow: hidden;
       `}
-      title="ScreenShot"
+      title="Captura de Pantalla"
     >
       <Container>
         <Img src={image} />

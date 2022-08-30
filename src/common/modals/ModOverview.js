@@ -77,11 +77,11 @@ const ModOverview = ({
 
   const getPlaceholderText = () => {
     if (loadingFiles) {
-      return 'Loading files';
+      return 'Cargando Archivos';
     } else if (files.length === 0 && !loadingFiles) {
-      return 'Mod not available';
+      return 'Mod no Disponible';
     } else {
-      return 'Select a version';
+      return 'Elegir Versión';
     }
   };
 

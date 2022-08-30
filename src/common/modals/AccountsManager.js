@@ -30,7 +30,7 @@ const ProfileSettings = () => {
         width: 400px;
         max-height: 700px;
       `}
-      title="Account Manager"
+      title="Administrador de Cuentas"
     >
       <Container>
         <AccountsContainer>
@@ -73,7 +73,7 @@ const ProfileSettings = () => {
                           accessToken: null
                         })
                       );
-                      message.error('Account not valid');
+                      message.error('Cuenta Inválida');
                     });
                   }}
                 >
@@ -84,7 +84,7 @@ const ProfileSettings = () => {
                         color: ${props => props.theme.palette.error.main};
                       `}
                     >
-                      {!account.accessToken && '(EXPIRED)'}
+                      {!account.accessToken && '(NO PREMIUM)'}
                     </span>
                   </div>
                   {!account.accessToken && (
@@ -97,7 +97,7 @@ const ProfileSettings = () => {
                         )
                       }
                     >
-                      Login again
+                      Inicia Sesión otra vez
                     </HoverContainer>
                   )}
                   {account.selectedProfile.id ===
@@ -134,7 +134,7 @@ const ProfileSettings = () => {
         </AccountsContainer>
         <AccountContainer>
           <AccountItem onClick={() => dispatch(openModal('AddAccount'))}>
-            Add Account
+            Añadir Cuenta
           </AccountItem>
         </AccountContainer>
       </Container>

@@ -194,7 +194,9 @@ function useInterval(callback, delay) {
 function News({ style, news }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const ContextTheme = useContext(ThemeContext);
-  const showNews = useSelector(state => state.settings.showNews);
+  var showNews = useSelector(state => state.settings.showNews);
+
+  showNews = false
 
   useInterval(
     () => {

@@ -38,7 +38,7 @@ const ModChangelog = ({ modpackId, files, type, modpackName }) => {
       return '';
     }
     if (loading) {
-      return 'Loading';
+      return 'Cargando';
     }
     if (!changelog) {
       return 'Missing changelog';
@@ -51,7 +51,7 @@ const ModChangelog = ({ modpackId, files, type, modpackName }) => {
         height: 500px;
         width: 650px;
       `}
-      title="Changelog"
+      title="Log de Cambios"
     >
       <div
         css={`
@@ -72,7 +72,7 @@ const ModChangelog = ({ modpackId, files, type, modpackName }) => {
             setSelectedId(v);
             loadChangelog(v);
           }}
-          placeholder="Select a version"
+          placeholder="Elegir Versión"
           virtual={false}
         >
           {(files || []).map(v => (
