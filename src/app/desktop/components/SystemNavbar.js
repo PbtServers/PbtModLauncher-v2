@@ -45,11 +45,6 @@ const DevtoolButton = () => {
 const SettingsButton = () => {
   const dispatch = useDispatch();
 
-  //const [isMaximized, setIsMaximized] = useState(false);
-  //const isUpdateAvailable = false;
-  //const location = useSelector(state => state.router.location.pathname);
-  //const [isAppImage, setIsAppImage] = useState(false);
-
   const modals = useSelector(state => state.modals);
 
   const areSettingsOpen = modals.find(

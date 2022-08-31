@@ -406,6 +406,8 @@ const Instance = ({ instanceName }) => {
                   manifest,
                   instance.background,
                   instance.timePlayed
+                  {},
+                  { isUpdate: true }
                 )
               );
             }}

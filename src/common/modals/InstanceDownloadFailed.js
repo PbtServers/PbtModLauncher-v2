@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { copy, remove } from 'fs-extra';
-import path from 'path';
-import lockfile from 'lockfile';
-import { readdir, unlink } from 'fs/promises';
 import Modal from '../components/Modal';
 import {
   addNextInstanceToCurrentDownload,
   downloadInstance,
-  removeDownloadFromQueue
+  removeDownloadFromQueue,
+  updateInstanceConfig
 } from '../reducers/actions';
 import { closeModal } from '../reducers/modals/actions';
 import { _getInstancesPath, _getTempPath } from '../utils/selectors';
+import { rollBackInstanceZip } from '../utils';
 
-const InstanceDownloadFailed = ({ instanceName, error, isUpdate }) => {
+const InstanceDownloadFailed = ({
+  instanceName,
+  error,
+  isUpdate,
+  preventClose
+}) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const instancesPath = useSelector(_getInstancesPath);
@@ -26,72 +29,19 @@ const InstanceDownloadFailed = ({ instanceName, error, isUpdate }) => {
       : instanceName;
 
   const cancelDownload = async () => {
-    await dispatch(removeDownloadFromQueue(instanceName));
+    await dispatch(removeDownloadFromQueue(instanceName, true));
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    const instancePath = path.join(instancesPath, instanceName);
+    await rollBackInstanceZip(
+      isUpdate,
+      instancesPath,
+      instanceName,
+      tempPath,
+      dispatch,
+      updateInstanceConfig
+    );
 
-    if (isUpdate) {
-      await new Promise(resolve => {
-        // Force premature unlock to let our listener catch mods from override
-        lockfile.unlock(
-          path.join(instancePath, instanceName, 'installing.lock'),
-          err => {
-            if (err) console.error(err);
-            resolve();
-          }
-        );
-      });
-
-      const contentDir = await readdir(instancePath);
-
-      await Promise.all(
-        contentDir.map(async f => {
-          try {
-            if (f !== 'config.json' || f !== 'installing.lock') {
-              const filePath = path.join(instancesPath, f);
-              await unlink(filePath);
-            }
-          } catch (err) {
-            console.error(err);
-          }
-          return null;
-        })
-      );
-
-      const oldInstanceContentDir = await readdir(
-        path.join(tempPath, instanceName)
-      );
-
-      await Promise.all(
-        oldInstanceContentDir.map(async f => {
-          try {
-            if (f !== 'config.json' || f !== 'installing.lock') {
-              const tempFilePath = path.join(tempPath, f);
-              const newFilePath = path.join(instancesPath, f);
-              await copy(tempFilePath, newFilePath);
-            }
-          } catch (err) {
-            console.error(err);
-          }
-          return null;
-        })
-      );
-
-      await new Promise(resolve => {
-        // Force premature unlock to let our listener catch mods from override
-        lockfile.unlock(
-          path.join(instancesPath, instanceName, 'installing.lock'),
-          err => {
-            if (err) console.error(err);
-            resolve();
-          }
-        );
-      });
-    }
-
-    if (!isUpdate) await remove(instancePath);
     setLoading(false);
     dispatch(addNextInstanceToCurrentDownload());
     dispatch(closeModal());
@@ -110,6 +60,7 @@ const InstanceDownloadFailed = ({ instanceName, error, isUpdate }) => {
         max-width: 550px;
         overflow-x: hidden;
       `}
+      preventClose={preventClose}
       title={`Descarga Fallida - ${ellipsedName}`}
     >
       <div>

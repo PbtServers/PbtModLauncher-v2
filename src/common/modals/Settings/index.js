@@ -1,7 +1,7 @@
 import React, { useState, lazy } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Modal from '../../components/Modal';
 import AsyncComponent from '../../components/AsyncComponent';
 import CloseButton from '../../components/CloseButton';

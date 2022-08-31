@@ -390,7 +390,7 @@ const AutomaticSetup = ({
       await fse.remove(path.join(javaBaseFolder, version));
       const downloadLocation = path.join(tempFolder, path.basename(url));
 
-      setCurrentSubStep(`Java ${javaVersion} - Descarga`);
+      setCurrentSubStep(`Java ${javaVersion} - Descargando`);
       await downloadFile(downloadLocation, url, p => {
         ipcRenderer.invoke('update-progress-bar', p);
         setDownloadPercentage(p);

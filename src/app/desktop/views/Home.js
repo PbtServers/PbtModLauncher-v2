@@ -51,21 +51,6 @@ const Home = () => {
   const [annoucement, setAnnoucement] = useState(null);
 
   useEffect(() => {
-    const init = async () => {
-      // const appVersion = await ipcRenderer.invoke('getAppVersion');
-      // if (lastUpdateVersion !== appVersion) {
-      //   dispatch(updateLastUpdateVersion(appVersion));
-      //   dispatch(openModal('ChangeLogs'));
-      // }
-      // const { data } = await axios.get(
-      //   'https://api.gdlauncher.com/announcement'
-      // );
-      // setAnnoucement(data || null);
-    };
-
-    init();
-  }, []);
-
   useEffect(() => {
     extractFace(account.skin).then(setProfileImage).catch(console.error);
   }, [account]);
