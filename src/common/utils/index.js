@@ -107,11 +107,11 @@ export const convertMinutesToHumanTime = minutes => {
 
   switch (true) {
     case months >= 2:
-      return `${months} months`;
+      return `${months} meses`;
     case months === 1:
       return `1 month`;
     case weeks >= 2:
-      return `${weeks} weeks`;
+      return `${weeks} semanas`;
     case weeks === 1:
       return `1 week`;
     case days >= 1:
@@ -121,11 +121,11 @@ export const convertMinutesToHumanTime = minutes => {
     case hours === 1:
       return `1 hour`;
     case minutes >= 2:
-      return `${min} minutes`;
+      return `${min} minutos`;
     case minutes === 1:
-      return `1 minute`;
+      return `1 minuto`;
     case minutes === 0:
-      return '0 minutes';
+      return '0 minutos';
     default:
       return '';
   }

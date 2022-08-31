@@ -303,8 +303,8 @@ const Instance = ({ instanceName }) => {
                     {!isPlaying.initialized && <div className="spinner" />}
                   </div>
                 )}
-                {isInQueue && 'In Queue'}
-                {!isInQueue && !isPlaying && <span>PLAY</span>}
+                {isInQueue && 'En Espera'}
+                {!isInQueue && !isPlaying && <span>JUGAR</span>}
               </>
             )}
           </HoverContainer>

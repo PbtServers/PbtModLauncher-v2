@@ -60,8 +60,8 @@ if (gotTheLock) {
   app.quit();
 }
 
-if (!app.isDefaultProtocolClient('gdlauncher')) {
-  app.setAsDefaultProtocolClient('gdlauncher');
+if (!app.isDefaultProtocolClient('pbtmodlauncherv2')) {
+  app.setAsDefaultProtocolClient('pbtmodlauncherv2');
 }
 
 // This gets rid of this: https://github.com/electron/electron/issues/13186
@@ -74,10 +74,10 @@ const edit = [
   ...(process.platform === 'darwin'
     ? [
         {
-          label: 'GDLauncher',
+          label: 'PbtModLauncher',
           submenu: [
             {
-              label: 'About GDLauncher',
+              label: 'Sobre PbtModLauncher',
               role: 'about'
             },
             { type: 'separator' },
@@ -88,22 +88,22 @@ const edit = [
             },
             { type: 'separator' },
             {
-              label: 'Hide GDLauncher',
+              label: 'Esconder PbtModLauncher',
               accelerator: 'Command+H',
               role: 'hide'
             },
             {
-              label: 'Hide Others',
+              label: 'Esconder Otros',
               accelerator: 'Command+Alt+H',
               role: 'hideOthers'
             },
             {
-              label: 'Show All',
+              label: 'Mostrar Todos',
               role: 'unhide'
             },
             { type: 'separator' },
             {
-              label: 'Quit GDLauncher',
+              label: 'Salir de PbtModLauncher',
               accelerator: 'Command+Q',
               click: () => {
                 app.quit();
@@ -117,28 +117,28 @@ const edit = [
     label: 'Edit',
     submenu: [
       {
-        label: 'Cut',
+        label: 'Cortar',
         accelerator: 'CmdOrCtrl+X',
         selector: 'cut:'
       },
       {
-        label: 'Copy',
+        label: 'Copiar',
         accelerator: 'CmdOrCtrl+C',
         selector: 'copy:'
       },
       {
-        label: 'Paste',
+        label: 'Pegar',
         accelerator: 'CmdOrCtrl+V',
         selector: 'paste:'
       },
       {
-        label: 'Select All',
+        label: 'Seleccionar Todo',
         accelerator: 'CmdOrCtrl+A',
         selector: 'selectAll:'
       },
       { type: 'separator' },
-      { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
-      { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' }
+      { label: 'DesHacer', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+      { label: 'ReHacer', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' }
     ]
   }
 ];
@@ -313,11 +313,11 @@ function createWindow() {
   tray = new Tray(nimage);
   const trayMenuTemplate = [
     {
-      label: 'GDLauncher',
+      label: 'PbtModLauncher',
       enabled: false
     },
     {
-      label: 'Show Dev Tools',
+      label: 'Mostrar DevTools',
       click: () => mainWindow.webContents.openDevTools()
     }
   ];
@@ -332,7 +332,7 @@ function createWindow() {
       ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../build/index.html')}`,
     {
-      userAgent: 'GDLauncher'
+      userAgent: 'PbtModLauncher'
     }
   );
   if (isDev) {

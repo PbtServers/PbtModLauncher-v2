@@ -31,7 +31,7 @@ const InstanceStartupAd = ({ instanceName }) => {
         width: 650px;
         overflow-x: hidden;
       `}
-      title={`Starting up ${instanceName}`}
+      title={`Iniciando ${instanceName}`}
     >
       <div
         css={`
@@ -49,7 +49,7 @@ const InstanceStartupAd = ({ instanceName }) => {
             margin-top: 20px;
           `}
         >
-          Your instance is starting...
+          Espera Mientras PbtModLauncher Prepara tu Instancia...
           <LoadingOutlined
             css={`
               margin-left: 30px;
