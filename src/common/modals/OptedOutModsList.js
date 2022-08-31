@@ -171,11 +171,11 @@ const OptedOutModsList = ({
       preventClose={preventClose}
       closeCallback={() => {
         setTimeout(
-          () => reject(new Error('Download Aborted by the user')),
+          () => reject(new Error('Descarga Cancelada')),
           300
         );
       }}
-      title="Opted out mods list"
+      title="Algunos Mods no se han Podido Descargar!"
     >
       <Container>
         <div
@@ -184,10 +184,7 @@ const OptedOutModsList = ({
             margin-bottom: 2rem;
           `}
         >
-          Hey oh! It looks like some developers opted out from showing their
-          mods on third-party launchers. We can still attempt to download them
-          automatically. Please click continue and wait for all downloads to
-          finish. Please don&apos;t click anything inside the browser.
+          Parece que el/la Desarrollador/a de este Mod ha Decidido no Permitirnos Descargarlo Automáticamente, si le das a Continuar, te llevaremos para Descargarlo, Simplemente Descárgalo y Haremos el Resto...
         </div>
         <ModsContainer>
           {optedOutMods &&
@@ -217,12 +214,12 @@ const OptedOutModsList = ({
             onClick={() => {
               dispatch(closeModal());
               setTimeout(
-                () => reject(new Error('Download Aborted by the user')),
+                () => reject(new Error('Descarga Cancelada')),
                 300
               );
             }}
           >
-            Cancel
+            Cancelar
           </Button>
           {missingMods.length === 0 && (
             <Button
@@ -254,7 +251,7 @@ const OptedOutModsList = ({
                 background-color: ${props => props.theme.palette.colors.green};
               `}
             >
-              Confirm
+              Continuar
             </Button>
           )}
           {missingMods.length > 0 && (
