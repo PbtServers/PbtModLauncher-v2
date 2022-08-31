@@ -313,7 +313,7 @@ export default function ThirdStep({
                       </div>
                     </div>
                   ) : (
-                    <h2>We&apos;re doing some magical stuff</h2>
+                    <h2>Espera, Estamos Creando tu Maravilloso Modpack ;)</h2>
                   )}
                 </div>
               </div>

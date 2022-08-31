@@ -521,7 +521,7 @@ const ModsBrowser = ({ instanceName, gameVersions }) => {
                   margin-top: 70px;
                 `}
               >
-                No mods has been found with the current filters.
+                No hay Mods que Coincidan con esos Filtros!
               </div>
             </div>
           ) : (

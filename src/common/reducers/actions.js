@@ -1396,7 +1396,7 @@ export function downloadForge(instanceName) {
 
       // Patching
       if (forgeJson.install?.processors?.length) {
-        dispatch(updateDownloadStatus(instanceName, 'Patching forge...'));
+        dispatch(updateDownloadStatus(instanceName, 'Parcheando Forge...'));
 
         // Extract client.lzma from installer
 
@@ -2198,7 +2198,7 @@ export const startListener = () => {
       if (queueLength > 1) {
         dispatch(
           updateMessage({
-            content: `Synchronizing mods. ${queueLength} left.`,
+            content: `Actualizando Mods. ${queueLength} Restantes.`,
             duration: 0
           })
         );
@@ -2209,7 +2209,7 @@ export const startListener = () => {
       if (queueLength > 1) {
         dispatch(
           updateMessage({
-            content: `Synchronizing mods. ${queueLength} left.`,
+            content: `Actualizando Mods. ${queueLength} Restantes.`,
             duration: 0
           })
         );
