@@ -184,7 +184,7 @@ const OptedOutModsList = ({
             margin-bottom: 2rem;
           `}
         >
-          Parece que el/la Desarrollador/a de este Mod ha Decidido no Permitirnos Descargarlo Automáticamente, si le das a Continuar, te llevaremos para Descargarlo, Simplemente Descárgalo y Haremos el Resto...
+          Parece que el/la Desarrollador/a de este Mod ha Decidido no Permitirnos Descargarlo Automáticamente, si le das a Continuar, te llevaremos para Descargarlo, Simplemente Espera y Haremos el Resto...
         </div>
         <ModsContainer>
           {optedOutMods &&
