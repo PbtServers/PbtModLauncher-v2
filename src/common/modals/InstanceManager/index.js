@@ -162,29 +162,21 @@ const PlayButtonAnimation = keyframes`
 
 const menuEntries = {
   overview: {
-    name: 'Overview',
+    name: 'Gestor Principal',
     component: AsyncComponent(lazy(() => import('./Overview')))
   },
   mods: {
     name: 'Mods',
     component: AsyncComponent(lazy(() => import('./Mods')))
   },
-  modpack: {
-    name: 'Modpack',
-    component: AsyncComponent(lazy(() => import('./Modpack')))
-  },
-  notes: {
-    name: 'Notes',
-    component: AsyncComponent(lazy(() => import('./Notes')))
-  },
   resourcePacks: {
-    name: 'Resource Packs',
+    name: 'Paquetes de Recursos',
     component: AsyncComponent(lazy(() => import('./ResourcePacks')))
   },
   // resourcePacks: { name: "Resource Packs", component: Overview },
   // worlds: { name: "Worlds", component: Overview },
   screenshots: {
-    name: 'Screenshots',
+    name: 'Capturas de Pantalla',
     component: AsyncComponent(lazy(() => import('./Screenshots')))
   }
   // settings: { name: "Settings", component: Overview },
@@ -272,7 +264,7 @@ const InstanceManager = ({ instanceName }) => {
           <SideMenu>
             <InstanceBackground onClick={openFileDialog} imagePath={background}>
               <Overlay />
-              <p>Change Icon</p>
+              <p>Cambiar Icono</p>
               {background && (
                 <FontAwesomeIcon
                   icon={faTimesCircle}
@@ -355,7 +347,7 @@ const InstanceManager = ({ instanceName }) => {
                     {!isPlaying.initialized && <div className="spinner" />}
                   </div>
                 ) : (
-                  <span>PLAY</span>
+                  <span>JUGAR</span>
                 )}
               </div>
               <div
@@ -400,9 +392,7 @@ const InstanceManager = ({ instanceName }) => {
               if (
                 (tab.name === menuEntries.mods.name &&
                   instance?.loader?.loaderType !== FORGE &&
-                  instance?.loader?.loaderType !== FABRIC) ||
-                (tab.name === menuEntries.modpack.name &&
-                  !instance?.loader?.fileID)
+                  instance?.loader?.loaderType !== FABRIC)
               ) {
                 return null;
               }
@@ -421,7 +411,6 @@ const InstanceManager = ({ instanceName }) => {
         <Content>
           <ContentComponent
             instanceName={instanceName}
-            modpackId={instance?.loader?.projectID}
             fileID={instance?.loader?.fileID}
             background={background}
             manifest={manifest}

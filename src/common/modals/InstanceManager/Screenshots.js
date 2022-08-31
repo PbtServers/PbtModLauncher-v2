@@ -82,8 +82,8 @@ const openFolder = screenshotsPath => {
 
 const getTitle = days => {
   const parsedDays = Number.parseInt(days, 10);
-  if (parsedDays === 0) return 'Today';
-  else if (parsedDays === 1) return 'Yesterday';
+  if (parsedDays === 0) return 'Hoy';
+  else if (parsedDays === 1) return 'Ayer';
   else if (parsedDays > 1 && parsedDays < 30) return `${days} days ago`;
   else if (parsedDays >= 30 && parsedDays < 365)
     return `${Math.floor(days / 30)} months ago`;
@@ -114,13 +114,13 @@ const Screenshots = ({ instanceName }) => {
       uploadingFileName !== null &&
       selectedItems.includes(uploadingFileName)
     ) {
-      return 'Image copied to clipboard!';
+      return 'Imágen Añadida al PortaPapeles!';
     } else if (
       uploadingFileName != null &&
       selectedItems[0] != uploadingFileName
     ) {
-      return 'Busy! Wait before uploading another image';
-    } else return 'Share the image via url';
+      return 'Ocupado! Espera antes de Subir otra Imágen';
+    } else return 'Comparte Imágenes por URL';
   };
 
   const containerRef = useRef(null);
@@ -165,11 +165,11 @@ const Screenshots = ({ instanceName }) => {
   const startListener = async () => {
     await makeDir(screenshotsPath);
     const screenshots = await getScreenshots(screenshotsPath);
-    setDateGroups(groupBy(screenshots, 'days'));
+    setDateGroups(groupBy(screenshots, 'dias'));
     watcher = watch(screenshotsPath, async (event, filename) => {
       if (filename) {
         const sortedScreens = await getScreenshots(screenshotsPath);
-        setDateGroups(groupBy(sortedScreens, 'days'));
+        setDateGroups(groupBy(sortedScreens, 'dias'));
       }
     });
   };
@@ -208,7 +208,7 @@ const Screenshots = ({ instanceName }) => {
             getScreenshotsCount(dateGroups) === selectedItems.length
           }
         >
-          {`${selectedItems.length} selected`}
+          {`${selectedItems.length} Seleccionada(s)`}
         </GlobalCheckbox>
 
         <DeleteButton
@@ -216,9 +216,9 @@ const Screenshots = ({ instanceName }) => {
             if (selectedItems.length) {
               dispatch(
                 openModal('ActionConfirmation', {
-                  message: 'Are you sure you want to delete this image(s)?',
+                  message: 'Seguro que Quieres Eliminar Esta(s) Imágen(es)?',
                   confirmCallback: deleteFile,
-                  title: 'Confirm'
+                  title: 'Confirmar'
                 })
               );
             }
@@ -306,16 +306,16 @@ const Screenshots = ({ instanceName }) => {
                               dispatch(
                                 openModal('ActionConfirmation', {
                                   message:
-                                    'Are you sure you want to delete this image?',
+                                    'Seguro que Quieres Borrar esta Imágen?',
                                   fileName: file.name,
                                   confirmCallback: deleteFile,
-                                  title: 'Confirm'
+                                  title: 'Confirmar'
                                 })
                               );
                             }}
                           >
                             <FontAwesomeIcon icon={faTrash} />
-                            {`Delete ${selectedItems.length} items`}
+                            {`Eliminar ${selectedItems.length} items`}
                           </MenuItem>
                         ) : (
                           selectedItems.length ===
@@ -326,16 +326,16 @@ const Screenshots = ({ instanceName }) => {
                                 dispatch(
                                   openModal('ActionConfirmation', {
                                     message:
-                                      'Are you sure you want to delete this image?',
+                                      'Seguro que Quieres Borrar esta Imágen?',
                                     fileName: file.name,
                                     confirmCallback: deleteFile,
-                                    title: 'Confirm'
+                                    title: 'Confirmar'
                                   })
                                 );
                               }}
                             >
                               <FontAwesomeIcon icon={faTrash} />
-                              Delete all
+                              Borrar Todas
                             </MenuItem>
                           )
                         )}
@@ -353,7 +353,7 @@ const Screenshots = ({ instanceName }) => {
                               }
                             >
                               <FontAwesomeIcon icon={faImage} />
-                              Preview
+                              Vista Previa
                             </MenuItem>
                             <MenuItem
                               onClick={() => {
@@ -363,7 +363,7 @@ const Screenshots = ({ instanceName }) => {
                               }}
                             >
                               <FontAwesomeIcon icon={faCopy} />
-                              Copy the image
+                              Copiar Imágen
                             </MenuItem>
                             <ImgurShareMenuItem
                               disabled={
@@ -397,7 +397,7 @@ const Screenshots = ({ instanceName }) => {
                                       uploadingFileName,
                                       selectedItems
                                     )
-                                  : `Image too big... ${Math.floor(
+                                  : `Imágen muy Pesada... ${Math.floor(
                                       file.size / 1024 / 1024
                                     )}MB`}
                               </MenuShareLink>
@@ -417,16 +417,16 @@ const Screenshots = ({ instanceName }) => {
                                 dispatch(
                                   openModal('ActionConfirmation', {
                                     message:
-                                      'Are you sure you want to delete this image?',
+                                      'Seguro que Quieres Borrar esta Imágen?',
                                     fileName: file.name,
                                     confirmCallback: deleteFile,
-                                    title: 'Confirm'
+                                    title: 'Confirmar'
                                   })
                                 );
                               }}
                             >
                               <FontAwesomeIcon icon={faTrash} />
-                              Delete
+                              Eliminar
                             </MenuItem>
                           </>
                         )}
@@ -438,7 +438,7 @@ const Screenshots = ({ instanceName }) => {
             );
           })
         ) : (
-          <NoScreenAvailable>No Screenshot Available</NoScreenAvailable>
+          <NoScreenAvailable>No hay Capturas de Pantalla Disponibles</NoScreenAvailable>
         )}
       </Container>
     </ExternalContainer>

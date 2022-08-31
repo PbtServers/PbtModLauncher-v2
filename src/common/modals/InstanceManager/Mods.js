@@ -484,7 +484,7 @@ const Row = memo(({ index, style, data }) => {
                 margin-right: 10px;
               `}
             />
-            Copy Name
+            Copiar Nombre
           </MenuItem>
         </ContextMenu>
       </Portal>
@@ -636,7 +636,7 @@ const Mods = ({ instanceName }) => {
 
         if (existingMods.includes(fileName)) {
           console.error(
-            'A mod with this name already exists in the instance.',
+            'ya Existe un Mod con ese Nombre en la Instancia.',
             file.name
           );
           setFileDrop(false);
@@ -648,7 +648,7 @@ const Mods = ({ instanceName }) => {
           );
           dragComp[fileName] = true;
         } else {
-          console.error('This file is not a mod!', file);
+          console.error('ese Archivo no es un Mod!', file);
           setFileDrop(false);
           setFileDrag(false);
         }
@@ -679,7 +679,7 @@ const Mods = ({ instanceName }) => {
           setIsMenuOpen(false);
         }}
       >
-        Update All Mods
+        Actualizar Mods
       </Menu.Item>
     </Menu>
   );
@@ -714,7 +714,7 @@ const Mods = ({ instanceName }) => {
                 : setSelectedMods([])
             }
           >
-            Select All
+            Elegir Todos
           </Checkbox>
           <DeleteSelectedMods
             onClick={async () => {
@@ -749,7 +749,7 @@ const Mods = ({ instanceName }) => {
             }}
             loading={loadingModUpdates}
           >
-            Check for Updates
+            Buscar Actualizaciones
           </Button>
           <span
             onClick={e => {
@@ -801,7 +801,7 @@ const Mods = ({ instanceName }) => {
             );
           }}
         >
-          Add Mod
+          Añadir Mod
         </Button>
         <Input
           allowClear
@@ -811,7 +811,7 @@ const Mods = ({ instanceName }) => {
           css={`
             width: 200px !important;
           `}
-          placeholder={`Search ${mods.length} mods`}
+          placeholder={`Buscar Mods`}
         />
       </Header>
       <div
@@ -848,7 +848,7 @@ const Mods = ({ instanceName }) => {
                   `}
                   onDragLeave={e => e.stopPropagation()}
                 >
-                  <CopyTitle>Copy</CopyTitle>
+                  <CopyTitle>Copiar</CopyTitle>
                   <DragArrow icon={faArrowDown} size="3x" />
                 </div>
               )}
@@ -856,7 +856,7 @@ const Mods = ({ instanceName }) => {
           )}
         </Transition>
         {mods.length === 0 && (
-          <NotItemsAvailable>No Mods Available</NotItemsAvailable>
+          <NotItemsAvailable>No hay Mods Disponibles</NotItemsAvailable>
         )}
         <AutoSizer>
           {({ height, width }) => (

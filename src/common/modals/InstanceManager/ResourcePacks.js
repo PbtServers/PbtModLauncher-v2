@@ -286,8 +286,8 @@ const ResourcePacks = ({ instanceName }) => {
 
   const openFolderDialog = async () => {
     const dialog = await ipcRenderer.invoke('openFileDialog', [
-      { name: 'Resource Pack', extensions: ['zip'] },
-      { name: 'All', extensions: ['*'] }
+      { name: 'Paquete de Recursos', extensions: ['zip'] },
+      { name: 'Todos', extensions: ['*'] }
     ]);
     if (dialog.canceled) return;
     const fileName = path.basename(dialog.filePaths[0]);
@@ -360,7 +360,7 @@ const ResourcePacks = ({ instanceName }) => {
                 : setSelectedItems([])
             }
           >
-            Select All
+            Seleccionar Todos
           </Checkbox>
           <TrashIcon
             selectedMods={selectedItems.length}
@@ -396,7 +396,7 @@ const ResourcePacks = ({ instanceName }) => {
             openFolderDialog();
           }}
         >
-          Add ResourcePack
+          Añadir Pack
         </Button>
       </Header>
 
@@ -406,7 +406,7 @@ const ResourcePacks = ({ instanceName }) => {
         fileList={resourcePacks}
       >
         {resourcePacks.length === 0 && (
-          <NotItemsAvailable>No ResourcePacks Available</NotItemsAvailable>
+          <NotItemsAvailable>No hay Paquetes de Recursos Disponibles</NotItemsAvailable>
         )}
         <AutoSizer>
           {({ height, width }) => (
