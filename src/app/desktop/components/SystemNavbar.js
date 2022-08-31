@@ -191,7 +191,7 @@ const SystemNavbar = () => {
             </a>
             <DevtoolButton />
           </div>
-          {!hideAds && (
+          {(
             <div
               css={`
                 display: flex;
@@ -203,12 +203,8 @@ const SystemNavbar = () => {
                   white-space: nowrap;
                 `}
               >
-                Partnered with &nbsp;&nbsp;
+                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PbtModLauncher v2 (PbtServers)</b>
               </div>
-              <BisectHosting
-                showPointerCursor
-                onClick={() => dispatch(openModal('BisectHosting'))}
-              />
               {/* <PulsatingCircle /> */}
             </div>
           )}
@@ -287,18 +283,14 @@ const SystemNavbar = () => {
       </Container>
       {isOsx && (
         <>
-          {!hideAds && (
+          {(
             <div
               css={`
                 display: flex;
                 height: 100%;
               `}
             >
-              Partnered with &nbsp;&nbsp;
-              <BisectHosting
-                showPointerCursor
-                onClick={() => dispatch(openModal('BisectHosting'))}
-              />
+              <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PbtModLauncher v2 (PbtServers)</b>
               {/* <PulsatingCircle /> */}
             </div>
           )}

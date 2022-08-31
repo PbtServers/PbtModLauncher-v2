@@ -14,6 +14,7 @@ import omitBy from 'lodash/omitBy';
 import { pipeline } from 'stream';
 import he from 'he';
 import zlib from 'zlib';
+import crypto from 'crypto';
 import lockfile from 'lockfile';
 import omit from 'lodash/omit';
 import Seven from 'node-7z';
@@ -413,43 +414,66 @@ export function downloadJavaLegacyFixer() {
   };
 }
 
-export function login(username, password, redirect = true) {
+export function login(
+  username,
+  password,
+  offlineMode = false,
+  redirect = true
+) {
   return async (dispatch, getState) => {
     const {
       app: { isNewUser, clientToken }
     } = getState();
-    if (!username || !password) {
-      throw new Error('No username or password provided');
-    }
-    try {
-      let data = null;
-      try {
-        ({ data } = await mcAuthenticate(username, password, clientToken));
-        data.accountType = ACCOUNT_MOJANG;
-      } catch (err) {
-        console.error(err);
-        throw new Error('Invalid username or password.');
-      }
+    let data = null;
 
-      if (!data?.selectedProfile?.id) {
-        throw new Error("It looks like you didn't buy the game.");
-      }
-      const skinUrl = await getPlayerSkin(data.selectedProfile.id);
-      if (skinUrl) {
-        data.skin = skinUrl;
+    if (!username)
+      throw new Error('No username provided');
+
+    if (!password && !offlineMode) {
+      throw new Error('No password provided');
+    }
+
+    try {
+      if (!offlineMode) {
+        try {
+          ({ data } = await mcAuthenticate(username, password, clientToken));
+          data.accountType = ACCOUNT_MOJANG;
+        } catch (err) {
+          console.error(err);
+          throw new Error('Invalid username or password.');
+        }
+        if (!data?.selectedProfile?.id) {
+          throw new Error("Parece que no Compraste el Juego.");
+        }
+        const skinUrl = await getPlayerSkin(data.selectedProfile.id);
+        if (skinUrl) {
+          data.skin = skinUrl;
+        }
+      } else {
+        // how does minecraft generate offline UUIDs:
+        // https://forums.spongepowered.org/t/why-are-the-uuids-changing-in-offline-mode/20237/2
+        // how to do it in javascript:
+        // https://stackoverflow.com/questions/47505620/javas-uuid-nameuuidfrombytes-to-written-in-javascript
+        const md5Bytes = crypto.createHash('md5').update("OfflinePlayer:" + username).digest();
+        md5Bytes[6] &= 0x0f;  /* clear version        */
+        md5Bytes[6] |= 0x30;  /* set to version 3     */
+        md5Bytes[8] &= 0x3f;  /* clear variant        */
+        md5Bytes[8] |= 0x80;  /* set to IETF variant  */
+        let generatedID = md5Bytes.toString('hex');
+        data = {
+          selectedProfile: {
+            id: generatedID,
+            name: username
+          },
+          accountType: ACCOUNT_MOJANG,
+          skin: `https://www.minecraftskins.com/uploads/skins/2021/03/27/bird-17274516.png?v375`
+        };
       }
       dispatch(updateAccount(data.selectedProfile.id, data));
       dispatch(updateCurrentAccountId(data.selectedProfile.id));
 
-      if (!isNewUser) {
-        if (redirect) {
-          dispatch(push('/home'));
-        }
-      } else {
-        dispatch(updateIsNewUser(false));
-        if (redirect) {
-          dispatch(push('/onboarding'));
-        }
+      if (redirect) {
+        dispatch(push('/home'));
       }
     } catch (err) {
       console.error(err);
@@ -1096,7 +1120,6 @@ export function addToQueue(
   background,
   timePlayed,
   settings = {},
-  isUpdate
   updateOptions
 ) {
   return async (dispatch, getState) => {

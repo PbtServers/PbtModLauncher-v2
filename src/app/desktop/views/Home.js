@@ -49,8 +49,6 @@ const Home = () => {
 
   const [profileImage, setProfileImage] = useState(null);
   const [annoucement, setAnnoucement] = useState(null);
-
-  useEffect(() => {
   useEffect(() => {
     extractFace(account.skin).then(setProfileImage).catch(console.error);
   }, [account]);
