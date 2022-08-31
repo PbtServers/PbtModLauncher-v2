@@ -151,7 +151,7 @@ export default function MyAccountPreferences() {
           text-align: left;
         `}
       >
-        Autodetect Java Path&nbsp; <FontAwesomeIcon icon={faJava} />
+        AutoDetectar Java&nbsp; <FontAwesomeIcon icon={faJava} />
         <a
           css={`
             margin-left: 30px;
@@ -160,7 +160,7 @@ export default function MyAccountPreferences() {
             dispatch(openModal('JavaSetup'));
           }}
         >
-          Run Java Setup again
+          Volver a Configurar Java
         </a>
       </Title>
       <AutodetectPath>
@@ -169,7 +169,7 @@ export default function MyAccountPreferences() {
             text-align: left;
           `}
         >
-          Desactiva esto para Utilizar tu Propio Java
+          Desactiva esto para Utilizar tus Propios Ejecutables de Java
         </Paragraph>
         <Switch
           color="primary"
@@ -304,7 +304,7 @@ export default function MyAccountPreferences() {
             margin-bottom: 20px;
           `}
         >
-          Game Resolution&nbsp; <FontAwesomeIcon icon={faDesktop} />
+          Resolución del Juego&nbsp; <FontAwesomeIcon icon={faDesktop} />
         </Title>
         <Paragraph
           css={`
@@ -313,12 +313,12 @@ export default function MyAccountPreferences() {
             margin: 0;
           `}
         >
-          Select the initial game resolution in pixels (width x height).
+          Elige la Resolución Inicial del Juego En Pixeles (Anchura x Altura).
         </Paragraph>
         <ResolutionInputContainer>
           <div>
             <Input
-              placeholder="width"
+              placeholder="Anchura"
               value={mcResolution.width}
               onChange={e => {
                 const w = parseInt(e.target.value, 10);
@@ -327,7 +327,7 @@ export default function MyAccountPreferences() {
             />
             &nbsp;X&nbsp;
             <Input
-              placeholder="Height"
+              placeholder="Altura"
               value={mcResolution.height}
               onChange={e => {
                 const h = parseInt(e.target.value, 10);
@@ -374,7 +374,7 @@ export default function MyAccountPreferences() {
             margin-bottom: 20px;
           `}
         >
-          Java Memory&nbsp; <FontAwesomeIcon icon={faMemory} />
+          Memoria RAM&nbsp; <FontAwesomeIcon icon={faMemory} />
         </Title>
         <Paragraph
           css={`
@@ -383,7 +383,7 @@ export default function MyAccountPreferences() {
             margin: 0;
           `}
         >
-          Select the preferred amount of memory to use when launching the game.
+          Elige la Cantidad de RAM que le vas a Asignar a la Máquina Virtual.
         </Paragraph>
         <div
           css={`
@@ -425,14 +425,14 @@ export default function MyAccountPreferences() {
             text-align: left;
           `}
         >
-          Java Custom Arguments &nbsp; <FontAwesomeIcon icon={faList} />
+          Argumentos Java Personalizados&nbsp; <FontAwesomeIcon icon={faList} />
         </Title>
         <Paragraph
           css={`
             text-align: left;
           `}
         >
-          Select the preferred custom arguments to use when launching the game.
+          Elige tus Argumentos Favoritos y Mejor Optimizados para Arrancar Java.
         </Paragraph>
         <div
           css={`
@@ -465,7 +465,7 @@ export default function MyAccountPreferences() {
             text-align: left;
           `}
         >
-          Minecraft Startup Method &nbsp; <FontAwesomeIcon icon={faPlay} />
+          Método de Arranque de Minecraft&nbsp; <FontAwesomeIcon icon={faPlay} />
         </Title>
         <McStartupMethodRow>
           <Paragraph
@@ -473,8 +473,7 @@ export default function MyAccountPreferences() {
               text-align: left;
             `}
           >
-            Select the preferred Minecraft startup method. Only change this if
-            you&apos;re experiencing issues with the default one.
+            Elige un Método para Arrancar, SOLO Cambiar esto si Sabes lo que Haces!
           </Paragraph>
           <Select
             value={mcStartupMethod}

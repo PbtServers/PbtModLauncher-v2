@@ -385,9 +385,9 @@ const General = () => {
           value={curseReleaseChannel}
           virtual={false}
         >
-          <Select.Option value={1}>Stable</Select.Option>
+          <Select.Option value={1}>Estable</Select.Option>
           <Select.Option value={2}>Beta</Select.Option>
-          <Select.Option value={3}>Alpha</Select.Option>
+          <Select.Option value={3}>Alfa</Select.Option>
         </Select>
       </Content>
       <Title>
