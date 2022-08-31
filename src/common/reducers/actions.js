@@ -14,7 +14,6 @@ import omitBy from 'lodash/omitBy';
 import { pipeline } from 'stream';
 import he from 'he';
 import zlib from 'zlib';
-import crypto from 'crypto';
 import lockfile from 'lockfile';
 import omit from 'lodash/omit';
 import Seven from 'node-7z';
@@ -123,7 +122,6 @@ import PromiseQueue from '../../app/desktop/utils/PromiseQueue';
 import fmlLibsMapping from '../../app/desktop/utils/fmllibs';
 import { openModal, closeModal } from './modals/actions';
 import forgePatcher from '../utils/forgePatcher';
-
 
 export function initManifests() {
   return async (dispatch, getState) => {
@@ -409,78 +407,44 @@ export function downloadJavaLegacyFixer() {
   };
 }
 
-export function login(
-  username,
-  password,
-  offlineMode = false,
-  redirect = true
-) {
+export function login(username, password, redirect = true) {
   return async (dispatch, getState) => {
     const {
       app: { isNewUser, clientToken }
     } = getState();
-    let data = null;
-
-    if (!username)
-      throw new Error('No username provided');
-
-    if (!password && !offlineMode) {
-      throw new Error('No password provided');
+    if (!username || !password) {
+      throw new Error('No username or password provided');
     }
     try {
-      if (!offlineMode) {
-        try {
-          ({ data } = await mcAuthenticate(username, password, clientToken));
-          data.accountType = ACCOUNT_MOJANG;
-        } catch (err) {
-          console.error(err);
-          throw new Error('Invalid username or password.');
-        }
-        if (!data?.selectedProfile?.id) {
-          throw new Error("It looks like you didn't buy the game.");
-        }
-        const skinUrl = await getPlayerSkin(data.selectedProfile.id);
-        if (skinUrl) {
-          data.skin = skinUrl;
-        }
-      } else {
-        // how does minecraft generate offline UUIDs:
-        // https://forums.spongepowered.org/t/why-are-the-uuids-changing-in-offline-mode/20237/2
-        // how to do it in javascript:
-        // https://stackoverflow.com/questions/47505620/javas-uuid-nameuuidfrombytes-to-written-in-javascript
-        const md5Bytes = crypto.createHash('md5').update("OfflinePlayer:" + username).digest();
-        md5Bytes[6] &= 0x0f;  /* clear version        */
-        md5Bytes[6] |= 0x30;  /* set to version 3     */
-        md5Bytes[8] &= 0x3f;  /* clear variant        */
-        md5Bytes[8] |= 0x80;  /* set to IETF variant  */
-        let generatedID = md5Bytes.toString('hex');
-        data = {
-          selectedProfile: {
-            id: generatedID,
-            name: username
-          },
-          accountType: ACCOUNT_MOJANG,
-          skin: `https://www.minecraftskins.com/uploads/skins/2021/03/27/bird-17274516.png?v375`
-        };
+      let data = null;
+      try {
+        ({ data } = await mcAuthenticate(username, password, clientToken));
+        data.accountType = ACCOUNT_MOJANG;
+      } catch (err) {
+        console.error(err);
+        throw new Error('Invalid username or password.');
+      }
+
+      if (!data?.selectedProfile?.id) {
+        throw new Error("It looks like you didn't buy the game.");
+      }
+      const skinUrl = await getPlayerSkin(data.selectedProfile.id);
+      if (skinUrl) {
+        data.skin = skinUrl;
       }
       dispatch(updateAccount(data.selectedProfile.id, data));
       dispatch(updateCurrentAccountId(data.selectedProfile.id));
 
-
-      if (redirect) {
-        dispatch(push('/home'));
+      if (!isNewUser) {
+        if (redirect) {
+          dispatch(push('/home'));
+        }
+      } else {
+        dispatch(updateIsNewUser(false));
+        if (redirect) {
+          dispatch(push('/onboarding'));
+        }
       }
-
-      // if (!isNewUser) {
-      //   if (redirect) {
-      //     dispatch(push('/home'));
-      //   }
-      // } else {
-      //   dispatch(updateIsNewUser(false));
-      //   if (redirect) {
-      //     dispatch(push('/onboarding'));
-      //   }
-      // }
     } catch (err) {
       console.error(err);
       throw new Error(err);
@@ -1125,7 +1089,8 @@ export function addToQueue(
   manifest,
   background,
   timePlayed,
-  settings = {}
+  settings = {},
+  isUpdate
 ) {
   return async (dispatch, getState) => {
     const state = getState();
@@ -1139,6 +1104,7 @@ export function addToQueue(
       loader,
       manifest,
       background,
+      isUpdate,
       ...patchedSettings
     });
 
@@ -1189,7 +1155,7 @@ export function downloadFabric(instanceName) {
     const state = getState();
     const { loader } = _getCurrentDownloadItem(state);
 
-    dispatch(updateDownloadStatus(instanceName, 'Descargando Archivos...'));
+    dispatch(updateDownloadStatus(instanceName, 'Descargando Archivos Fabric...'));
 
     let fabricJson;
     const fabricJsonPath = path.join(
@@ -1291,7 +1257,7 @@ export function downloadForge(instanceName) {
       await fse.copy(expectedInstaller, tempInstaller, { overwrite: true });
     } catch (err) {
       console.warn(
-        'No installer found in temp or hash mismatch. Need to download it.'
+        'No se ha Encontrado un Instalador, hay que Descargarlo.'
       );
       dispatch(
         updateDownloadStatus(instanceName, 'Descargando Instalador de Forge...')
@@ -1430,7 +1396,7 @@ export function downloadForge(instanceName) {
 
       // Patching
       if (forgeJson.install?.processors?.length) {
-        dispatch(updateDownloadStatus(instanceName, 'Parcheando Forge...'));
+        dispatch(updateDownloadStatus(instanceName, 'Patching forge...'));
 
         // Extract client.lzma from installer
 
@@ -1903,17 +1869,16 @@ export function processForgeManifest(instanceName) {
 
 export function downloadInstance(instanceName) {
   return async (dispatch, getState) => {
+    const state = getState();
+    const { loader, manifest, isUpdate } = _getCurrentDownloadItem(state);
     try {
-      const state = getState();
       const {
         app: {
           vanillaManifest: { versions: mcVersions }
         }
       } = state;
 
-      dispatch(updateDownloadStatus(instanceName, 'Descargando Archivos del Juego...'));
-
-      const { loader, manifest } = _getCurrentDownloadItem(state);
+      dispatch(updateDownloadStatus(instanceName, 'Descargando Archivos Oficiales...'));
 
       const mcVersion = loader?.mcVersion;
 
@@ -2060,7 +2025,8 @@ export function downloadInstance(instanceName) {
         openModal('InstanceDownloadFailed', {
           instanceName,
           preventClose: true,
-          error: err
+          error: err,
+          isUpdate
         })
       );
     }
@@ -2172,7 +2138,10 @@ export const changeModpackVersion = (instanceName, newModpackData) => {
           instanceName,
           loader,
           newManifest,
-          `background${path.extname(imageURL)}`
+          `background${path.extname(imageURL)}`,
+          undefined,
+          undefined,
+          true
         )
       );
     } else if (instance.loader.source === FTB) {
@@ -3356,7 +3325,7 @@ export const isNewVersionAvailable = async () => {
 
   try {
     const rChannel = await fs.readFile(
-      path.join(appData, 'PbtModLauncherv2', 'rChannel')
+      path.join(appData, 'gdlauncher_next', 'rChannel')
     );
     releaseChannel = parseInt(rChannel.toString(), 10);
   } catch {
