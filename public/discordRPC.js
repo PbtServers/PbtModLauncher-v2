@@ -7,10 +7,8 @@ let activity;
 const initialAppStartup = Math.floor(Date.now() / 1000);
 
 const defaultValue = {
-  details: 'Idle',
+  details: 'Menú Principal',
   startTimestamp: initialAppStartup,
-  largeImageKey: 'default_big',
-  largeImageText: 'PbtModLauncher v2 -- El Launcher de PbtServers',
   instance: false
 };
 
@@ -38,7 +36,7 @@ exports.update = details => {
   activity = {
     ...activity,
     startTimestamp: Math.floor(Date.now() / 1000),
-    details: `Playing ${details}`
+    details: `Jugando ${details}`
   };
   client.setActivity(activity);
 };
