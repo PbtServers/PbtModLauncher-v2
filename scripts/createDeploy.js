@@ -125,7 +125,7 @@ const commonConfig = {
     generateUpdatesFilesForAllChannels: true,
     npmRebuild: false,
     productName: 'PbtModLauncherv2',
-    appId: 'org.gorilladevs.GDLauncher',
+    appId: 'com.pbtservers.PbtModLauncherv2',
     files: [
       '!node_modules/**/*',
       'build/**/*',
@@ -180,9 +180,9 @@ const commonConfig = {
     },
     protocols: [
       {
-        name: 'gdlauncher',
+        name: 'pbtmodlauncherv2',
         role: 'Viewer',
-        schemes: ['gdlauncher']
+        schemes: ['pbtmodlauncherv2']
       }
     ]
   },
