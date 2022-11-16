@@ -200,7 +200,7 @@ const Login = () => {
         <Container>
           <LeftSide transitionState={transitionState}>
             <Header>
-              <img src={HorizontalLogo} style="width:150%;height:150%;float:left"/>
+              <img src={HorizontalLogo} style="width:120%;height:150%;float:left"/>
             </Header>
             <Form>
               <div>
@@ -299,7 +299,7 @@ const Login = () => {
             </Footer>
           </LeftSide>
           <Background transitionState={transitionState}>
-            <img src={backgroundVideo} style="width:95%;height:90%;" />
+            <img src={backgroundVideo} style="width:100%;height:100%;" />
           </Background>
           <Loading transitionState={transitionState}>Cargando...</Loading>
         </Container>
