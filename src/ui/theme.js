@@ -5,13 +5,13 @@ module.exports = {
       white: '#fff'
     },
     primary: {
-      light: '#5A7391',
-      main: '#365076',
+      light: '#2F3C4C',
+      main: '#0D191F',
       dark: '#2B4066'
     },
     secondary: {
-      light: '#54636D',
-      main: '#1B2533',
+      light: '#242B2F',
+      main: '#121720',
       dark: '#050818'
     },
     error: {
@@ -20,13 +20,13 @@ module.exports = {
       dark: '#952f2d'
     },
     grey: {
-      50: '#B7C5C8',
-      100: '#A3B1B6',
-      200: '#909EA4',
-      300: '#7C8A92',
-      400: '#687780',
-      500: '#54636D',
-      600: '#2D3C49',
+      50: '#9CA9AC',
+      100: '#6A7375',
+      200: '#5C6569',
+      300: '#636E75',
+      400: '#4D585F',
+      500: '#3D4850',
+      600: '#212C35',
       700: '#1B2533',
       800: '#121929',
       900: '#050818'
@@ -37,7 +37,7 @@ module.exports = {
       lavander: '#BB6BD9',
       green: '#27AE60',
       blue: '#3FA7D6',
-      lightBlue: '#345995',
+      lightBlue: '#192A47',
       liberty: '#6761a8',
       jungleGreen: '#43aa8b',
       maximumRed: '#d62828',
@@ -67,7 +67,7 @@ module.exports = {
   spacing: factor => [0, 4, 8, 16, 32, 64][factor],
   sizes: {
     width: {
-      sidebar: 172
+      sidebar: 175
     },
     height: {
       systemNavbar: 45

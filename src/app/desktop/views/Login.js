@@ -262,7 +262,7 @@ const Login = () => {
               >
                 <FooterLinks>
                   <div>
-                    <a href="https://www.minecraft.net/it-it/password/forgot">
+                    <a href="https://www.minecraft.net/es-es/password/forgot">
                       Has Olvidado tu Contraseña?
                     </a>
                   </div>
@@ -271,7 +271,6 @@ const Login = () => {
                   css={`
                     cursor: pointer;
                   `}
-                  onClick={() => dispatch(openModal('ChangeLogs'))}
                 >
                   v{version}
                 </div>

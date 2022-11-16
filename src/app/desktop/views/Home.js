@@ -22,6 +22,7 @@ const AddInstanceIcon = styled(Button)`
   position: fixed;
   bottom: 20px;
   left: 20px;
+  color: ${props => props.theme.palette.colors.red};
 `;
 
 const AccountContainer = styled(Button)`

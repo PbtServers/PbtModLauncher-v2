@@ -84,14 +84,14 @@ const ProfileImage = styled.img`
 const Uuid = styled.div`
   font-size: smaller;
   font-weight: 200;
-  color: ${props => props.theme.palette.grey[100]};
+  color: ${props => props.theme.palette.grey[50]};
   display: flex;
 `;
 
 const Username = styled.div`
   font-size: smaller;
   font-weight: 200;
-  color: ${props => props.theme.palette.grey[100]};
+  color: ${props => props.theme.palette.grey[50]};
   display: flex;
 `;
 

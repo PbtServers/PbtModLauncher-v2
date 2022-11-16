@@ -261,7 +261,7 @@ function createWindow() {
     minHeight: 700,
     show: true,
     frame: false,
-    backgroundColor: '#1B2533',
+    backgroundColor: '#121720',
     webPreferences: {
       experimentalFeatures: true,
       nodeIntegration: true,
@@ -317,7 +317,7 @@ function createWindow() {
         ...requestHeaders
       } = details.requestHeaders;
       if (xSkipOrigin !== 'skip') {
-        requestHeaders.Origin = 'https://gdevs.io';
+        requestHeaders.Origin = 'https://pbtservers.com';
       }
       callback({ cancel: false, requestHeaders });
     }
