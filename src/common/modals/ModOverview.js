@@ -326,7 +326,7 @@ const ModOverview = ({
               setLoading(false);
             }}
           >
-            {installedData.fileID ? 'Switch Version' : 'Download'}
+            {installedData.fileID ? 'Cambiar Versión' : 'Descargar'}
           </Button>
         </Footer>
       </>

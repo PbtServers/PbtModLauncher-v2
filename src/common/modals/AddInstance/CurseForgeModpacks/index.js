@@ -81,7 +81,7 @@ const CurseForgeModpacks = ({ setStep, setVersion, setModpack }) => {
           defaultValue={null}
           virtual={false}
         >
-          <Select.Option value={null}>All Versions</Select.Option>
+          <Select.Option value={null}>Todas las Versiones</Select.Option>
           {(mcVersions || [])
             .filter(v => v?.type === 'release')
             .map(v => (
@@ -97,7 +97,7 @@ const CurseForgeModpacks = ({ setStep, setVersion, setModpack }) => {
           virtual={false}
         >
           <Select.Option key="allcategories" value={null}>
-            All Categories
+            Todas las Categorias
           </Select.Option>
           {(categories || [])
             .filter(v => v?.classId === 4471)
@@ -127,32 +127,32 @@ const CurseForgeModpacks = ({ setStep, setVersion, setModpack }) => {
             ))}
         </StyledSelect>
         <StyledSelect
-          placeholder="Sort by"
+          placeholder="Ordenar Por"
           defaultValue="Featured"
           onChange={setSortBy}
           virtual={false}
         >
           <Select.Option key="Featured" value="Featured">
-            Featured
+            Promocionado
           </Select.Option>
           <Select.Option key="Popularity" value="Popularity">
-            Popularity
+            Más Popular
           </Select.Option>
           <Select.Option key="LastUpdated" value="LastUpdated">
-            Last Updated
+            Más Actualizado
           </Select.Option>
           <Select.Option key="Name" value="Name">
-            Name
+            Nombre
           </Select.Option>
           <Select.Option key="Author" value="Author">
-            Author
+            Autor
           </Select.Option>
           <Select.Option key="TotalDownloads" value="TotalDownloads">
-            Total Downloads
+            Descargas Totales
           </Select.Option>
         </StyledSelect>
         <StyledInput
-          placeholder="Search..."
+          placeholder="Buscar..."
           onSearch={setSearchText}
           onChange={e => setSearchText(e.target.value)}
           style={{ width: 200 }}

@@ -227,7 +227,7 @@ const InstanceManager = ({ instanceName }) => {
   };
 
   useEffect(() => {
-    if (instance?.background) {
+    if (instance.background) {
       fs.readFile(path.join(instancesPath, instanceName, instance.background))
         .then(res =>
           setBackground(`data:image/png;base64,${res.toString('base64')}`)

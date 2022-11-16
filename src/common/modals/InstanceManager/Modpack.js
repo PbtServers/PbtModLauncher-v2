@@ -139,7 +139,7 @@ const Modpack = ({ modpackId, instanceName, manifest, fileID }) => {
         `}
       >
         <StyledSelect
-          placeholder={loading ? 'Loading Versions' : 'Select a version'}
+          placeholder={loading ? 'Cargando Versiones...' : 'Elige una Versión'}
           onChange={handleChange}
           listItemHeight={50}
           listHeight={400}
