@@ -1156,7 +1156,7 @@ export function addToQueue(
             ...(prev || {}),
             loader,
             timePlayed: prev.timePlayed || timePlayed || 0,
-            background,
+            background: "background.png",
             mods: prev.mods || [],
             ...patchedSettings
           };
