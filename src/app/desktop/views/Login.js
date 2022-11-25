@@ -298,8 +298,8 @@ const Login = () => {
               </div>
             </Footer>
           </LeftSide>
-          <Background transitionState={transitionState}>
-            <img src={backgroundVideo} style="width:100%;height:100%;" />
+          <Background>
+            <img src={backgroundVideo} style="width:100%;height:100%;filter: brightness(60%);" />
           </Background>
           <Loading transitionState={transitionState}>Cargando...</Loading>
         </Container>
