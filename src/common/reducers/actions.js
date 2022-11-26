@@ -1837,7 +1837,7 @@ export function processForgeManifest(instanceName) {
     }
 
     if (validAddon) {
-      dispatch(updateDownloadStatus(instanceName, 'Copying overrides...'));
+      dispatch(updateDownloadStatus(instanceName, 'Copiando Alteraciones...'));
       let progress = 0;
       await extractAll(
         addonPathZip,
@@ -1857,7 +1857,7 @@ export function processForgeManifest(instanceName) {
         }
       );
 
-      dispatch(updateDownloadStatus(instanceName, 'Finalizing overrides...'));
+      dispatch(updateDownloadStatus(instanceName, 'Finalizando...'));
 
       const overrideFiles = await getFilesRecursive(
         path.join(_getTempPath(state), instanceName, 'overrides')

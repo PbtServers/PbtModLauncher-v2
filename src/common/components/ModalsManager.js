@@ -58,6 +58,7 @@ const modalsComponentLookupTable = {
   InstanceDuplicateName: AsyncComponent(
     lazy(() => import('../modals/InstanceDuplicateName'))
   ),
+  InstanceUpdateMods: AsyncComponent(lazy(() => import('../modals/InstanceUpdateMods'))),
   AutoUpdatesNotAvailable: AsyncComponent(
     lazy(() => import('../modals/AutoUpdatesNotAvailable'))
   ),

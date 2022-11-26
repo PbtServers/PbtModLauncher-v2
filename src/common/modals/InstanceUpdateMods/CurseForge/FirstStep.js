@@ -31,21 +31,16 @@ export default function FirstStep({
 }) {
   const fileBlackList = [
     path.join(instancePath, 'config.json'),
-    path.join(instancePath, 'natives'),
-    path.join(instancePath, 'thumbnail.png'),
-    path.join(instancePath, 'usercache.json'),
-    path.join(instancePath, 'usernamecache.json'),
-    path.join(instancePath, 'logs'),
-    path.join(instancePath, '.mixin.out'),
-    path.join(instancePath, '.fabric'),
-    path.join(instancePath, 'screenshots'),
-    path.join(instancePath, 'crash-reports'),
-    path.join(instancePath, 'manifest.json')
+    path.join(instancePath, 'servers.dat')
   ];
+
+  const instanceModPath = path.join(instancePath, 'mods')
+  const instanceConfigPath = path.join(instancePath, 'config')
 
   useEffect(() => {
     if (page !== 1) return;
     const getTreeData = async () => {
+
       const arr = dirTree(instancePath);
 
       const flatDirArray = objectIn => {
@@ -64,6 +59,10 @@ export default function FirstStep({
         return arrayResult;
       };
 
+      function getExtension(filename) {
+        return filename.split('.').pop()
+      }
+
       const mapObject = (children, disableChildren = false) => {
         if (!children || children.length === 0) return [];
         const files = [];
@@ -79,8 +78,16 @@ export default function FirstStep({
             disableCheckbox: disableBool,
             children: mapObject(child.children, disableBool)
           };
-          if (child.type === 'file') files.push(childResult);
-          if (child.type === 'directory') dirs.push(childResult);
+          //if (child.type === 'file' && getExtension(child.name.toLowerCase()) === "jar") files.push(childResult);
+
+          const instanceModChildPath = path.join(instanceModPath, child.name);
+          const instanceConfigChildPath = path.join(instanceConfigPath, child.name);
+
+          if (child.type === 'file' && child.path === instanceModChildPath) files.push(childResult);
+          else if (child.type === 'file' && child.path === instanceConfigChildPath) files.push(childResult);
+          if (child.type === 'directory' && child.name === 'mods') dirs.push(childResult);
+          else if (child.type === 'directory' && child.name === 'config') dirs.push(childResult);
+          else if (child.type === 'directory' && child.path === instanceConfigChildPath) files.push(childResult);
         });
 
         function arrSort(innerArrayToSort) {
@@ -116,7 +123,7 @@ export default function FirstStep({
         ];
       }
       await setTreeData(
-        rootNode('Contenido de la Instancia', instancePath, mapObject(arr.children))
+        rootNode('Mods y Configs de la Instancia', instancePath, mapObject(arr.children))
       );
       await setSelectedFiles(flatDirArray(arr.children));
     };

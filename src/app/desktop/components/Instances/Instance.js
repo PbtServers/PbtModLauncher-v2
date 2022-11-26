@@ -12,6 +12,7 @@ import {
   faClock,
   faWrench,
   faFolder,
+  faArchive,
   faTrash,
   faStop,
   faBoxOpen,
@@ -200,14 +201,14 @@ const Instance = ({ instanceName }) => {
   const manageInstance = () => {
     dispatch(openModal('InstanceManager', { instanceName }));
   };
-  const openBisectModal = () => {
-    dispatch(openModal('BisectHosting'));
-  };
   const instanceExportCurseForge = () => {
     dispatch(openModal('InstanceExportCurseForge', { instanceName }));
   };
   const openDuplicateNameDialog = () => {
     dispatch(openModal('InstanceDuplicateName', { instanceName }));
+  };
+  const openImportUpdateDialog = () => {
+    dispatch(openModal('InstanceUpdateMods', { instanceName }));
   };
   const killProcess = () => {
     console.log(isPlaying.pid);
@@ -350,7 +351,8 @@ const Instance = ({ instanceName }) => {
             Abrir Directorio
           </MenuItem>
 
-          {/* // TODO - Support other export options besides curseforge forge. */}
+          <MenuItem divider />
+
           <MenuItem
             onClick={instanceExportCurseForge}
             disabled={
@@ -383,6 +385,16 @@ const Instance = ({ instanceName }) => {
               `}
             />
             Duplicar
+          </MenuItem>
+          <MenuItem onClick={openImportUpdateDialog}>
+            <FontAwesomeIcon
+               icon={faArchive}
+                 css={`
+                    margin-right: 10px;
+                    width: 25px !important;
+                 `}
+            />
+            Actualizar Instancia
           </MenuItem>
           <MenuItem divider />
           <MenuItem
