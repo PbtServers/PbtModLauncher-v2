@@ -24,20 +24,20 @@
     "architecture": "x64",
     "version": "8",
     "version_data": {
-      "openjdk_version": "11.0.17",
-      "semver": "11.0.17"
+      "openjdk_version": "8u352b08",
+      "semver": "8u352b08"
     },
     "updated_at": "2021-11-05T10:10:10Z",
     "timestamp": "2021-11-05T10:10:10Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
     "binary_type": "jdk",
-    "release_name": "jdk-11.0.17",
-    "release_link": "https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0",
-    "binary_name": "graalvm-ce-java11-windows-amd64-22.3.0.zip",
-    "binary_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java11-windows-amd64-22.3.0.zip",
+    "release_name": "jdk-8u352b08",
+    "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
+    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-win_x64.zip",
+    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-win_x64.zip",
     "binary_size": 39046089,
-    "checksum_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java11-windows-amd64-22.3.0.zip.sha256"
+    "checksum_link": "8315BC27B5B258BA78B88CE9F2EF0C45149E784A304164C21C8C653A7053BD58"
   },
   {
     "os": "mac",
