@@ -4,20 +4,20 @@
     "architecture": "x64",
     "version": "8",
     "version_data": {
-      "openjdk_version": "1.8.0_312-b07",
-      "semver": "8.0.312+7"
+      "openjdk_version": "8u352b08",
+      "semver": "8u352b08"
     },
     "updated_at": "2021-11-05T10:09:54Z",
     "timestamp": "2021-11-05T10:09:54Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk8u312-b07",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk8u312-b07",
-    "binary_name": "OpenJDK8U-jre_x64_linux_hotspot_8u312b07.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x64_linux_hotspot_8u312b07.tar.gz",
+    "binary_type": "jdk",
+    "release_name": "jdk-8u352b08",
+    "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
+    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-linux_x64.tar.gz",
+    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_x64.tar.gz",
     "binary_size": 41286015,
-    "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x64_linux_hotspot_8u312b07.tar.gz.sha256.txt"
+    "checksum_link": "A3987F9BD87A3930F2E9CD679990E7B702C8F912A77D08A24163DEBBFC51BF51"
   },
   {
     "os": "windows",
@@ -44,79 +44,79 @@
     "architecture": "x64",
     "version": "8",
     "version_data": {
-      "openjdk_version": "1.8.0_312-b07",
-      "semver": "8.0.312+7"
+      "openjdk_version": "8u352b08",
+      "semver": "8u352b08"
     },
     "updated_at": "2021-11-05T10:10:03Z",
     "timestamp": "2021-11-05T10:10:03Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk8u312-b07",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk8u312-b07",
-    "binary_name": "OpenJDK8U-jre_x64_mac_hotspot_8u312b07.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x64_mac_hotspot_8u312b07.tar.gz",
+    "binary_type": "jdk",
+    "release_name": "jdk-8u352b08",
+    "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
+    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-macosx_x64.tar.gz",
+    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-macosx_x64.tar.gz",
     "binary_size": 45027148,
-    "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x64_mac_hotspot_8u312b07.tar.gz.sha256.txt"
+    "checksum_link": "685c000870a71f6fa08653f9836d2c7bbf331722188a3d1b7ad63060f993c7e2"
   },
   {
     "os": "linux",
     "architecture": "aarch64",
     "version": "8",
     "version_data": {
-      "openjdk_version": "1.8.0_312-b07",
-      "semver": "8.0.312+7"
+      "openjdk_version": "8u352b08",
+      "semver": "8u352b08"
     },
     "updated_at": "2021-11-05T10:09:43Z",
     "timestamp": "2021-11-05T10:09:43Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk8u312-b07",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk8u312-b07",
-    "binary_name": "OpenJDK8U-jre_aarch64_linux_hotspot_8u312b07.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_aarch64_linux_hotspot_8u312b07.tar.gz",
+    "binary_type": "jdk",
+    "release_name": "jdk-8u352b08",
+    "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
+    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-linux_aarch64.tar.gz",
+    "binary_link": "https://cdn.azul.com/zulu-embedded/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_aarch64.tar.gz",
     "binary_size": 40312760,
-    "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_aarch64_linux_hotspot_8u312b07.tar.gz.sha256.txt"
+    "checksum_link": "80d22ddd0dfac0562580cf46bb55f9539e61f7fd8df5f8464a1c83eb9dec24bf"
   },
   {
     "os": "windows",
     "architecture": "x32",
     "version": "8",
     "version_data": {
-      "openjdk_version": "1.8.0_312-b07",
-      "semver": "8.0.312+7"
+      "openjdk_version": "8u352b08",
+      "semver": "8u352b08"
     },
     "updated_at": "2021-11-05T10:10:17Z",
     "timestamp": "2021-11-05T10:10:17Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk8u312-b07",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk8u312-b07",
-    "binary_name": "OpenJDK8U-jre_x86-32_windows_hotspot_8u312b07.zip",
-    "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x86-32_windows_hotspot_8u312b07.zip",
+    "binary_type": "jdk",
+    "release_name": "jdk-8u352b08",
+    "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
+    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-win_i686.zip",
+    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-win_i686.zip",
     "binary_size": 37494360,
-    "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x86-32_windows_hotspot_8u312b07.zip.sha256.txt"
+    "checksum_link": "2850f1366894ca3f3aba0f81542e8f0296dd76348f89344c028818eb58da3d87"
   },
   {
     "os": "linux",
     "architecture": "arm",
     "version": "8",
     "version_data": {
-      "openjdk_version": "1.8.0_312-b07",
-      "semver": "8.0.312+7"
+      "openjdk_version": "8u352b08",
+      "semver": "8u352b08"
     },
     "updated_at": "2021-11-05T10:52:45Z",
     "timestamp": "2021-11-05T10:52:45Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk8u312-b07",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk8u312-b07",
-    "binary_name": "OpenJDK8U-jre_arm_linux_hotspot_8u312b07.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_arm_linux_hotspot_8u312b07.tar.gz",
+    "binary_type": "jdk",
+    "release_name": "jdk-8u352b08",
+    "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
+    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-linux_aarch32hf.tar.gz",
+    "binary_link": "https://cdn.azul.com/zulu-embedded/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_aarch32hf.tar.gz",
     "binary_size": 38706993,
-    "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_arm_linux_hotspot_8u312b07.tar.gz.sha256.txt"
+    "checksum_link": "326d1a2d1fe79e3589e68e9af299a00cfe528006c2de89a1ed8a63cc1aeadbd7"
   }
 ]
