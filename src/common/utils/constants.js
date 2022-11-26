@@ -6,7 +6,7 @@ export const GDL_LEGACYJAVAFIXER_MOD_URL =
   'https://gdevs.io/legacyjavafixer-1.0.jar';
 export const MOJANG_APIS = 'https://authserver.mojang.com';
 export const JAVA_MANIFEST_URL =
-  'https://raw.githubusercontent.com/PbtServers/PbtModLauncher-v2/master/openjdk8.json';
+  'https://raw.githubusercontent.com/PbtServers/PbtModLauncher-v2/master/openjdkog.json';
 export const LATEST_JAVA_VERSION = 17;
 export const JAVA_LATEST_MANIFEST_URL =
   'https://raw.githubusercontent.com/PbtServers/PbtModLauncher-v2/master/openjdklatest.json';

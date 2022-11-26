@@ -562,11 +562,11 @@ const AutomaticSetup = ({
               margin-bottom: 10px;
             `}
           >
-            <h3>Java 8 details:</h3>
+            <h3>Java 11 Detalles:</h3>
             <code>{java8Log}</code>
           </div>
           <div>
-            <h3>Java {LATEST_JAVA_VERSION} details:</h3>
+            <h3>Java {LATEST_JAVA_VERSION} Detalles:</h3>
             <code>{javaLatestLog}</code>
           </div>
         </div>

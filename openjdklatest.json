@@ -4,199 +4,139 @@
     "architecture": "aarch64",
     "version": "17",
     "version_data": {
-      "openjdk_version": "17.0.1+12",
-      "semver": "17.0.1+12"
+      "openjdk_version": "17.0.5",
+      "semver": "17.0.5"
     },
     "updated_at": "2021-12-15T16:12:11Z",
     "timestamp": "2021-12-15T16:12:11Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk-17.0.1+12",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk-17.0.1+12",
-    "binary_name": "OpenJDK17U-jre_aarch64_linux_hotspot_17.0.1_12.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_aarch64_linux_hotspot_17.0.1_12.tar.gz",
+    "binary_type": "jdk",
+    "release_name": "jdk-17.0.5",
+    "release_link": "https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0",
+    "binary_name": "graalvm-ce-java17-linux-aarch64-22.3.0.tar.gz",
+    "binary_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-linux-aarch64-22.3.0.tar.gz",
     "binary_size": 44585085,
-    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_aarch64_linux_hotspot_17.0.1_12.tar.gz.sha256.txt"
-  },
-  {
-    "os": "linux",
-    "architecture": "arm",
-    "version": "17",
-    "version_data": {
-      "openjdk_version": "17.0.1+12",
-      "semver": "17.0.1+12"
-    },
-    "updated_at": "2021-12-15T16:12:14Z",
-    "timestamp": "2021-12-15T16:12:14Z",
-    "heap_size": "normal",
-    "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk-17.0.1+12",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk-17.0.1+12",
-    "binary_name": "OpenJDK17U-jre_arm_linux_hotspot_17.0.1_12.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_arm_linux_hotspot_17.0.1_12.tar.gz",
-    "binary_size": 43553826,
-    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_arm_linux_hotspot_17.0.1_12.tar.gz.sha256.txt"
-  },
-  {
-    "os": "linux",
-    "architecture": "ppc64le",
-    "version": "17",
-    "version_data": {
-      "openjdk_version": "17.0.1+12",
-      "semver": "17.0.1+12"
-    },
-    "updated_at": "2021-12-15T16:12:18Z",
-    "timestamp": "2021-12-15T16:12:18Z",
-    "heap_size": "normal",
-    "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk-17.0.1+12",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk-17.0.1+12",
-    "binary_name": "OpenJDK17U-jre_ppc64le_linux_hotspot_17.0.1_12.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_ppc64le_linux_hotspot_17.0.1_12.tar.gz",
-    "binary_size": 44178646,
-    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_ppc64le_linux_hotspot_17.0.1_12.tar.gz.sha256.txt"
-  },
-  {
-    "os": "linux",
-    "architecture": "s390x",
-    "version": "17",
-    "version_data": {
-      "openjdk_version": "17.0.1+12",
-      "semver": "17.0.1+12"
-    },
-    "updated_at": "2021-12-15T16:12:22Z",
-    "timestamp": "2021-12-15T16:12:22Z",
-    "heap_size": "normal",
-    "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk-17.0.1+12",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk-17.0.1+12",
-    "binary_name": "OpenJDK17U-jre_s390x_linux_hotspot_17.0.1_12.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_s390x_linux_hotspot_17.0.1_12.tar.gz",
-    "binary_size": 42948940,
-    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_s390x_linux_hotspot_17.0.1_12.tar.gz.sha256.txt"
+    "checksum_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-linux-aarch64-22.3.0.tar.gz.sha256"
   },
   {
     "os": "alpine-linux",
     "architecture": "x64",
     "version": "17",
     "version_data": {
-      "openjdk_version": "17.0.1+12",
-      "semver": "17.0.1+12"
+      "openjdk_version": "17.0.5",
+      "semver": "17.0.5"
     },
     "updated_at": "2021-12-15T16:12:26Z",
     "timestamp": "2021-12-15T16:12:26Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk-17.0.1+12",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk-17.0.1+12",
-    "binary_name": "OpenJDK17U-jre_x64_alpine-linux_hotspot_17.0.1_12.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_x64_alpine-linux_hotspot_17.0.1_12.tar.gz",
+    "binary_type": "jdk",
+    "release_name": "jdk-17.0.5",
+    "release_link": "https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0",
+    "binary_name": "graalvm-ce-java17-linux-amd64-22.3.0.tar.gz",
+    "binary_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-linux-amd64-22.3.0.tar.gz",
     "binary_size": 46081542,
-    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_x64_alpine-linux_hotspot_17.0.1_12.tar.gz.sha256.txt"
+    "checksum_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-linux-amd64-22.3.0.tar.gz.sha256"
   },
   {
     "os": "linux",
     "architecture": "x64",
     "version": "17",
     "version_data": {
-      "openjdk_version": "17.0.1+12",
-      "semver": "17.0.1+12"
+      "openjdk_version": "17.0.5",
+      "semver": "17.0.5"
     },
     "updated_at": "2021-12-15T16:12:31Z",
     "timestamp": "2021-12-15T16:12:31Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk-17.0.1+12",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk-17.0.1+12",
-    "binary_name": "OpenJDK17U-jre_x64_linux_hotspot_17.0.1_12.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_x64_linux_hotspot_17.0.1_12.tar.gz",
+    "binary_type": "jdk",
+    "release_name": "jdk-17.0.5",
+    "release_link": "https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0",
+    "binary_name": "graalvm-ce-java17-linux-amd64-22.3.0.tar.gz",
+    "binary_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-linux-amd64-22.3.0.tar.gz",
     "binary_size": 46151359,
-    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_x64_linux_hotspot_17.0.1_12.tar.gz.sha256.txt"
+    "checksum_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-linux-amd64-22.3.0.tar.gz.sha256"
   },
   {
     "os": "windows",
     "architecture": "x64",
     "version": "17",
     "version_data": {
-      "openjdk_version": "17.0.1+12",
-      "semver": "17.0.1+12"
+      "openjdk_version": "17.0.5",
+      "semver": "17.0.5"
     },
     "updated_at": "2021-12-15T16:12:38Z",
     "timestamp": "2021-12-15T16:12:38Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk-17.0.1+12",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk-17.0.1+12",
-    "binary_name": "OpenJDK17U-jre_x64_windows_hotspot_17.0.1_12.zip",
-    "binary_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_x64_windows_hotspot_17.0.1_12.zip",
+    "binary_type": "jdk",
+    "release_name": "jdk-17.0.5",
+    "release_link": "https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0",
+    "binary_name": "graalvm-ce-java17-windows-amd64-22.3.0.zip",
+    "binary_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-windows-amd64-22.3.0.zip",
     "binary_size": 43093629,
-    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_x64_windows_hotspot_17.0.1_12.zip.sha256.txt"
+    "checksum_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-windows-amd64-22.3.0.zip.sha256"
   },
   {
     "os": "windows",
     "architecture": "x32",
     "version": "17",
     "version_data": {
-      "openjdk_version": "17.0.1+12",
-      "semver": "17.0.1+12"
+      "openjdk_version": "17.0.5",
+      "semver": "17.0.5"
     },
     "updated_at": "2021-12-15T16:12:46Z",
     "timestamp": "2021-12-15T16:12:46Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk-17.0.1+12",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk-17.0.1+12",
-    "binary_name": "OpenJDK17U-jre_x86-32_windows_hotspot_17.0.1_12.zip",
-    "binary_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_x86-32_windows_hotspot_17.0.1_12.zip",
+    "binary_type": "jdk",
+    "release_name": "jdk-17.0.5",
+    "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
+    "binary_name": "zulu17.38.21-ca-jdk17.0.5-win_i686.zip",
+    "binary_link": "https://cdn.azul.com/zulu/bin/zulu17.38.21-ca-jdk17.0.5-win_i686.zip",
     "binary_size": 40319967,
-    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_x86-32_windows_hotspot_17.0.1_12.zip.sha256.txt"
+    "checksum_link": ""
   },
   {
     "os": "mac",
     "architecture": "aarch64",
     "version": "17",
     "version_data": {
-      "openjdk_version": "17.0.1+12",
-      "semver": "17.0.1+12"
+      "openjdk_version": "17.0.5",
+      "semver": "17.0.5"
     },
     "updated_at": "2021-12-15T16:10:28Z",
     "timestamp": "2021-12-15T16:10:28Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk-17.0.1+12",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk-17.0.1+12",
-    "binary_name": "OpenJDK17U-jre_aarch64_mac_hotspot_17.0.1_12.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_aarch64_mac_hotspot_17.0.1_12.tar.gz",
+    "binary_type": "jdk",
+    "release_name": "jdk-17.0.5",
+    "release_link": "https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0",
+    "binary_name": "graalvm-ce-java17-darwin-aarch64-22.3.0.tar.gz",
+    "binary_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-darwin-aarch64-22.3.0.tar.gz",
     "binary_size": 41120726,
-    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_aarch64_mac_hotspot_17.0.1_12.tar.gz.sha256.txt"
+    "checksum_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-darwin-aarch64-22.3.0.tar.gz.sha256"
   },
   {
     "os": "mac",
     "architecture": "x64",
     "version": "17",
     "version_data": {
-      "openjdk_version": "17.0.1+12",
-      "semver": "17.0.1+12"
+      "openjdk_version": "17.0.5",
+      "semver": "17.0.5"
     },
     "updated_at": "2021-12-15T16:10:33Z",
     "timestamp": "2021-12-15T16:10:33Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk-17.0.1+12",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk-17.0.1+12",
-    "binary_name": "OpenJDK17U-jre_x64_mac_hotspot_17.0.1_12.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_x64_mac_hotspot_17.0.1_12.tar.gz",
+    "binary_type": "jdk",
+    "release_name": "jdk-17.0.5",
+    "release_link": "https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0",
+    "binary_name": "graalvm-ce-java17-darwin-amd64-22.3.0.tar.gz",
+    "binary_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-darwin-amd64-22.3.0.tar.gz",
     "binary_size": 49381283,
-    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jre_x64_mac_hotspot_17.0.1_12.tar.gz.sha256.txt"
+    "checksum_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-darwin-amd64-22.3.0.tar.gz.sha256"
   }
 ]

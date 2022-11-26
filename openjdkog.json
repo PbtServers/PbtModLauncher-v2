@@ -24,20 +24,20 @@
     "architecture": "x64",
     "version": "8",
     "version_data": {
-      "openjdk_version": "1.8.0_312-b07",
-      "semver": "8.0.312+7"
+      "openjdk_version": "11.0.17",
+      "semver": "11.0.17"
     },
     "updated_at": "2021-11-05T10:10:10Z",
     "timestamp": "2021-11-05T10:10:10Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk8u312-b07",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk8u312-b07",
-    "binary_name": "OpenJDK8U-jre_x64_windows_hotspot_8u312b07.zip",
-    "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x64_windows_hotspot_8u312b07.zip",
+    "binary_type": "jdk",
+    "release_name": "jdk-11.0.17",
+    "release_link": "https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0",
+    "binary_name": "graalvm-ce-java11-windows-amd64-22.3.0.zip",
+    "binary_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java11-windows-amd64-22.3.0.zip",
     "binary_size": 39046089,
-    "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x64_windows_hotspot_8u312b07.zip.sha256.txt"
+    "checksum_link": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java11-windows-amd64-22.3.0.zip.sha256"
   },
   {
     "os": "mac",
@@ -80,46 +80,6 @@
     "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_aarch64_linux_hotspot_8u312b07.tar.gz.sha256.txt"
   },
   {
-    "os": "linux",
-    "architecture": "ppc64le",
-    "version": "8",
-    "version_data": {
-      "openjdk_version": "1.8.0_312-b07",
-      "semver": "8.0.312+7"
-    },
-    "updated_at": "2021-11-05T10:09:50Z",
-    "timestamp": "2021-11-05T10:09:50Z",
-    "heap_size": "normal",
-    "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk8u312-b07",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk8u312-b07",
-    "binary_name": "OpenJDK8U-jre_ppc64le_linux_hotspot_8u312b07.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_ppc64le_linux_hotspot_8u312b07.tar.gz",
-    "binary_size": 40743435,
-    "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_ppc64le_linux_hotspot_8u312b07.tar.gz.sha256.txt"
-  },
-  {
-    "os": "aix",
-    "architecture": "ppc64",
-    "version": "8",
-    "version_data": {
-      "openjdk_version": "1.8.0_312-b07",
-      "semver": "8.0.312+7"
-    },
-    "updated_at": "2021-11-05T10:09:47Z",
-    "timestamp": "2021-11-05T10:09:47Z",
-    "heap_size": "normal",
-    "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk8u312-b07",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk8u312-b07",
-    "binary_name": "OpenJDK8U-jre_ppc64_aix_hotspot_8u312b07.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_ppc64_aix_hotspot_8u312b07.tar.gz",
-    "binary_size": 42806130,
-    "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_ppc64_aix_hotspot_8u312b07.tar.gz.sha256.txt"
-  },
-  {
     "os": "windows",
     "architecture": "x32",
     "version": "8",
@@ -140,26 +100,6 @@
     "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x86-32_windows_hotspot_8u312b07.zip.sha256.txt"
   },
   {
-    "os": "solaris",
-    "architecture": "sparcv9",
-    "version": "8",
-    "version_data": {
-      "openjdk_version": "1.8.0_312-b07",
-      "semver": "8.0.312+7"
-    },
-    "updated_at": "2021-11-11T10:04:24Z",
-    "timestamp": "2021-11-11T10:04:24Z",
-    "heap_size": "normal",
-    "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk8u312-b07",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk8u312-b07",
-    "binary_name": "OpenJDK8U-jre_sparcv9_solaris_hotspot_8u312b07.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_sparcv9_solaris_hotspot_8u312b07.tar.gz",
-    "binary_size": 53232710,
-    "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_sparcv9_solaris_hotspot_8u312b07.tar.gz.sha256.txt"
-  },
-  {
     "os": "linux",
     "architecture": "arm",
     "version": "8",
@@ -178,25 +118,5 @@
     "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_arm_linux_hotspot_8u312b07.tar.gz",
     "binary_size": 38706993,
     "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_arm_linux_hotspot_8u312b07.tar.gz.sha256.txt"
-  },
-  {
-    "os": "solaris",
-    "architecture": "x64",
-    "version": "8",
-    "version_data": {
-      "openjdk_version": "1.8.0_312-b07",
-      "semver": "8.0.312+7"
-    },
-    "updated_at": "2021-11-11T10:04:27Z",
-    "timestamp": "2021-11-11T10:04:27Z",
-    "heap_size": "normal",
-    "openjdk_impl": "hotspot",
-    "binary_type": "jre",
-    "release_name": "jdk8u312-b07",
-    "release_link": "https://github.com/adoptium/temurin8-binaries/releases/tag/jdk8u312-b07",
-    "binary_name": "OpenJDK8U-jre_x64_solaris_hotspot_8u312b07.tar.gz",
-    "binary_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x64_solaris_hotspot_8u312b07.tar.gz",
-    "binary_size": 50196314,
-    "checksum_link": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jre_x64_solaris_hotspot_8u312b07.tar.gz.sha256.txt"
   }
 ]
