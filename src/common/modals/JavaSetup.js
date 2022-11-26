@@ -556,13 +556,13 @@ const AutomaticSetup = ({
             }
           `}
         >
-          <h2>Java is already installed!</h2>
+          <h2>Java ya está Instalado!</h2>
           <div
             css={`
               margin-bottom: 10px;
             `}
           >
-            <h3>Java 11 Detalles:</h3>
+            <h3>Java 8 Detalles:</h3>
             <code>{java8Log}</code>
           </div>
           <div>
