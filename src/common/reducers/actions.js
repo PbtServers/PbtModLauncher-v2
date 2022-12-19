@@ -14,7 +14,7 @@ import omitBy from 'lodash/omitBy';
 import { pipeline } from 'stream';
 import he from 'he';
 import zlib from 'zlib';
-
+import crypto from 'crypto';
 import lockfile from 'lockfile';
 import omit from 'lodash/omit';
 import Seven from 'node-7z';
@@ -429,10 +429,10 @@ export function login(
     let data = null;
 
     if (!username)
-      throw new Error('No username provided');
+      throw new Error('No has Puesto Usuario');
 
     if (!password && !offlineMode) {
-      throw new Error('No password provided');
+      throw new Error('No has Puesto Contraseña');
     }
 
     try {
@@ -442,7 +442,7 @@ export function login(
           data.accountType = ACCOUNT_MOJANG;
         } catch (err) {
           console.error(err);
-          throw new Error('Invalid username or password.');
+          throw new Error('Usuario o Contraseña Invalidos');
         }
         if (!data?.selectedProfile?.id) {
           throw new Error("Parece que no Compraste el Juego.");
@@ -533,7 +533,7 @@ export function loginWithOAuthAccessToken(redirect = true) {
           } = await msAuthenticateXBL(msRefreshedAccessToken));
         } catch (error) {
           console.error(error);
-          throw new Error('Error occurred while logging in Xbox Live .');
+          throw new Error('Error al Conectar con XBOX Live .');
         }
 
         let xstsToken = null;
@@ -561,7 +561,7 @@ export function loginWithOAuthAccessToken(redirect = true) {
           mcRefreshedExpiresAt = Date.now() + 1000 * mcRefreshedExpiresIn;
         } catch (error) {
           console.error(error);
-          throw new Error('Error occurred while logging in Minecraft.');
+          throw new Error('Error al Iniciar Sesión en Minecraft.');
         }
 
         const skinUrl = await getPlayerSkin(selectedProfile.id);
