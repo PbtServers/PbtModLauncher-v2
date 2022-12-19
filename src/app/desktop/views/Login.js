@@ -51,14 +51,14 @@ const Container = styled.div`
 
 const LeftSide = styled.div`
   position: relative;
-  width: 300px;
+  width: 600px;
   padding: 40px;
   height: 100%;
   transition: 0.3s ease-in-out;
   transform: translateX(
     ${({ transitionState }) =>
       transitionState === 'entering' || transitionState === 'entered'
-        ? -300
+        ? -600
         : 0}px
   );
   background: ${props => props.theme.palette.secondary.main};

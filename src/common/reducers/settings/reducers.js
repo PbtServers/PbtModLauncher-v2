@@ -63,7 +63,7 @@ function hideAds(state = true, action) {
   }
 }
 
-function offlineMode(state = true, action) {
+function offlineMode(state = false, action) {
   switch (action.type) {
     case ActionTypes.UPDATE_OFFLINE_MODE:
       return action.val;

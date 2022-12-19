@@ -14,7 +14,7 @@ import omitBy from 'lodash/omitBy';
 import { pipeline } from 'stream';
 import he from 'he';
 import zlib from 'zlib';
-import crypto from 'crypto';
+
 import lockfile from 'lockfile';
 import omit from 'lodash/omit';
 import Seven from 'node-7z';
@@ -117,10 +117,12 @@ import {
   downloadInstanceFiles
 } from '../../app/desktop/utils/downloader';
 import {
+  addQuotes,
   getFileMurmurHash2,
   getSize,
   makeInstanceRestorePoint,
-  removeDuplicates
+  removeDuplicates,
+  replaceLibraryDirectory
 } from '../utils';
 import { UPDATE_CONCURRENT_DOWNLOADS } from './settings/actionTypes';
 import { UPDATE_MODAL } from './modals/actionTypes';
@@ -1579,10 +1581,129 @@ export function processFTBManifest(instanceName) {
     const instancePath = path.join(instancesPath, instanceName);
     const fileHashes = {};
 
-    const { files } = manifest;
+    const { files: allFiles } = manifest;
     const concurrency = state.settings.concurrentDownloads;
 
+    const files = allFiles.filter(v => v.url && v.url !== '');
+    const CFFiles = allFiles.filter(v => !v.url || v.url === '');
+
+    dispatch(updateDownloadStatus(instanceName, 'Downloading CF files...'));
+    const addonsHashmap = {};
+    const addonsFilesHashmap = {};
+
+    // DOWNLOAD CF FILES
+
+    const _getAddons = async () => {
+      console.log(CFFiles.map(v => v.curseforge?.project));
+      const addons = await getMultipleAddons(
+        CFFiles.map(v => v.curseforge?.project)
+      );
+
+      addons.forEach(v => {
+        addonsHashmap[v.id] = v;
+      });
+    };
+
+    const _getAddonFiles = async () => {
+      await pMap(
+        CFFiles,
+        async item => {
+          const modManifest = await getAddonFile(
+            item.curseforge?.project,
+            item.curseforge?.file
+          );
+
+          addonsFilesHashmap[item.curseforge?.project] = modManifest;
+        },
+        { concurrency: concurrency + 10 }
+      );
+    };
+
+    await Promise.all([_getAddons(), _getAddonFiles()]);
+
     let modManifests = [];
+    const optedOutMods = [];
+    await pMap(
+      CFFiles,
+      async item => {
+        if (!addonsHashmap[item.curseforge?.project]) return;
+        let ok = false;
+        let tries = 0;
+        /* eslint-disable no-await-in-loop */
+        do {
+          tries += 1;
+          if (tries !== 1) {
+            await new Promise(resolve => setTimeout(resolve, 5000));
+          }
+
+          const addon = addonsHashmap[item.curseforge?.project];
+          const isResourcePack = addon.classId === 12;
+          const modManifest = addonsFilesHashmap[item.curseforge?.project];
+          const destFile = path.join(
+            _getInstancesPath(state),
+            instanceName,
+            isResourcePack ? 'resourcepacks' : 'mods',
+            modManifest.fileName
+          );
+
+          const fileExists = await fse.pathExists(destFile);
+
+          if (!fileExists) {
+            if (!modManifest.downloadUrl) {
+              const normalizedModData = normalizeModData(
+                modManifest,
+                item.curseforge?.project,
+                addon.name
+              );
+
+              optedOutMods.push({ addon, modManifest: normalizedModData });
+              return;
+            }
+            await downloadFile(destFile, modManifest.downloadUrl);
+            modManifests = modManifests.concat(
+              normalizeModData(
+                modManifest,
+                item.curseforge?.project,
+                addon.name
+              )
+            );
+          }
+          const percentage = (modManifests.length * 100) / CFFiles.length - 1;
+
+          dispatch(updateDownloadProgress(percentage > 0 ? percentage : 0));
+          ok = true;
+        } while (!ok && tries <= 3);
+        /* eslint-enable no-await-in-loop */
+      },
+      { concurrency }
+    );
+
+    if (optedOutMods.length) {
+      await new Promise((resolve, reject) => {
+        dispatch(
+          openModal('OptedOutModsList', {
+            optedOutMods,
+            instancePath: path.join(_getInstancesPath(state), instanceName),
+            resolve,
+            reject,
+            abortCallback: () => {
+              setTimeout(
+                () => reject(new Error('Descarga Abortada por el Usuario')),
+                300
+              );
+            }
+          })
+        );
+      });
+    }
+
+    modManifests = modManifests.concat(
+      ...optedOutMods.map(v =>
+        normalizeModData(v.modManifest, v.modManifest.projectID, v.addon.name)
+      )
+    );
+
+    // DOWNLOAD FTB FILES
 
     let prev = 0;
     const updatePercentage = downloaded => {
@@ -1770,7 +1891,13 @@ export function processForgeManifest(instanceName) {
           const fileExists = await fse.pathExists(destFile);
           if (!fileExists) {
             if (!modManifest.downloadUrl) {
-              optedOutMods.push({ addon, modManifest });
+              const normalizedModData = normalizeModData(
+                modManifest,
+                item.projectID,
+                addon.name
+              );
+
+              optedOutMods.push({ addon, modManifest: normalizedModData });
               return;
             }
             await downloadFile(destFile, modManifest.downloadUrl);
@@ -1931,7 +2058,8 @@ export function processForgeManifest(instanceName) {
 
 export function downloadInstance(instanceName) {
   return async (dispatch, getState) => {
-    const state = getState();    const { loader, manifest, isUpdate, bypassCopy } =
+    const state = getState();
+    const { loader, manifest, isUpdate, bypassCopy } =
       _getCurrentDownloadItem(state);
     const {
       app: {
@@ -2971,14 +3099,7 @@ export function launchInstance(instanceName, forceQuit = false) {
               arg => {
                 return arg
                   .replace(/\${version_name}/g, mcJson.id)
-                  .replace(
-                    /=\${library_directory}/g,
-                    `="${_getLibrariesPath(state)}"`
-                  )
-                  .replace(
-                    /\${library_directory}/g,
-                    `${_getLibrariesPath(state)}`
-                  )
+                  .replace(/\${library_directory}/g, _getLibrariesPath(state))
                   .replace(
                     /\${classpath_separator}/g,
                     process.platform === 'win32' ? ';' : ':'
@@ -3085,8 +3206,10 @@ export function launchInstance(instanceName, forceQuit = false) {
       loggingId || ''
     );
 
+    const needsQuote = process.platform !== 'win32';
+
     console.log(
-      `"${javaPath}" ${getJvmArguments(
+      `${addQuotes(needsQuote, javaPath)} ${getJvmArguments(
         libraries,
         mcMainFile,
         instancePath,
@@ -3102,7 +3225,7 @@ export function launchInstance(instanceName, forceQuit = false) {
         .replace(
           // eslint-disable-next-line no-template-curly-in-string
           '-Dlog4j.configurationFile=${path}',
-          `-Dlog4j.configurationFile="${loggingPath}"`
+          `-Dlog4j.configurationFile=${addQuotes(needsQuote, loggingPath)}`
         )
     );
 
@@ -3113,7 +3236,7 @@ export function launchInstance(instanceName, forceQuit = false) {
     let closed = false;
 
     const ps = spawn(
-      `"${javaPath}"`,
+      `${addQuotes(needsQuote, javaPath)}`,
       jvmArguments.map(v =>
         v
           .toString()
@@ -3121,12 +3244,13 @@ export function launchInstance(instanceName, forceQuit = false) {
           .replace(
             // eslint-disable-next-line no-template-curly-in-string
             '-Dlog4j.configurationFile=${path}',
-            `-Dlog4j.configurationFile="${loggingPath}"`
+            `-Dlog4j.configurationFile=${addQuotes(needsQuote, loggingPath)}`
           )
       ),
       {
         cwd: instancePath,
-        shell: true
+        shell: process.platform !== 'win32',
+        detached: false
       }
     );
 

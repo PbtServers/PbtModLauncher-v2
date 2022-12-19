@@ -115,17 +115,17 @@ export const convertMinutesToHumanTime = minutes => {
     case months >= 2:
       return `${months} meses`;
     case months === 1:
-      return `1 month`;
+      return `1 mes`;
     case weeks >= 2:
       return `${weeks} semanas`;
     case weeks === 1:
-      return `1 week`;
+      return `1 semana`;
     case days >= 1:
       return `${days} d, ${hours} h, ${min} m`;
     case hours >= 2:
       return `${hours} h, ${min} m`;
     case hours === 1:
-      return `1 hour`;
+      return `1 hora`;
     case minutes >= 2:
       return `${min} minutos`;
     case minutes === 1:
@@ -261,6 +261,7 @@ export const makeModRestorePoint = async (newModPath, modsPath, modName) => {
     console.warn(e);
   }
 };
+
 export const scaleMem = x => Math.log2(x / 1024);
 export const scaleMemInv = x => 1024 * 2 ** x;
 export const sysMemScaled = Math.round(
@@ -283,4 +284,20 @@ export const getSize = async dir => {
       })
       .catch(e => reject(e));
   });
+};
+
+export const addQuotes = (needsQuote, string) => {
+  return needsQuote ? `"${string}"` : string;
+};
+
+export const replaceLibraryDirectory = (arg, librariesDir) => {
+  const parsedArg = arg.replace(/\${library_directory}/g, `"${librariesDir}`);
+  const regex = /\${classpath_separator}/g;
+  const splittedString = parsedArg.split(regex);
+  splittedString[splittedString.length - 1] = `${
+    splittedString[splittedString.length - 1]
+  }"`;
+
+  // eslint-disable-next-line no-template-curly-in-string
+  return splittedString.join('${classpath_separator}');
 };

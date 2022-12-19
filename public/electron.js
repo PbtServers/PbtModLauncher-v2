@@ -165,16 +165,29 @@ const userAgent = new UserAgent({
 // app.allowRendererProcessReuse = true;
 Menu.setApplicationMenu(Menu.buildFromTemplate(edit));
 
-let oldLauncherUserData = path.join(app.getPath('userData'), 'instances');
-
 // Read config and eventually use new path
 try {
-  const configFile = fss.readFileSync(
-    path.join(app.getPath('userData'), 'config.json')
-  );
+  const configPath = path.join(app.getPath('userData'), 'config.json');
+  const configFile = fss.readFileSync(configPath);
   const config = JSON.parse(configFile);
-  if (config.settings.instancesPath) {
-    oldLauncherUserData = config.settings.instancesPath;
+
+  const requiredArgs = [
+    '-Dfml.ignorePatchDiscrepancies=true',
+    '-Dfml.ignoreInvalidMinecraftCertificates=true'
+  ];
+
+  const javaArgs = config.settings.java.args;
+
+  if (config.settings.java.args) {
+    const cleanedJavaArgs = javaArgs
+      .split(' ')
+      .filter(arg => !requiredArgs.includes(arg))
+      .join(' ');
+
+    if (cleanedJavaArgs.split(' ').length !== javaArgs.split(' ').length) {
+      config.settings.java.args = cleanedJavaArgs;
+      fss.writeFileSync(configPath, JSON.stringify(config));
+    }
   }
 } catch {
   // Do nothing
@@ -550,10 +563,6 @@ ipcMain.handle('getUserData', () => {
 
 ipcMain.handle('getSentryDsn', () => {
   return process.env.SENTRY_DSN;
-});
-
-ipcMain.handle('getOldLauncherUserData', () => {
-  return oldLauncherUserData;
 });
 
 ipcMain.handle('getExecutablePath', () => {
