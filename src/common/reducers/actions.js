@@ -3097,13 +3097,18 @@ export function launchInstance(instanceName, forceQuit = false) {
             mcJson.forge = { arguments: {} };
             mcJson.forge.arguments.jvm = forgeJson.version.arguments.jvm.map(
               arg => {
-                return arg
-                  .replace(/\${version_name}/g, mcJson.id)
-                  .replace(/\${library_directory}/g, _getLibrariesPath(state))
-                  .replace(
-                    /\${classpath_separator}/g,
-                    process.platform === 'win32' ? ';' : ':'
-                  );
+                return replaceLibraryDirectory(
+                  arg
+                    .replace(/\${version_name}/g, mcJson.id)
+                    .replace(
+                      /=\${library_directory}/g,
+                      `="${_getLibrariesPath(state)}"`
+                    ),
+                  _getLibrariesPath(state)
+                ).replace(
+                  /\${classpath_separator}/g,
+                  process.platform === 'win32' ? '";' : '":'
+                );
               }
             );
           }
@@ -3250,7 +3255,7 @@ export function launchInstance(instanceName, forceQuit = false) {
       {
         cwd: instancePath,
         shell: process.platform !== 'win32',
-        detached: false
+        detached: true
       }
     );
 
