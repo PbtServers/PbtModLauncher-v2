@@ -695,7 +695,9 @@ export const getJVMArguments113 = (
           args[i] = val;
         }
       }
-      if (!needsQuote) args[i] = args[i].replaceAll('"', '');
+      if (typeof args[i] === 'string' && !needsQuote) {
+        args[i] = args[i].replaceAll('"', '');
+      }
     }
   }
 
