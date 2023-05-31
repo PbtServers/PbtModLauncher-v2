@@ -7,4 +7,4 @@ $remoteHash = Get-FileHash -InputStream $req.RawContentStream -Algorithm SHA256
 
 Write-Host $remoteHash
 
-echo $remoteHash > $name.hash.txt
+$remoteHash | Out-File $env:USERPROFILE\Documents\$name.hash.txt -encoding ascii
