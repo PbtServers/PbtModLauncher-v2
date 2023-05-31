@@ -4,20 +4,20 @@
     "architecture": "x64",
     "version": "8",
     "version_data": {
-      "openjdk_version": "8u352b08",
-      "semver": "8u352b08"
+      "openjdk_version": "8u372b07",
+      "semver": "8u372b07"
     },
     "updated_at": "2021-11-05T10:09:54Z",
     "timestamp": "2021-11-05T10:09:54Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
     "binary_type": "jdk",
-    "release_name": "jdk-8u352b08",
+    "release_name": "jdk-8u372b07",
     "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
-    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-linux_x64.tar.gz",
-    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_x64.tar.gz",
+    "binary_name": "zulu8.70.0.23-ca-jdk8.0.372-linux_x64.tar.gz",
+    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.70.0.23-ca-jdk8.0.372-linux_x64.tar.gz",
     "binary_size": 41286015,
-    "checksum_link": "A3987F9BD87A3930F2E9CD679990E7B702C8F912A77D08A24163DEBBFC51BF51"
+    "checksum_link": "AFCDA0F08CD05EFD3BD60B021618931595AB03689F1C1FEFCD46EF7761276D10"
   },
   {
     "os": "windows",
