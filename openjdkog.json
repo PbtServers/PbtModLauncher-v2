@@ -24,40 +24,40 @@
     "architecture": "x64",
     "version": "8",
     "version_data": {
-      "openjdk_version": "8u352b08",
-      "semver": "8u352b08"
+      "openjdk_version": "8u372b07",
+      "semver": "8u372b07"
     },
     "updated_at": "2021-11-05T10:10:10Z",
     "timestamp": "2021-11-05T10:10:10Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
     "binary_type": "jdk",
-    "release_name": "jdk-8u352b08",
+    "release_name": "jdk-8u372b07",
     "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
-    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-win_x64.zip",
-    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-win_x64.zip",
+    "binary_name": "zulu8.70.0.23-ca-jdk8.0.372-win_x64.zip",
+    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.70.0.23-ca-jdk8.0.372-win_x64.zip",
     "binary_size": 39046089,
-    "checksum_link": "8315BC27B5B258BA78B88CE9F2EF0C45149E784A304164C21C8C653A7053BD58"
+    "checksum_link": "D783B5FE4EF5D798F5B54BBFFCB056FA183768D8A4F7E8B138A690B5A875ED3E"
   },
   {
     "os": "mac",
     "architecture": "x64",
     "version": "8",
     "version_data": {
-      "openjdk_version": "8u352b08",
-      "semver": "8u352b08"
+      "openjdk_version": "8u372b07",
+      "semver": "8u372b07"
     },
     "updated_at": "2021-11-05T10:10:03Z",
     "timestamp": "2021-11-05T10:10:03Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
     "binary_type": "jdk",
-    "release_name": "jdk-8u352b08",
+    "release_name": "jdk-8u372b07",
     "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
-    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-macosx_x64.tar.gz",
-    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-macosx_x64.tar.gz",
+    "binary_name": "zulu8.70.0.23-ca-jdk8.0.372-macosx_x64.tar.gz",
+    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.70.0.23-ca-jdk8.0.372-macosx_x64.tar.gz",
     "binary_size": 45027148,
-    "checksum_link": "685c000870a71f6fa08653f9836d2c7bbf331722188a3d1b7ad63060f993c7e2"
+    "checksum_link": "D35A7BEDFB3DDE69701D27B7DF6100143C5617D5FEE746ACB3D845311A9573AF"
   },
   {
     "os": "linux",
@@ -77,46 +77,46 @@
     "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-linux_aarch64.tar.gz",
     "binary_link": "https://cdn.azul.com/zulu-embedded/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_aarch64.tar.gz",
     "binary_size": 40312760,
-    "checksum_link": "80d22ddd0dfac0562580cf46bb55f9539e61f7fd8df5f8464a1c83eb9dec24bf"
+    "checksum_link": "80D22DDD0DFAC0562580CF46BB55F9539E61F7FD8DF5F8464A1C83EB9DEC24BF"
   },
   {
     "os": "windows",
     "architecture": "x32",
     "version": "8",
     "version_data": {
-      "openjdk_version": "8u352b08",
-      "semver": "8u352b08"
+      "openjdk_version": "8u372b07",
+      "semver": "8u372b07"
     },
     "updated_at": "2021-11-05T10:10:17Z",
     "timestamp": "2021-11-05T10:10:17Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
     "binary_type": "jdk",
-    "release_name": "jdk-8u352b08",
+    "release_name": "jdk-8u372b07",
     "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
-    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-win_i686.zip",
-    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-win_i686.zip",
+    "binary_name": "zulu8.70.0.23-ca-jdk8.0.372-win_i686.zip",
+    "binary_link": "https://cdn.azul.com/zulu/bin/zulu8.70.0.23-ca-jdk8.0.372-win_i686.zip",
     "binary_size": 37494360,
-    "checksum_link": "2850f1366894ca3f3aba0f81542e8f0296dd76348f89344c028818eb58da3d87"
+    "checksum_link": "712D23C123CBB3005BFF8F6473DC59A5CFD837DC3C727C9143A05CBAAA592957"
   },
   {
     "os": "linux",
     "architecture": "arm",
     "version": "8",
     "version_data": {
-      "openjdk_version": "8u352b08",
-      "semver": "8u352b08"
+      "openjdk_version": "8u372b07",
+      "semver": "8u372b07"
     },
     "updated_at": "2021-11-05T10:52:45Z",
     "timestamp": "2021-11-05T10:52:45Z",
     "heap_size": "normal",
     "openjdk_impl": "hotspot",
     "binary_type": "jdk",
-    "release_name": "jdk-8u352b08",
+    "release_name": "jdk-8u372b07",
     "release_link": "https://www.azul.com/downloads/?package=jdk#download-openjdk",
-    "binary_name": "zulu8.66.0.15-ca-jdk8.0.352-linux_aarch32hf.tar.gz",
-    "binary_link": "https://cdn.azul.com/zulu-embedded/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_aarch32hf.tar.gz",
+    "binary_name": "zulu8.70.0.23-ca-jdk8.0.372-linux_aarch32hf.tar.gz",
+    "binary_link": "https://cdn.azul.com/zulu-embedded/bin/zulu8.70.0.23-ca-jdk8.0.372-linux_aarch32hf.tar.gz",
     "binary_size": 38706993,
-    "checksum_link": "326d1a2d1fe79e3589e68e9af299a00cfe528006c2de89a1ed8a63cc1aeadbd7"
+    "checksum_link": "612684905C546ECFA8B203BD0D739CE5B63762243B090DEB00FE6B35577DF6F4"
   }
 ]
