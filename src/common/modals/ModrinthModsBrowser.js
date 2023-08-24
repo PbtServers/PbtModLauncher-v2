@@ -24,18 +24,11 @@ import {
   faWrench,
   faDownload
 } from '@fortawesome/free-solid-svg-icons';
-import Modal from '../components/Modal';
-import { getSearch, getAddonFiles } from '../api';
+import { getModrinthSearchResults, getModrinthProjectVersions } from '../api';
 import { openModal } from '../reducers/modals/actions';
 import { _getInstance } from '../utils/selectors';
-import { installMod } from '../reducers/actions';
-import { FABRIC, FORGE } from '../utils/constants';
-import {
-  getFirstPreferredCandidate,
-  filterFabricFilesByVersion,
-  filterForgeFilesByVersion,
-  getPatchedInstanceType
-} from '../../app/desktop/utils';
+import { installModrinthMod } from '../reducers/actions';
+import { MODRINTH } from '../utils/constants';
 
 const RowContainer = styled.div`
   display: flex;
@@ -109,7 +102,8 @@ const ModsListWrapper = ({
   searchQuery,
   width,
   height,
-  itemData
+  itemData,
+  instance
 }) => {
   // If there are more items to be loaded then add an extra row to hold a loading indicator.
   const itemCount = hasNextPage ? items.length + 3 : items.length;
@@ -138,17 +132,17 @@ const ModsListWrapper = ({
 
   const Row = memo(({ index, style, data }) => {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const curseReleaseChannel = useSelector(
-      state => state.settings.curseReleaseChannel
-    );
+    const [error] = useState(null);
     const dispatch = useDispatch();
-    const { instanceName, gameVersions, installedMods, instance } = data;
+
+    const { instanceName, gameVersion, installedMods } = data;
 
     const item = items[index];
 
-    const isInstalled = installedMods.find(v => v.projectID === item?.id);
-    const primaryImage = item?.logo;
+    const isInstalled = installedMods.find(
+      v => v.projectID === item?.project_id
+    );
+    const iconUrl = item?.icon_url || '';
 
     if (!item) {
       return (
@@ -161,6 +155,19 @@ const ModsListWrapper = ({
         />
       );
     }
+
+    const openModOverview = () => {
+      dispatch(
+        openModal('ModOverview', {
+          source: MODRINTH,
+          gameVersion,
+          projectID: item.project_id,
+          ...(isInstalled && { fileID: isInstalled.fileID }),
+          ...(isInstalled && { fileName: isInstalled.fileName }),
+          instanceName
+        })
+      );
+    };
 
     return (
       <RowContainer
@@ -180,7 +187,7 @@ const ModsListWrapper = ({
         <RowInnerContainer>
           <RowContainerImg
             style={{
-              backgroundImage: `url('${primaryImage?.thumbnailUrl}')`
+              backgroundImage: `url('${iconUrl}')`
             }}
           />
           <div
@@ -192,19 +199,9 @@ const ModsListWrapper = ({
               transition: color 0.1s ease-in-out;
               cursor: pointer;
             `}
-            onClick={() => {
-              dispatch(
-                openModal('ModOverview', {
-                  gameVersions,
-                  projectID: item.id,
-                  ...(isInstalled && { fileID: isInstalled.fileID }),
-                  ...(isInstalled && { fileName: isInstalled.fileName }),
-                  instanceName
-                })
-              );
-            }}
+            onClick={openModOverview}
           >
-            {item.name}
+            {item.title}
           </div>
         </RowInnerContainer>
         {!isInstalled ? (
@@ -215,60 +212,51 @@ const ModsListWrapper = ({
                 onClick={async e => {
                   setLoading(true);
                   e.stopPropagation();
-                  const files = await getAddonFiles(item?.id);
 
-                  const isFabric = getPatchedInstanceType(instance) === FABRIC;
-                  const isForge = getPatchedInstanceType(instance) === FORGE;
-
-                  let filteredFiles = [];
-
-                  if (isFabric) {
-                    filteredFiles = filterFabricFilesByVersion(
-                      files,
-                      gameVersions
-                    );
-                  } else if (isForge) {
-                    filteredFiles = filterForgeFilesByVersion(
-                      files,
-                      gameVersions
-                    );
-                  }
-
-                  const preferredFile = getFirstPreferredCandidate(
-                    filteredFiles,
-                    curseReleaseChannel
+                  // Get the latest compatible version and give it to the installer
+                  const availableModVersions = await getModrinthProjectVersions(
+                    item.project_id
                   );
-
-                  if (preferredFile === null) {
-                    setLoading(false);
-                    setError('Mod Not Available');
-                    console.error(
-                      `Could not find any release candidate for addon: ${item?.id} / ${gameVersions}`
-                    );
-                    return;
-                  }
-
-                  let prev = 0;
-                  await dispatch(
-                    installMod(
-                      item?.id,
-                      preferredFile?.id,
-                      instanceName,
-                      gameVersions,
-                      true,
-                      p => {
-                        if (parseInt(p, 10) !== prev) {
-                          prev = parseInt(p, 10);
-                          ipcRenderer.invoke(
-                            'update-progress-bar',
-                            parseInt(p, 10) / 100
-                          );
-                        }
-                      },
-                      undefined,
-                      item
+                  const compatibleModVersions = availableModVersions
+                    .filter(
+                      v =>
+                        v.game_versions.includes(gameVersion) &&
+                        v.loaders.includes(instance.loader?.loaderType)
                     )
-                  );
+                    .sort((a, b) => a.date_published - b.date_published);
+                  // prioritise stable releases, fall back to unstable releases if no compatible stable releases exist
+                  const latestCompatibleModVersion =
+                    compatibleModVersions.find(
+                      v => v.version_type === 'release'
+                    ) ??
+                    compatibleModVersions.find(
+                      v => v.version_type === 'beta'
+                    ) ??
+                    compatibleModVersions.find(v => v.version_type === 'alpha');
+
+                  if (!latestCompatibleModVersion) {
+                    console.error(
+                      `Failed to install "${item.title}": No compatible versions were found`
+                    );
+                  } else {
+                    let prev = 0;
+                    await dispatch(
+                      installModrinthMod(
+                        latestCompatibleModVersion,
+                        instanceName,
+                        gameVersion,
+                        p => {
+                          if (parseInt(p, 10) !== prev) {
+                            prev = parseInt(p, 10);
+                            ipcRenderer.invoke(
+                              'update-progress-bar',
+                              parseInt(p, 10) / 100
+                            );
+                          }
+                        }
+                      )
+                    );
+                  }
                   ipcRenderer.invoke('update-progress-bar', 0);
                   setLoading(false);
                 }}
@@ -279,20 +267,7 @@ const ModsListWrapper = ({
             </div>
           )
         ) : (
-          <Button
-            type="primary"
-            onClick={() => {
-              dispatch(
-                openModal('ModOverview', {
-                  gameVersions,
-                  projectID: item.id,
-                  ...(isInstalled && { fileID: isInstalled.fileID }),
-                  ...(isInstalled && { fileName: isInstalled.fileName }),
-                  instanceName
-                })
-              );
-            }}
-          >
+          <Button type="primary" onClick={openModOverview}>
             <FontAwesomeIcon icon={faWrench} />
           </Button>
         )}
@@ -332,33 +307,45 @@ const createItemData = memoize(
   (
     items,
     instanceName,
-    gameVersions,
+    gameVersion,
     installedMods,
     instance,
     isNextPageLoading
   ) => ({
     items,
     instanceName,
-    gameVersions,
+    gameVersion,
     installedMods,
     instance,
     isNextPageLoading
   })
 );
 
-let lastRequest;
-const ModsBrowser = ({ instanceName, gameVersions }) => {
-  const itemsNumber = 50;
-
+const ModrinthModsBrowser = ({ instanceName, gameVersion }) => {
   const [mods, setMods] = useState([]);
   const [areModsLoading, setAreModsLoading] = useState(true);
-  const [filterType, setFilterType] = useState('Featured');
+  const [filterType, setFilterType] = useState('relevance');
   const [searchQuery, setSearchQuery] = useState('');
   const [hasNextPage, setHasNextPage] = useState(false);
-  const [categoryId, setCategoryId] = useState(null);
+  const [categoryId, setCategoryId] = useState(undefined);
   const [error, setError] = useState(false);
   const instance = useSelector(state => _getInstance(state)(instanceName));
-  const categories = useSelector(state => state.app.curseforgeCategories);
+  const categories = useSelector(state =>
+    state.app.modrinthCategories
+      .filter(cat => cat.project_type === 'mod')
+      .map(cat => {
+        return {
+          id: cat.name,
+          displayName: cat.name[0].toUpperCase() + cat.name.slice(1),
+          icon: cat.icon
+            .replace('xmlns="http://www.w3.org/2000/svg"', '')
+            .replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"')
+            .replace('currentColor', 'white')
+        };
+        // the SVG editing is required until Modrinth normalises the SVGs they send us
+        // only some have the xmlns attribute, which is required for them to work as a data uri
+      })
+  );
 
   const installedMods = instance?.mods;
 
@@ -378,174 +365,126 @@ const ModsBrowser = ({ instanceName, gameVersions }) => {
     loadMoreMods();
   }, []);
 
-  const loadMoreMods = async (searchP = '', reset) => {
-    const reqObj = {};
-    lastRequest = reqObj;
-    if (!areModsLoading) {
-      setAreModsLoading(true);
-    }
-
+  const loadMoreMods = async (query = '', reset) => {
     const isReset = reset !== undefined ? reset : false;
-    let data = null;
+    setAreModsLoading(true);
+    setError(false);
+
+    let hits;
+    let totalHits;
+
     try {
-      if (error) {
-        setError(false);
-      }
-      data = await getSearch(
-        'mods',
-        searchP,
-        itemsNumber,
-        isReset ? 0 : mods.length,
+      // this only supports filtering by 1 category, but the API supports multiple if we want to include that later
+      ({ hits, total_hits: totalHits } = await getModrinthSearchResults(
+        query,
+        'MOD',
+        gameVersion,
+        [categoryId],
         filterType,
-        filterType !== 'Author' && filterType !== 'Name',
-        gameVersions,
-        categoryId,
-        getPatchedInstanceType(instance)
-      );
+        isReset ? 0 : mods.length
+      ));
     } catch (err) {
+      console.error(err);
       setError(err);
     }
 
-    const newMods = reset ? data : mods.concat(data);
-    if (lastRequest === reqObj) {
-      setAreModsLoading(false);
-      setMods(newMods || []);
-      setHasNextPage((newMods || []).length % itemsNumber === 0);
-    }
+    const newMods = reset ? hits : [...mods, ...hits];
+
+    setHasNextPage(newMods?.length < totalHits);
+    setMods(newMods || []);
+    setAreModsLoading(false);
   };
 
   const itemData = createItemData(
     mods,
     instanceName,
-    gameVersions,
+    gameVersion,
     installedMods,
     instance,
     areModsLoading
   );
 
   return (
-    <Modal
-      css={`
-        height: 85%;
-        width: 90%;
-        max-width: 1500px;
-      `}
-      title="Administrador de Instancias"
-    >
-      <Container>
-        <Header>
-          <Select
-            css={`
-              width: 160px !important;
-              margin: 0 10px !important;
-            `}
-            defaultValue={filterType}
-            onChange={setFilterType}
-            disabled={areModsLoading}
-            virtual={false}
-          >
-            <Select.Option value="Featured">Featured</Select.Option>
-            <Select.Option value="Popularity">Popularity</Select.Option>
-            <Select.Option value="LastUpdated">Last Updated</Select.Option>
-            <Select.Option value="Name">Name</Select.Option>
-            <Select.Option value="Author">Author</Select.Option>
-            <Select.Option value="TotalDownloads">Downloads</Select.Option>
-          </Select>
-          <Select
-            placeholder="Minecraft Category"
-            onChange={setCategoryId}
-            defaultValue={null}
-            virtual={false}
-            css={`
-              width: 500px !important;
-              margin-right: 10px !important;
-            `}
-          >
-            <Select.Option key="allcategories" value={null}>
-              All Categories
+    <Container>
+      <Header>
+        <Select
+          css={`
+            width: 160px !important;
+            margin: 0 10px !important;
+          `}
+          defaultValue="relevance"
+          onChange={setFilterType}
+          disabled={areModsLoading}
+          virtual={false}
+        >
+          {['Relevance', 'Downloads', 'Follows', 'Newest', 'Updated'].map(x => (
+            <Select.Option key={x.toLowerCase()} value={x.toLowerCase()}>
+              {x}
             </Select.Option>
-            {(categories || [])
-              .filter(v => v?.classId === 6)
-              .sort((a, b) => a?.name.localeCompare(b?.name))
-              .map(v => (
-                <Select.Option value={v?.id} key={v?.id}>
-                  <div
-                    css={`
-                      display: flex;
-                      align-items: center;
-                      width: 100%;
-                      height: 100%;
-                    `}
-                  >
-                    <img
-                      src={v?.iconUrl}
-                      css={`
-                        height: 16px;
-                        width: 16px;
-                        margin-right: 10px;
-                      `}
-                      alt="icon"
-                    />
-                    {v?.name}
-                  </div>
-                </Select.Option>
-              ))}
-          </Select>
-          <Input
-            css={`
-              height: 32px !important;
-            `}
-            placeholder="Buscar..."
-            value={searchQuery}
-            onChange={e => {
-              setSearchQuery(e.target.value);
-              loadMoreModsDebounced(e.target.value, true);
-            }}
-            allowClear
-          />
-        </Header>
-
-        {!error ? (
-          !areModsLoading && mods.length === 0 ? (
-            <div
-              css={`
-                margin-top: 120px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                font-size: 150px;
-              `}
-            >
-              <FontAwesomeIcon icon={faExclamationCircle} />
-              <div
+          ))}
+        </Select>
+        <Select
+          placeholder="Category"
+          onChange={setCategoryId}
+          defaultValue={null}
+          virtual={false}
+          css={`
+            width: 500px !important;
+            margin-right: 10px !important;
+            text-transform: capitalize;
+          `}
+        >
+          <Select.Option key={null} value={null}>
+            All Categories
+          </Select.Option>
+          {(categories || [])
+            .sort((a, b) => a.displayName.localeCompare(b.displayName))
+            .map(cat => (
+              <Select.Option
+                value={cat.id}
+                key={cat.id}
                 css={`
-                  font-size: 20px;
-                  margin-top: 70px;
+                  text-transform: capitalize;
                 `}
               >
-                No hay Mods que Coincidan con esos Filtros!
-              </div>
-            </div>
-          ) : (
-            <AutoSizer>
-              {({ height, width }) => (
-                <ModsListWrapper
-                  hasNextPage={hasNextPage}
-                  isNextPageLoading={areModsLoading}
-                  items={mods}
-                  width={width}
-                  height={height - 50}
-                  loadNextPage={loadMoreMods}
-                  searchQuery={searchQuery}
-                  version={gameVersions}
-                  installedMods={installedMods}
-                  instanceName={instanceName}
-                  itemData={itemData}
-                />
-              )}
-            </AutoSizer>
-          )
-        ) : (
+                <div
+                  css={`
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                  `}
+                >
+                  <img
+                    src={`data:image/svg+xml,${cat.icon}`}
+                    css={`
+                      height: 16px;
+                      width: 16px;
+                      margin-right: 10px;
+                    `}
+                    alt={`${cat.displayName}icon`}
+                  />
+                  {cat.displayName}
+                </div>
+              </Select.Option>
+            ))}
+        </Select>
+        <Input
+          css={`
+            height: 32px !important;
+          `}
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={e => {
+            setSearchQuery(e.target.value);
+            loadMoreModsDebounced(e.target.value, true);
+          }}
+          allowClear
+        />
+      </Header>
+
+      {!error ? (
+        !areModsLoading && mods.length === 0 ? (
           <div
             css={`
               margin-top: 120px;
@@ -555,23 +494,62 @@ const ModsBrowser = ({ instanceName, gameVersions }) => {
               font-size: 150px;
             `}
           >
-            <FontAwesomeIcon icon={faBomb} />
+            <FontAwesomeIcon icon={faExclamationCircle} />
             <div
               css={`
                 font-size: 20px;
                 margin-top: 70px;
               `}
             >
-              ha Ocurrido un Error Cargando la Lista de Mods...
+              No se han encontrado mods con los filtros actuales.
             </div>
           </div>
-        )}
-      </Container>
-    </Modal>
+        ) : (
+          <AutoSizer>
+            {({ height, width }) => (
+              <ModsListWrapper
+                hasNextPage={hasNextPage}
+                isNextPageLoading={areModsLoading}
+                items={mods}
+                width={width}
+                height={height - 100}
+                loadNextPage={loadMoreMods}
+                searchQuery={searchQuery}
+                version={gameVersion}
+                installedMods={installedMods}
+                instanceName={instanceName}
+                itemData={itemData}
+                instance={instance}
+              />
+            )}
+          </AutoSizer>
+        )
+      ) : (
+        <div
+          css={`
+            margin-top: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 150px;
+          `}
+        >
+          <FontAwesomeIcon icon={faBomb} />
+          <div
+            css={`
+              font-size: 20px;
+              margin-top: 70px;
+            `}
+          >
+            ha Ocurrido un Error Cargando la Lista de Mods...
+          </div>
+        </div>
+      )}
+    </Container>
   );
 };
 
-export default memo(ModsBrowser);
+export default memo(ModrinthModsBrowser);
 
 const ModsLoader = memo(
   ({ width, top, isNextPageLoading, hasNextPage, loadNextPage }) => {

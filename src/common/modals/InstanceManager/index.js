@@ -413,6 +413,7 @@ const InstanceManager = ({ instanceName }) => {
             instanceName={instanceName}
             fileID={instance?.loader?.fileID}
             background={background}
+            source={instance?.loader?.source}
             manifest={manifest}
           />
         </Content>

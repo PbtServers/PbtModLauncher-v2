@@ -16,6 +16,8 @@ import NewInstance from './NewInstance';
 import minecraftIcon from '../../assets/minecraftIcon.png';
 import curseForgeIcon from '../../assets/curseforgeIcon.webp';
 import ftbIcon from '../../assets/ftbIcon.webp';
+import modrinthIcon from '../../assets/modrinthIcon.webp';
+import ModrinthModpacks from './ModrinthModpacks';
 
 const Content = ({
   in: inProp,
@@ -38,17 +40,17 @@ const Content = ({
       setStep={setStep}
       setModpack={setModpack}
     />,
+    <ModrinthModpacks
+      setVersion={setVersion}
+      setStep={setStep}
+      setModpack={setModpack}
+    />,
     <Import
       setVersion={setVersion}
       setModpack={setModpack}
       importZipPath={importZipPath}
       setImportZipPath={setImportZipPath}
       setOverrideNextStepOnClick={setOverrideNextStepOnClick}
-    />,
-    <FTBModpacks
-      setVersion={setVersion}
-      setStep={setStep}
-      setModpack={setModpack}
     />
   ];
 
@@ -103,7 +105,18 @@ const Content = ({
                        />
                        CurseForge
                   </Radio.Button>
-                  <Radio.Button value={2}>
+                 <Radio.Button value={2}>
+                    <img
+                      src={modrinthIcon}
+                      css={`
+                        margin-right: 4px;
+                        cursor: pointer;
+                        width: 20px;
+                      `}
+                    />
+                    Modrinth
+                  </Radio.Button>
+                  <Radio.Button value={3}>
                     <FontAwesomeIcon
                       icon={faArchive}
                       css={`

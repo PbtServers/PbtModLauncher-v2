@@ -366,16 +366,22 @@ const Row = memo(({ index, style, data }) => {
           </div>
           <div
             onClick={() => {
-              if (!item.fileID) return;
-              dispatch(
-                openModal('ModOverview', {
-                  projectID: item.projectID,
-                  fileID: item.fileID,
-                  fileName: item.fileName,
-                  gameVersions,
-                  instanceName
-                })
-              );
+              if (item.fileID) {
+                dispatch(
+                  openModal('ModOverview', {
+                    source: item.source,
+                    projectID: item.projectID,
+                    fileID: item.fileID,
+                    fileName: item.fileName,
+                    gameVersions,
+                    instanceName
+                  })
+                );
+              } else {
+                console.error(
+                  `Mod "${name}" no tiene file/version ID. No se puede abrir el Mod Overview.`
+                );
+              }
             }}
             className="rowCenterContent"
           >
@@ -693,7 +699,7 @@ const Mods = ({ instanceName }) => {
           setIsMenuOpen(false);
         }}
       >
-        Actualizar Mods
+        Actualizar Todos los Mods
       </Menu.Item>
     </Menu>
   );
