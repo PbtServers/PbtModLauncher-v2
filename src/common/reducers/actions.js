@@ -3416,7 +3416,7 @@ export function launchInstance(instanceName, forceQuit = false) {
     );
 
     console.log(
-       "${javaPath}" ${getJvmArguments(
+       `"${javaPath}" ${getJvmArguments(
         libraries,
         mcMainFile,
         instancePath,
@@ -3787,13 +3787,9 @@ export function installModrinthMod(
                     }
                   ]
                 ]
-              ]
             };
           })
         );
-              };
-            })
-          );
 
         await fse.move(tempFile, destFile, { overwrite: true });
         });

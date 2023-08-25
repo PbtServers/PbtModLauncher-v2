@@ -15,7 +15,6 @@ import Import from './Import';
 import NewInstance from './NewInstance';
 import minecraftIcon from '../../assets/minecraftIcon.png';
 import curseForgeIcon from '../../assets/curseforgeIcon.webp';
-import ftbIcon from '../../assets/ftbIcon.webp';
 import modrinthIcon from '../../assets/modrinthIcon.webp';
 import ModrinthModpacks from './ModrinthModpacks';
 

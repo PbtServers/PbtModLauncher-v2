@@ -10,8 +10,6 @@ import { useInView } from 'react-intersection-observer';
 import Modal from '../../components/Modal';
 import SocialButtons from '../../components/SocialButtons';
 import KoFiButton from '../../assets/ko-fi.png';
-import UpdateIllustration from '../../assets/update_illustration.png';
-import UpdateIllustrationChristmas from '../../assets/update_illustration_christmas.png';
 import { openModal } from '../../reducers/modals/actions';
 import ga from '../../utils/analytics';
 import changelog from './changeLog';

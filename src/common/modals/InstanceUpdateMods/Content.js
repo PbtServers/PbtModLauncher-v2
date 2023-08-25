@@ -17,7 +17,6 @@ import Import from './Import';
 import Export from './CurseForge';
 import minecraftIcon from '../../assets/minecraftIcon.png';
 import curseForgeIcon from '../../assets/curseforgeIcon.webp';
-import ftbIcon from '../../assets/ftbIcon.webp';
 
 const Content = ({
   in: inProp,
