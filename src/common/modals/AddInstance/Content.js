@@ -39,17 +39,17 @@ const Content = ({
       setStep={setStep}
       setModpack={setModpack}
     />,
-    <ModrinthModpacks
-      setVersion={setVersion}
-      setStep={setStep}
-      setModpack={setModpack}
-    />,
     <Import
       setVersion={setVersion}
       setModpack={setModpack}
       importZipPath={importZipPath}
       setImportZipPath={setImportZipPath}
       setOverrideNextStepOnClick={setOverrideNextStepOnClick}
+    />,
+    <ModrinthModpacks
+      setVersion={setVersion}
+      setStep={setStep}
+      setModpack={setModpack}
     />
   ];
 
@@ -104,7 +104,17 @@ const Content = ({
                        />
                        CurseForge
                   </Radio.Button>
-                 <Radio.Button value={2}>
+                  <Radio.Button value={2}>
+                    <FontAwesomeIcon
+                      icon={faArchive}
+                      css={`
+                        margin-right: 4px;
+                        cursor: pointer;
+                      `}
+                    />
+                    Importar ZIP
+                  </Radio.Button>
+                  <Radio.Button value={3}>
                     <img
                       src={modrinthIcon}
                       css={`
@@ -114,16 +124,6 @@ const Content = ({
                       `}
                     />
                     Modrinth
-                  </Radio.Button>
-                  <Radio.Button value={3}>
-                    <FontAwesomeIcon
-                      icon={faArchive}
-                      css={`
-                        margin-right: 4px;
-                        cursor: pointer;
-                      `}
-                    />
-                    Importar ZIP
                   </Radio.Button>
                 </Radio.Group>
               </div>

@@ -81,7 +81,7 @@ const ModrinthModpacks = ({ setStep, setModpack, setVersion }) => {
     <Container>
       <HeaderContainer>
         <StyledInput
-          placeholder="Search..."
+          placeholder="Buscar..."
           onSearch={setSearchText}
           onChange={e => setSearchText(e.target.value)}
           style={{ width: 200 }}
@@ -106,7 +106,7 @@ const ModrinthModpacks = ({ setStep, setModpack, setVersion }) => {
                   margin-top: 70px;
                 `}
               >
-                No modpack has been found with the current filters.
+                No se han encontrado modpacks con esos filtros!
               </div>
             </div>
           ) : (
@@ -144,7 +144,7 @@ const ModrinthModpacks = ({ setStep, setModpack, setVersion }) => {
                 margin-top: 70px;
               `}
             >
-              An error occurred while loading the modpacks list...
+              Ha ocurrido un error al cargar la lista de modpacks...
             </div>
           </div>
         )}
