@@ -124,6 +124,7 @@ import {
   downloadInstanceFilesWithFallbacks
 } from '../../app/desktop/utils/downloader';
 import {
+  addQuotes,
   getFileMurmurHash2,
   getSize,
   makeInstanceRestorePoint,
@@ -3415,8 +3416,9 @@ export function launchInstance(instanceName, forceQuit = false) {
       loggingId || ''
     );
 
-    console.log(
-       `"${javaPath}" ${getJvmArguments(
+    const needsQuote = process.platform !== 'win32';
+        console.log(
+       `${addQuotes(needsQuote, javaPath)} ${getJvmArguments(
         libraries,
         mcMainFile,
         instancePath,
@@ -3432,7 +3434,7 @@ export function launchInstance(instanceName, forceQuit = false) {
         .replace(
           // eslint-disable-next-line no-template-curly-in-string
           '-Dlog4j.configurationFile=${path}',
-          `-Dlog4j.configurationFile="${loggingPath}"`
+          `-Dlog4j.configurationFile=${addQuotes(needsQuote, loggingPath)}`
         )
     );
 
@@ -3443,7 +3445,7 @@ export function launchInstance(instanceName, forceQuit = false) {
     let closed = false;
 
     const ps = spawn(
-      `"${javaPath}"`,
+      `${addQuotes(needsQuote, javaPath)}`,
       jvmArguments.map(v =>
         v
           .toString()
@@ -3451,12 +3453,13 @@ export function launchInstance(instanceName, forceQuit = false) {
           .replace(
             // eslint-disable-next-line no-template-curly-in-string
             '-Dlog4j.configurationFile=${path}',
-            `-Dlog4j.configurationFile="${loggingPath}"`
+            `-Dlog4j.configurationFile=${addQuotes(needsQuote, loggingPath)}`
           )
       ),
       {
         cwd: instancePath,
-        shell: true
+        shell: process.platform !== 'win32',
+        detached: true
       }
     );
 
