@@ -37,7 +37,7 @@ const axioInstance = axios.create({
 const modrinthClient = axios.create({
   baseURL: MODRINTH_API_URL,
   headers: {
-    'User-Agent': `gorilla-devs/GDLauncher/${appVersion}`
+    'User-Agent': `PbtModLauncherv2`
   }
 });
 
@@ -252,20 +252,42 @@ export const getFabricJson = ({ mcVersion, loaderVersion }) => {
 // FORGE ADDONS
 
 export const getAddon = async projectID => {
-  trackCurseForgeAPI();
-  const url = `${FORGESVC_URL}/mods/${projectID}`;
-  const { data } = await axioInstance.get(url);
-  return data?.data;
+
+  var projectIDlen = projectID.length;
+
+  if (projectIDlen >= 8) {
+    trackModrinthAPI();
+    const url = `${MODRINTH_API_URL}/project/${projectID}`;
+    const { data } = await axioInstance.get(url);
+    return data?.data;
+  } else {
+    trackCurseForgeAPI();
+    const url = `${FORGESVC_URL}/mods/${projectID}`;
+    const { data } = await axioInstance.get(url);
+    return data?.data;
+  }
 };
 
 export const getMultipleAddons = async addons => {
+
+  let addonsin = JSON.stringify({ modIds: addons });
+
+  let addonsini = addonsin.split(',');
+
+  let addonsfin = addonsini.filter(function(item) {
+      return item.length <= 7;
+  });
+
+  let addonsfinal = addonsfin.toString();
+  let addonsfinal2 = '{"modIds":[' + addonsfinal + "]}"
+
+  console.warn(addonsfinal2);
+
   trackCurseForgeAPI();
   const url = `${FORGESVC_URL}/mods`;
   const { data } = await axioInstance.post(
     url,
-    JSON.stringify({
-      modIds: addons
-    })
+    addonsfinal2
   );
   return data?.data;
 };
@@ -295,10 +317,20 @@ export const getAddonDescription = async projectID => {
 };
 
 export const getAddonFile = async (projectID, fileID) => {
-  trackCurseForgeAPI();
-  const url = `${FORGESVC_URL}/mods/${projectID}/files/${fileID}`;
-  const { data } = await axioInstance.get(url);
-  return data?.data;
+
+  var projectIDlen = projectID.length;
+
+  if (projectIDlen >= 8) {
+    trackModrinthAPI();
+    const url = `${MODRINTH_API_URL}/project/${projectID}/version/${fileID}`;
+    const { data } = await axioInstance.get(url);
+    return data?.data;
+  } else {
+    trackCurseForgeAPI();
+    const url = `${FORGESVC_URL}/mods/${projectID}/files/${fileID}`;
+    const { data } = await axioInstance.get(url);
+    return data?.data;
+  }
 };
 
 export const getAddonsByFingerprint = async fingerprints => {
