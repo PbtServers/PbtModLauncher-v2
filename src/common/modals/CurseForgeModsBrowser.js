@@ -209,80 +209,6 @@ const ModsListWrapper = ({
             {item.name}
           </div>
         </RowInnerContainer>
-        {!isInstalled ? (
-          error || (
-            <div>
-              <Button
-                type="primary"
-                onClick={async e => {
-                  setLoading(true);
-                  e.stopPropagation();
-                  const files = await getAddonFiles(item?.id);
-
-                  const isFabric = getPatchedInstanceType(instance) === FABRIC;
-                  const isForge = getPatchedInstanceType(instance) === FORGE;
-
-                  let filteredFiles = [];
-
-                  if (isFabric) {
-                    filteredFiles = filterFabricFilesByVersion(
-                      files,
-                      gameVersions
-                    );
-                  } else if (isForge) {
-                    filteredFiles = filterForgeFilesByVersion(
-                      files,
-                      gameVersions
-                    );
-                  }
-
-                  const preferredFile = getFirstPreferredCandidate(
-                    filteredFiles,
-                    curseReleaseChannel
-                  );
-
-                  if (preferredFile === null) {
-                    setLoading(false);
-                    setError('Mod Not Available');
-                    console.error(
-                      `Could not find any release candidate for addon: ${item?.id} / ${gameVersions}`
-                    );
-                    return;
-                  }
-
-                  let prev = 0;
-                  await dispatch(
-                    installMod(
-                      item?.id,
-                      preferredFile?.id,
-                      instanceName,
-                      gameVersions,
-                      true,
-                      p => {
-                        if (parseInt(p, 10) !== prev) {
-                          prev = parseInt(p, 10);
-                          ipcRenderer.invoke(
-                            'update-progress-bar',
-                            parseInt(p, 10) / 100
-                          );
-                        }
-                      }
-                    )
-                  );
-                  ipcRenderer.invoke('update-progress-bar', 0);
-                  setLoading(false);
-                }}
-                loading={loading}
-              >
-                <FontAwesomeIcon icon={faDownload} />
-              </Button>
-            </div>
-          )
-        ) : (
-          <Button type="primary" onClick={openModOverview}>
-            <FontAwesomeIcon icon={faWrench} />
-          </Button>
-        )}
       </RowContainer>
     );
   });
@@ -475,7 +401,7 @@ const CurseForgeModsBrowser = ({ instanceName, gameVersions }) => {
           css={`
             height: 32px !important;
           `}
-          placeholder="Search..."
+          placeholder="Buscar..."
           value={searchQuery}
           onChange={e => {
             setSearchQuery(e.target.value);

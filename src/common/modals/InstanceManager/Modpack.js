@@ -272,7 +272,7 @@ const Modpack = ({ modpackId, instanceName, source, manifest, fileID }) => {
           dispatch(closeModal());
         }}
       >
-        Switch Version
+        Cambiar Versión
       </Button>
     </Container>
   );

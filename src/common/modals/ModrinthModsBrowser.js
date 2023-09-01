@@ -204,73 +204,6 @@ const ModsListWrapper = ({
             {item.title}
           </div>
         </RowInnerContainer>
-        {!isInstalled ? (
-          error || (
-            <div>
-              <Button
-                type="primary"
-                onClick={async e => {
-                  setLoading(true);
-                  e.stopPropagation();
-
-                  // Get the latest compatible version and give it to the installer
-                  const availableModVersions = await getModrinthProjectVersions(
-                    item.project_id
-                  );
-                  const compatibleModVersions = availableModVersions
-                    .filter(
-                      v =>
-                        v.game_versions.includes(gameVersion) &&
-                        v.loaders.includes(instance.loader?.loaderType)
-                    )
-                    .sort((a, b) => a.date_published - b.date_published);
-                  // prioritise stable releases, fall back to unstable releases if no compatible stable releases exist
-                  const latestCompatibleModVersion =
-                    compatibleModVersions.find(
-                      v => v.version_type === 'release'
-                    ) ??
-                    compatibleModVersions.find(
-                      v => v.version_type === 'beta'
-                    ) ??
-                    compatibleModVersions.find(v => v.version_type === 'alpha');
-
-                  if (!latestCompatibleModVersion) {
-                    console.error(
-                      `Failed to install "${item.title}": No compatible versions were found`
-                    );
-                  } else {
-                    let prev = 0;
-                    await dispatch(
-                      installModrinthMod(
-                        latestCompatibleModVersion,
-                        instanceName,
-                        gameVersion,
-                        p => {
-                          if (parseInt(p, 10) !== prev) {
-                            prev = parseInt(p, 10);
-                            ipcRenderer.invoke(
-                              'update-progress-bar',
-                              parseInt(p, 10) / 100
-                            );
-                          }
-                        }
-                      )
-                    );
-                  }
-                  ipcRenderer.invoke('update-progress-bar', 0);
-                  setLoading(false);
-                }}
-                loading={loading}
-              >
-                <FontAwesomeIcon icon={faDownload} />
-              </Button>
-            </div>
-          )
-        ) : (
-          <Button type="primary" onClick={openModOverview}>
-            <FontAwesomeIcon icon={faWrench} />
-          </Button>
-        )}
       </RowContainer>
     );
   });
@@ -473,7 +406,7 @@ const ModrinthModsBrowser = ({ instanceName, gameVersion }) => {
           css={`
             height: 32px !important;
           `}
-          placeholder="Search..."
+          placeholder="Buscar..."
           value={searchQuery}
           onChange={e => {
             setSearchQuery(e.target.value);

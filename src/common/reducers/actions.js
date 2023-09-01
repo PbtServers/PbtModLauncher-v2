@@ -3314,7 +3314,8 @@ export function launchInstance(instanceName, forceQuit = false) {
                   .replace(
                     /\${classpath_separator}/g,
                     process.platform === 'win32' ? ';' : ':'
-                  );              }
+                  );
+              }
             );
           }
           mcJson.arguments.game = mcJson.arguments.game.concat(
@@ -3790,11 +3791,11 @@ export function installModrinthMod(
                     }
                   ]
                 ]
-            };
-          })
-        );
+              };
+            })
+          );
 
-        await fse.move(tempFile, destFile, { overwrite: true });
+          await fse.move(tempFile, destFile, { overwrite: true });
         });
       },
       { concurrency: 2 }
@@ -3804,7 +3805,6 @@ export function installModrinthMod(
 
 /**
  * Recursively gets all the dependent versions of a given version and returns them in one array
- * @param {ModrinthVersion} version
  * @param {ModrinthVersion} version The mod version to get the dependencies for
  * @param {string} gameVersion The required Minecraft version, so we can ensure dependencies are compatible
  * @returns {Promise<ModrinthVersion[]>}
