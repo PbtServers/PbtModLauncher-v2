@@ -278,7 +278,8 @@ export const getMultipleAddons = async addons => {
       return item.length <= 7;
   });
 
-  let addonsfinal = addonsfin.toString();
+  let addonsfinalstr = addonsfin.toString();
+  let addonsfinal = addonsfinalstr.replace(']}', '');
   let addonsfinal2 = '{"modIds":[' + addonsfinal + "]}"
 
   console.warn(addonsfinal2);
