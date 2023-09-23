@@ -268,28 +268,50 @@ export const getAddon = async projectID => {
   }
 };
 
-export const getMultipleAddons = async addons => {
+export const getMultipleCFAddons = async addons => {
 
   let addonsin = JSON.stringify({ modIds: addons });
 
   let addonsini = addonsin.split(',');
 
-  let addonsfin = addonsini.filter(function(item) {
+  let addonscf = addonsini.filter(function(item) {
       return item.length <= 7;
   });
 
-  let addonsfinalstr = addonsfin.toString();
-  let addonsfinal = addonsfinalstr.replace(']}', '');
-  let addonsfinal2 = '{"modIds":[' + addonsfinal + "]}"
+  let addonscffinal = addonscf.toString();
+  const addonscffinal2 = '{"modIds":[' + addonscffinal + "]}";
 
-  console.warn(addonsfinal2);
+  console.warn("CurseForge Mods --> " + addonscffinal2);
 
   trackCurseForgeAPI();
   const url = `${FORGESVC_URL}/mods`;
   const { data } = await axioInstance.post(
     url,
-    addonsfinal2
+    addonscffinal2
   );
+  return data?.data;
+};
+
+export const getMultipleModrinthAddons = async addons => {
+
+  let addonsin = JSON.stringify({ modIds: addons });
+
+  let addonsini = addonsin.split(',');
+
+  let addonsmr = addonsini.filter(function(item) {
+      return item.length >= 8;
+  });
+
+  let addonsmrfinalstr = addonsmr.toString();
+  let addonsmrfinalstri = addonsmrfinalstr.replace('}', '');
+  let addonsmrfinal = addonsmrfinalstri.replace('{"modIds":', '?ids=');
+  const addonsmrfinal2 = addonsmrfinal;
+
+  console.warn("Modrinth Mods --> " + addonsmrfinal2);
+
+  trackModrinthAPI();
+  const url = `${MODRINTH_API_URL}/projects`;
+  const { data } = await axioInstance.get(url + addonsmrfinal2);
   return data?.data;
 };
 

@@ -65,7 +65,8 @@ import {
   getModrinthProject,
   getModrinthVersionManifest,
   getModrinthVersions,
-  getMultipleAddons,
+  getMultipleCFAddons,
+  getMultipleModrinthAddons,
   mcAuthenticate,
   mcInvalidate,
   mcRefresh,
@@ -1879,13 +1880,13 @@ export function processForgeManifest(instanceName) {
     const { manifest, loader } = _getCurrentDownloadItem(state);
     const concurrency = state.settings.concurrentDownloads;
 
-    dispatch(updateDownloadStatus(instanceName, 'Descargando Mods...'));
+    dispatch(updateDownloadStatus(instanceName, 'Descargando Mods (CurseForge)...'));
 
     const addonsHashmap = {};
     const addonsFilesHashmap = {};
 
-    const _getAddons = async () => {
-      const addons = await getMultipleAddons(
+    const _getCFAddons = async () => {
+      const addons = await getMultipleCFAddons(
         manifest.files.map(v => v.projectID)
       );
 
@@ -1906,7 +1907,7 @@ export function processForgeManifest(instanceName) {
       );
     };
 
-    await Promise.all([_getAddons(), _getAddonFiles()]);
+    await Promise.all([_getCFAddons(), _getAddonFiles()]);
 
     let modManifests = [];
     const optedOutMods = [];
@@ -2005,6 +2006,8 @@ export function processForgeManifest(instanceName) {
         }
       }
     }
+
+
 
     if (validAddon) {
       dispatch(updateDownloadStatus(instanceName, 'Copiando Alteraciones...'));
@@ -3782,12 +3785,12 @@ export function installModrinthMod(
                   ...config.mods,
                   ...[
                     {
-                      source: MODRINTH,
-                      projectID: v.project_id,
-                      fileID: v.id,
+                      //source: MODRINTH,
+                      //projectID: v.project_id,
+                      //fileID: v.id,
                       fileName: file.filename,
                       displayName: file.filename,
-                      downloadUrl: file.url
+                      //downloadUrl: file.url
                     }
                   ]
                 ]
