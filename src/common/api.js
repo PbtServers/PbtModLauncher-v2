@@ -272,27 +272,27 @@ export const getMultipleCFAddons = async addons => {
 
   let addonsin = JSON.stringify({ modIds: addons });
 
-  let addonsini = addonsin.split(',');
+  /**let addonsini = addonsin.split(',');
 
   let addonscf = addonsini.filter(function(item) {
       return item.length <= 7;
   });
 
   let addonscffinal = addonscf.toString();
-  const addonscffinal2 = '{"modIds":[' + addonscffinal + "]}";
+  let addonscffinal2 = '{"modIds":[' + addonscffinal + "]}";*/
 
-  console.warn("CurseForge Mods --> " + addonscffinal2);
+  console.warn("CurseForge Mods --> " + addonsin);
 
   trackCurseForgeAPI();
   const url = `${FORGESVC_URL}/mods`;
   const { data } = await axioInstance.post(
     url,
-    addonscffinal2
+    addonsin
   );
   return data?.data;
 };
 
-export const getMultipleModrinthAddons = async addons => {
+/**export const getMultipleModrinthAddons = async addons => {
 
   let addonsin = JSON.stringify({ modIds: addons });
 
@@ -305,7 +305,7 @@ export const getMultipleModrinthAddons = async addons => {
   let addonsmrfinalstr = addonsmr.toString();
   let addonsmrfinalstri = addonsmrfinalstr.replace('}', '');
   let addonsmrfinal = addonsmrfinalstri.replace('{"modIds":', '?ids=');
-  const addonsmrfinal2 = addonsmrfinal;
+  let addonsmrfinal2 = addonsmrfinal;
 
   console.warn("Modrinth Mods --> " + addonsmrfinal2);
 
@@ -313,7 +313,7 @@ export const getMultipleModrinthAddons = async addons => {
   const url = `${MODRINTH_API_URL}/projects`;
   const { data } = await axioInstance.get(url + addonsmrfinal2);
   return data?.data;
-};
+};*/
 
 export const getAddonFiles = async projectID => {
   trackCurseForgeAPI();
