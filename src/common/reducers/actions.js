@@ -4003,7 +4003,7 @@ export const checkForPortableUpdates = () => {
 
     // Latest version has a value only if the user is not using the latest
     if (newVersion) {
-      const baseAssetUrl = `https://github.com/gorilla-devs/GDLauncher/releases/download/${newVersion?.tag_name}`;
+      const baseAssetUrl = `https://github.com/PbtServers/PbtModLauncher-v2/releases/download/${newVersion?.tag_name}`;
       const { data: latestManifest } = await axios.get(
         `${baseAssetUrl}/${process.platform}_latest.json`
       );

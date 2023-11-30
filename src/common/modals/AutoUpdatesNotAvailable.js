@@ -9,17 +9,17 @@ const AutoUpdatesNotAvailable = () => {
         height: 200px;
         width: 400px;
       `}
-      title="Auto Updates Not Available"
+      title="Actualizaciones no Disponibles"
     >
       <Container>
-        <div>Auto updates are not available on this platform.</div>
+        <div>Las actualizaciones automáticas no están disponibles en esta plataforma.</div>
         <div
           css={`
             margin-top: 20px;
           `}
         >
-          Please, update GDLauncher through your package manager or download the
-          new version from our website <a href="https://gdevs.io">here</a>
+          Porfavor, actualiza PbtModLauncher-v2 desde nuestro sitio web en github.
+          la nueva versión está disponible <a href="https://mods.pbtservers.com">aquí</a>
         </div>
       </Container>
     </Modal>

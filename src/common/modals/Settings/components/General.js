@@ -475,15 +475,20 @@ const General = () => {
             margin: 10px 0;
           `}
         >
-          <img src={HorizontalLogo} style="width:80%;height:80%;" />
+          <img src={HorizontalLogo} style="width:80%;height:80%;" />{' '}
           <div
             css={`
               margin-left: 10px;
             `}
           >
-            v {version}
+            v{version}
           </div>
         </div>
+        <p>
+          {updateAvailable
+            ? 'Hay una actualización disponible en este momento. Selecciona actualizar para aplicarla y reiniciar el launcher!'
+            : 'Actualmente no hay actualizaciones disponibles. Te avisaremos si hace falta actualizar.'}
+        </p>
         <div
           css={`
             margin-top: 20px;
@@ -492,6 +497,30 @@ const General = () => {
             flex-direction: row;
           `}
         >
+          {updateAvailable ? (
+            <Button
+              onClick={() =>
+                ipcRenderer.invoke('installUpdateAndQuitOrRestart')
+              }
+              css={`
+                margin-right: 10px;
+              `}
+              type="primary"
+            >
+              Actualizar &nbsp;
+              <FontAwesomeIcon icon={faDownload} />
+            </Button>
+          ) : (
+            <div
+              css={`
+                width: 96px;
+                height: 36px;
+                padding: 6px 8px;
+              `}
+            >
+              No hay Actualizaciones!
+            </div>
+          )}
         </div>
       </LauncherVersion>
     </>

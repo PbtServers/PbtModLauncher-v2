@@ -341,19 +341,20 @@ export const getAddonDescription = async projectID => {
 
 export const getAddonFile = async (projectID, fileID) => {
 
-  var projectIDlen = projectID.length;
-
-  if (projectIDlen >= 8) {
+  //var projectIDlen = projectID.length;
+  /*if (projectIDlen >= 8) {
     trackModrinthAPI();
     const url = `${MODRINTH_API_URL}/project/${projectID}/version/${fileID}`;
     const { data } = await axioInstance.get(url);
     return data?.data;
   } else {
-    trackCurseForgeAPI();
-    const url = `${FORGESVC_URL}/mods/${projectID}/files/${fileID}`;
-    const { data } = await axioInstance.get(url);
-    return data?.data;
-  }
+  }*/
+
+  trackCurseForgeAPI();
+  const url = `${FORGESVC_URL}/mods/${projectID}/files/${fileID}`;
+  const { data } = await axioInstance.get(url);
+  return data?.data;
+
 };
 
 export const getAddonsByFingerprint = async fingerprints => {

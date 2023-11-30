@@ -99,30 +99,30 @@ const SystemNavbar = () => {
   const [isAppImage, setIsAppImage] = useState(false);
   const hideAds = useSelector(state => state.settings.hideAds);
 
-  // const checkForUpdates = async () => {
-  //   const isAppImageVar = await ipcRenderer.invoke('isAppImage');
-  //   setIsAppImage(isAppImageVar);
-  //   if (
-  //     process.env.REACT_APP_RELEASE_TYPE === 'setup' &&
-  //     (isAppImageVar || process.platform === 'win32')
-  //   ) {
-  //     ipcRenderer.invoke('checkForUpdates');
-  //     ipcRenderer.on('updateAvailable', () => {
-  //       dispatch(updateUpdateAvailable(true));
-  //     });
-  //   } else if (
-  //     process.platform === 'win32' &&
-  //     process.env.REACT_APP_RELEASE_TYPE !== 'setup'
-  //   ) {
-  //     dispatch(checkForPortableUpdates())
-  //       .then(v => dispatch(updateUpdateAvailable(Boolean(v))))
-  //       .catch(console.error);
-  //   } else {
-  //     isNewVersionAvailable()
-  //       .then(v => dispatch(updateUpdateAvailable(Boolean(v))))
-  //       .catch(console.error);
-  //   }
-  // };
+     const checkForUpdates = async () => {
+     const isAppImageVar = await ipcRenderer.invoke('isAppImage');
+     setIsAppImage(isAppImageVar);
+     if (
+       process.env.REACT_APP_RELEASE_TYPE === 'setup' &&
+       (isAppImageVar || process.platform === 'win32')
+     ) {
+       ipcRenderer.invoke('checkForUpdates');
+       ipcRenderer.on('updateAvailable', () => {
+         dispatch(updateUpdateAvailable(true));
+       });
+     } else if (
+       process.platform === 'win32' &&
+       process.env.REACT_APP_RELEASE_TYPE !== 'setup'
+     ) {
+       dispatch(checkForPortableUpdates())
+         .then(v => dispatch(updateUpdateAvailable(Boolean(v))))
+         .catch(console.error);
+     } else {
+       isNewVersionAvailable()
+         .then(v => dispatch(updateUpdateAvailable(Boolean(v))))
+         .catch(console.error);
+     }
+   };
 
   useEffect(() => {
     ipcRenderer
@@ -203,7 +203,7 @@ const SystemNavbar = () => {
                   white-space: nowrap;
                 `}
               >
-                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PbtModLauncher-v2 (v1.0.4-FIX) [Fork de GDLauncher]</b>
+                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PbtModLauncher-v2 [Fork de GDLauncher]</b>
               </div>
               {/* <PulsatingCircle /> */}
             </div>

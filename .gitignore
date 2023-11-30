@@ -14,6 +14,7 @@
 /build
 /release
 /deploy
+/deploy-v1.0.4-FIX/
 
 # IDEs
 .idea

@@ -865,76 +865,76 @@ ipcMain.handle('calculateMurmur2FromPath', (e, filePath) => {
 
 // AutoUpdater
 
-// if (process.env.REACT_APP_RELEASE_TYPE === 'setup') {
-//   autoUpdater.autoDownload = false;
-//   autoUpdater.allowDowngrade =
-//     !allowUnstableReleases && app.getVersion().includes('beta');
-//   autoUpdater.allowPrerelease = allowUnstableReleases;
-//   autoUpdater.setFeedURL({
-//     owner: 'gorilla-devs',
-//     repo: 'GDLauncher',
-//     provider: 'github'
-//   });
+if (process.env.REACT_APP_RELEASE_TYPE === 'setup') {
+  autoUpdater.autoDownload = false;
+  autoUpdater.allowDowngrade =
+    !allowUnstableReleases && app.getVersion().includes('beta');
+  autoUpdater.allowPrerelease = allowUnstableReleases;
+  autoUpdater.setFeedURL({
+    owner: 'PbtServers',
+    repo: 'PbtModLauncher-v2',
+    provider: 'github'
+  });
 
-//   autoUpdater.on('update-available', () => {
-//     autoUpdater.downloadUpdate();
-//   });
+  autoUpdater.on('update-available', () => {
+    autoUpdater.downloadUpdate();
+  });
 
-//   autoUpdater.on('update-downloaded', () => {
-//     mainWindow.webContents.send('updateAvailable');
-//   });
+  autoUpdater.on('update-downloaded', () => {
+    mainWindow.webContents.send('updateAvailable');
+  });
 
-//   ipcMain.handle('checkForUpdates', () => {
-//     autoUpdater.checkForUpdates();
-//   });
-// }
+  ipcMain.handle('checkForUpdates', () => {
+    autoUpdater.checkForUpdates();
+  });
+}
 
-// ipcMain.handle('installUpdateAndQuitOrRestart', async (e, quitAfterInstall) => {
-//   const tempFolder = path.join(
-//     path.dirname(app.getPath('exe')),
-//     'data',
-//     'temp'
-//   );
-//   if (process.env.REACT_APP_RELEASE_TYPE === 'setup') {
-//     autoUpdater.quitAndInstall(true, !quitAfterInstall);
-//   } else {
-//     const updaterVbs = 'updater.vbs';
-//     const updaterBat = 'updateLauncher.bat';
-//     await fs.writeFile(
-//       path.join(tempFolder, updaterBat),
-//       `ping 127.0.0.1 -n 1 > nul & robocopy "${path.join(
-//         tempFolder,
-//         'update'
-//       )}" "." /MOV /E${
-//         quitAfterInstall ? '' : ` & start "" "${app.getPath('exe')}"`
-//       }
-//         DEL "${path.join(tempFolder, updaterVbs)}"
-//         DEL "%~f0"
-//         `
-//     );
+ipcMain.handle('installUpdateAndQuitOrRestart', async (e, quitAfterInstall) => {
+  const tempFolder = path.join(
+    path.dirname(app.getPath('exe')),
+    'data',
+    'temp'
+  );
+  if (process.env.REACT_APP_RELEASE_TYPE === 'setup') {
+    autoUpdater.quitAndInstall(true, !quitAfterInstall);
+  } else {
+    const updaterVbs = 'updater.vbs';
+    const updaterBat = 'updateLauncher.bat';
+    await fs.writeFile(
+      path.join(tempFolder, updaterBat),
+      `ping 127.0.0.1 -n 1 > nul & robocopy "${path.join(
+        tempFolder,
+        'update'
+      )}" "." /MOV /E${
+        quitAfterInstall ? '' : ` & start "" "${app.getPath('exe')}"`
+      }
+        DEL "${path.join(tempFolder, updaterVbs)}"
+        DEL "%~f0"
+        `
+    );
 
-//     await fs.writeFile(
-//       path.join(tempFolder, updaterVbs),
-//       `Set WshShell = CreateObject("WScript.Shell") 
-//           WshShell.Run chr(34) & "${path.join(
-//             tempFolder,
-//             updaterBat
-//           )}" & Chr(34), 0
-//           Set WshShell = Nothing
-//           `
-//     );
+    await fs.writeFile(
+      path.join(tempFolder, updaterVbs),
+      `Set WshShell = CreateObject("WScript.Shell")
+          WshShell.Run chr(34) & "${path.join(
+            tempFolder,
+            updaterBat
+          )}" & Chr(34), 0
+          Set WshShell = Nothing
+          `
+    );
 
-//     const updateSpawn = spawn(path.join(tempFolder, updaterVbs), {
-//       cwd: path.dirname(app.getPath('exe')),
-//       detached: true,
-//       shell: true,
-//       stdio: [
-//         'ignore' /* stdin */,
-//         'ignore' /* stdout */,
-//         'ignore' /* stderr */
-//       ]
-//     });
-//     updateSpawn.unref();
-//     mainWindow.close();
-//   }
-// });
+    const updateSpawn = spawn(path.join(tempFolder, updaterVbs), {
+      cwd: path.dirname(app.getPath('exe')),
+      detached: true,
+      shell: true,
+      stdio: [
+        'ignore' /* stdin */,
+        'ignore' /* stdout */,
+        'ignore' /* stderr */
+      ]
+    });
+    updateSpawn.unref();
+    mainWindow.close();
+  }
+});
