@@ -41,10 +41,6 @@ const modrinthClient = axios.create({
   }
 });
 
-const trackFTBAPI = () => {
-  ga.sendCustomEvent('FTBAPICall');
-};
-
 const trackModrinthAPI = () => {
   ga.sendCustomEvent('ModrinthAPICall');
 };
@@ -253,19 +249,19 @@ export const getFabricJson = ({ mcVersion, loaderVersion }) => {
 
 export const getAddon = async projectID => {
 
-  var projectIDlen = projectID.length;
+  //var projectIDlen = projectID.length;
 
-  if (projectIDlen >= 8) {
+  /**if (projectIDlen >= 8) {
     trackModrinthAPI();
     const url = `${MODRINTH_API_URL}/project/${projectID}`;
     const { data } = await axioInstance.get(url);
     return data?.data;
-  } else {
+  } else {*/
     trackCurseForgeAPI();
     const url = `${FORGESVC_URL}/mods/${projectID}`;
     const { data } = await axioInstance.get(url);
     return data?.data;
-  }
+  //}
 };
 
 export const getMultipleCFAddons = async addons => {
@@ -287,7 +283,9 @@ export const getMultipleCFAddons = async addons => {
   const url = `${FORGESVC_URL}/mods`;
   const { data } = await axioInstance.post(
     url,
-    addonsin
+    JSON.stringify({
+      modIds: addons
+    })
   );
   return data?.data;
 };

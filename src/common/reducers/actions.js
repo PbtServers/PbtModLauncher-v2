@@ -1130,6 +1130,7 @@ export function updateInstanceConfig(
         if (readBuff.every(v => v === 0)) {
           throw new Error('Corrupted file');
         }
+        newFile.close();
         await fs.rename(tempP, p);
       };
 
