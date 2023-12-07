@@ -50,6 +50,18 @@ const Home = () => {
 
   const [profileImage, setProfileImage] = useState(null);
   const [annoucement, setAnnoucement] = useState(null);
+
+  useEffect(() => {
+    const init = async () => {
+      const appVersion = await ipcRenderer.invoke('getAppVersion');
+      if (lastUpdateVersion !== appVersion) {
+        dispatch(updateLastUpdateVersion(appVersion));
+      }
+    };
+
+    init();
+  }, []);
+
   useEffect(() => {
     extractFace(account.skin).then(setProfileImage).catch(console.error);
   }, [account]);

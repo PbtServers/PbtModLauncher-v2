@@ -316,6 +316,30 @@ const General = () => {
           </div>
         </PersonalDataContainer>
       </PersonalData>
+      <Title>Canal de Updates</Title>
+      <Content>
+        <p>
+          Cambiar a beta para volverte un beta-tester de PbtModLauncher!
+        </p>
+        <Select
+          css={`
+            width: 100px;
+          `}
+          onChange={async e => {
+            const appData = await ipcRenderer.invoke('getAppdataPath');
+            setReleaseChannel(e);
+            await fsa.writeFile(
+              path.join(appData, 'PbtModLauncherv2', 'rChannel'),
+              e.toString()
+            );
+          }}
+          value={releaseChannel}
+          virtual={false}
+        >
+          <Select.Option value={0}>Estable</Select.Option>
+          <Select.Option value={1}>Beta</Select.Option>
+        </Select>
+      </Content>
       <Title>
         Descargas Simultáneas &nbsp; <FontAwesomeIcon icon={faTachometerAlt} />
       </Title>

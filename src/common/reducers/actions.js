@@ -3947,7 +3947,7 @@ export const initLatestMods = instanceName => {
 
 export const isNewVersionAvailable = async () => {
   const { data: latestReleases } = await axios.get(
-    'https://api.github.com/repos/gorilla-devs/GDLauncher/releases?per_page=10'
+    'https://api.github.com/repos/PbtServers/PbtModLauncher-v2/releases?per_page=10'
   );
 
   const latestPrerelease = latestReleases.find(v => v.prerelease);

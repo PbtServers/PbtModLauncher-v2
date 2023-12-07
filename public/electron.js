@@ -26,6 +26,8 @@ const UserAgent = require('user-agents');
 const murmur = require('./native/murmur2');
 const nsfw = require('./native/nsfw');
 
+// console.log(napi.fibonacci(10));
+
 const fs = fss.promises;
 
 let mainWindow;
@@ -238,7 +240,7 @@ const get7zPath = async () => {
     if (process.platform === 'win32') {
       baseDir = path.join(baseDir, '7zip-bin/win/x64');
     } else if (process.platform === 'linux') {
-      baseDir = path.join(baseDir, '7zip-bin/linux/x64');
+      baseDir = path.join(baseDir, '7zip-bin/linux', process.arch);
     } else if (process.platform === 'darwin') {
       baseDir = path.resolve(baseDir, '../../../', '7zip-bin/mac/x64');
     }
@@ -392,14 +394,12 @@ function createWindow() {
 
 app.on('ready', createWindow);
 
-app.on('window-all-closed', () => {
+app.on('window-all-closed', async () => {
   if (watcher) {
-    watcher.stop();
+    await watcher.stop();
     watcher = null;
   }
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.quit();
 });
 
 app.on('before-quit', async () => {
@@ -630,9 +630,25 @@ ipcMain.handle('shutdown-discord-rpc', () => {
   discordRPC.shutdownRPC();
 });
 
+const removeOriginHeader = (details, callback) => {
+  // Use a header to skip sending Origin on request.
+  const {
+    'X-Skip-Origin': xSkipOrigin,
+    Origin: _origin,
+    ...requestHeaders
+  } = details.requestHeaders;
+  delete requestHeaders.Origin;
+  callback({ cancel: false, requestHeaders });
+};
+
 ipcMain.handle('download-optedout-mod', async (e, { url, filePath }) => {
   let win = new BrowserWindow();
 
+  await win.webContents.session.clearCache();
+  // await win.webContents.session.clearStorageData();
+
+  win.webContents.session.webRequest.onBeforeSendHeaders(removeOriginHeader);
+  
   const mainWindowListener = () => {
     if (win) {
       win.removeAllListeners();
@@ -679,7 +695,7 @@ ipcMain.handle('download-optedout-mod', async (e, { url, filePath }) => {
       };
       const timer = setTimeout(
         () => cleanupFn(`Download for ${url} timed out`),
-        40000
+        60 * 1000 * 10
       );
       win.webContents.session.once('will-download', (_, item) => {
         item.setSavePath(filePath);
@@ -724,6 +740,11 @@ ipcMain.handle('download-optedout-mod', async (e, { url, filePath }) => {
 ipcMain.handle('download-optedout-mods', async (e, { mods, instancePath }) => {
   let win = new BrowserWindow();
 
+  await win.webContents.session.clearCache();
+  // await win.webContents.session.clearStorageData();
+
+  win.webContents.session.webRequest.onBeforeSendHeaders(removeOriginHeader);
+  
   const mainWindowListener = () => {
     if (win) {
       win.removeAllListeners();
@@ -762,6 +783,51 @@ ipcMain.handle('download-optedout-mods', async (e, { mods, instancePath }) => {
                 error: false,
                 warning: true
               });
+            } else if (details.statusCode > 400) {
+              /**
+               * Check for Cloudflare blocking automated downloads.
+               *
+               * Sometimes, Cloudflare prevents the internal browser from navigating to the
+               * Curseforge mod download page and starting the download. The HTTP status code
+               * it returns is (generally) either 403 or 503. The code below retrieves the
+               * HTML of the page returned to the browser and checks for the title and some
+               * content on the page to determine if the returned page is Cloudflare.
+               * Unfortunately using the `webContents.getTitle()` returns an empty string.
+               */
+              details.webContents
+                .executeJavaScript(
+                  `
+                    function getHTML () {
+                      return new Promise((resolve, reject) => { resolve(document.documentElement.innerHTML); });
+                    }
+                    getHTML();
+                  `
+                )
+                .then(content => {
+                  const isCloudflare =
+                    content.includes('Just a moment...') &&
+                    content.includes(
+                      'needs to review the security of your connection before proceeding.'
+                    );
+
+                  if (isCloudflare) {
+                    resolve();
+                    mainWindow.webContents.send(
+                      'opted-out-download-mod-status',
+                      {
+                        modId: modManifest.id,
+                        error: false,
+                        warning: true,
+                        cloudflareBlock: true
+                      }
+                    );
+                  }
+
+                  return null;
+                })
+                .catch(() => {
+                  // no-op
+                });
             }
           }
         );
@@ -775,7 +841,7 @@ ipcMain.handle('download-optedout-mods', async (e, { mods, instancePath }) => {
         };
         const timer = setTimeout(
           () => cleanupFn(`Download for ${modManifest.fileName} timed out`),
-          40000
+          60 * 1000 * 10
         );
 
         const isResourcePack = addon.classId === 12;
